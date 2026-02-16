@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ResolucionesListForm">
+
+        <p:panel header="#{mensajes.ListResolucionesTitle}">
+            <p:commandButton id="createButton"                             icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{resolucionesController.prepareCreate}" update=":ResolucionesCreateForm" oncomplete="PF('ResolucionesCreateDialog').show()"/>
+            <p:commandButton id="addDocButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="Adjuntar Doc" update=":ResolucionesAgregarImagenForm" oncomplete="PF('ResolucionesAgregarImagenDialog').show()" disabled="#{empty resolucionesController.selected}"/>
+            <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" value="Ver Doc" action="#{resolucionesController.verDoc()}"  disabled="#{empty resolucionesController.selected or (not empty resolucionesController.selected and empty resolucionesController.selected.resolucionEscaneada)}"/>
+            <p:commandButton id="viewObsButton"  onclick="monitorExporting(startHandler(0), endHandler)" icon="ui-icon-search"   value="Ver Obs Antecedentes" action="#{resolucionesController.navigateObservacionesResolucionesCollection}" disabled="#{resolucionesController.deshabilitarVerObs()}" ajax="false"/>
+            <p:commandButton id="viewButton"   rendered="false" style="visibility: visible;" icon="ui-icon-search" value="#{mensajes.View}" update=":ResolucionesViewForm" oncomplete="PF('ResolucionesViewDialog').show()" disabled="#{empty resolucionesController.selected}"/>
+            <p:commandButton id="editButton"   style="visibility: visible;" icon="ui-icon-pencil" value="#{mensajes.Edit}" actionListener="#{resolucionesController.prepareEdit()}" update=":ResolucionesEditForm" oncomplete="PF('ResolucionesEditDialog').show()" disabled="#{empty resolucionesController.selected}"/>
+            <p:commandButton id="refreshButton" icon="ui-icon-refresh"  value="#{mensajes.Refrescar}" actionListener="#{resolucionesController.refrescar()}" update=":growl,datalist" />
+            <p:commandButton id="deleteButton" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{resolucionesController.delete}" update=":growl,datalist" disabled="#{resolucionesController.deshabilitarBorrar()}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:dataTable id="datalist"
+                         value="#{resolucionesController.items}"
+                         tableStyle="width: auto"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{resolucionesController.selected}">
+                <!--
+                         To enable Lazy Loading, please copy/replace the following lines above,
+                         and be sure to replace the word HASH with the # symbol:
+                
+                         value="HASH{resolucionesController.lazyItems}"
+                         lazy="true"
+                         rowKey="HASH{item.id}"  <<< Remove this line
+                -->
+
+
+                <p:ajax event="rowSelect"   update="@form:viewDocButton,@form:addDocButton,@form:createButton,@form:editButton,@form:deleteButton,@form:viewObsButton" listener="#{resolucionesController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:viewDocButton,@form:addDocButton,@form:createButton,@form:editButton,@form:deleteButton,@form:viewObsButton" listener="#{resolucionesController.resetParents}"/>
+                <p:ajax event="contextMenu" update="@form:viewDocButton @form:addDocButton @form:createButton @form:editButton @form:deleteButton,@form:viewObsButton" listener="#{resolucionesController.resetParents}"/>
+                <p:ajax event="rowDblselect" onsuccess="document.getElementById('ResolucionesListForm:viewButton').click();"/>
+                <!--
+                                <p:column sortBy="#{item.id}" filterMatchMode="contains" filterBy="#{item.id}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListResolucionesTitle_id}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.id}"/>
+                                </p:column>
+                -->
+
+
+
+                <p:column sortBy="#{resolucionesController.customFormatDate2(item.fechaHoraAlta)}" filterMatchMode="startsWith" filterBy="#{resolucionesController.customFormatDate2(item.fechaHoraAlta)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="#{resolucionesController.datePattern2()}" timeZone="America/Asuncion"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{resolucionesController.customFormatDate(item.fecha)}" filterMatchMode="startsWith" filterBy="#{resolucionesController.customFormatDate(item.fecha)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_fecha}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fecha}">
+                        <f:convertDateTime pattern="#{resolucionesController.datePattern()}" timeZone="America/Asuncion"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.nroResolucion}" filterMatchMode="contains" filterBy="#{item.nroResolucion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_nroResolucion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nroResolucion}"/>
+                </p:column>
+
+                <p:column filterMatchMode="contains" filterBy="#{item.documentoJudicial.causa}">
+                    <f:facet name="header">
+                        <h:outputText value="Nro Causa"/>
+                    </f:facet>
+                    <div align="center">
+                        <h:outputText value="#{item.documentoJudicial.causa}" escape="false"/>
+                    </div>
+                </p:column>
+
+                <p:column sortBy="#{item.tipoResolucion.descripcion}" filterMatchMode="contains" filterBy="#{item.tipoResolucion.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_tipoResolucion}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tipoResolucion.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.caratula}" filterMatchMode="contains" filterBy="#{item.caratula}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_caratula}"/>
+                    </f:facet>
+                    <div align="center">
+                        <h:outputText value="#{item.caratulaString}" escape="false"/>
+                    </div>
+                </p:column>
+
+                <p:column sortBy="#{item.documentoJudicial.caratulaAnterior}" filterMatchMode="contains" filterBy="#{item.documentoJudicial.caratulaAnterior}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_caratulaAnterior}"/>
+                    </f:facet>
+                    <div align="center">
+                        <h:outputText value="#{item.documentoJudicial.caratulaAnteriorString}" escape="false"/>
+                    </div>
+                </p:column>
+
+                <p:column filterMatchMode="contains" filterBy="#{resolucionesController.obtenerUltimaObservacionString(item)}">
+                    <f:facet name="header">
+                        <h:outputText value="Última Obs"/>
+                    </f:facet>
+                    <div align="center">
+                        <h:outputText value="#{resolucionesController.obtenerUltimaObservacionString(item)}" escape="false"/>
+                    </div>
+                </p:column>
+
+                <p:column sortBy="#{item.usuarioAlta}" filterMatchMode="contains" filterBy="#{item.usuarioAlta}">
+                    <f:facet name="header">
+                        <h:outputText value="Responsable"/>
+                    </f:facet>
+                    <h:outputText value="#{item.usuarioAlta}"/>
+                </p:column>
+
+                <p:column sortBy="#{documentosJudicialesController.obtenerPersonas(item.documentoJudicial)}" filterMatchMode="contains" filterBy="#{documentosJudicialesController.obtenerPersonas(item.documentoJudicial)}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_persona}"/>
+                    </f:facet>
+                    <p:dataTable id="data1listPersonasResuelve"
+                                 value="#{resolucionesController.obtenerListaPersonasResuelve(item, item.documentoJudicial)}"
+                                 tableStyle="width: auto; background-color: green !important"
+                                 lazy="false" emptyMessage="No hay personas asociadas"
+                                 rowKey="#{item2.id}"
+                                 var="item2">
+
+                        <p:column>
+                            <h:outputText value="#{item2.persona.nombresApellidos}"/>
+                        </p:column>
+
+
+                        <p:column>
+                            <h:outputText value="#{item2.resuelve.descripcion}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_firmado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estaFirmado}"/>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListResolucionesTitle_mostrarWeb}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.mostrarWeb}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Tiene Documento Adjunto"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tieneDocumento}"/>
+                </p:column>
+                <!--
+                                <p:column sortBy="#{item.fechaHoraAlta}" filterMatchMode="contains" filterBy="#{item.fechaHoraAlta}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListResolucionesTitle_fechaHoraAlta}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                                    </h:outputText>
+                                </p:column>
+                
+                
+                                <p:column sortBy="#{item.fechaHoraUltimoCambio}" filterMatchMode="contains" filterBy="#{item.fechaHoraUltimoCambio}">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListResolucionesTitle_fechaHoraUltimoCambio}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraUltimoCambio}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                                    </h:outputText>
+                                </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.documento}" filterMatchMode="contains" filterBy="#{item.documento}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListResolucionesTitle_documento}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.documento}"/>
+                                    </p:column>
+                -->
+                <!--
+                -->
+                <!--
+                                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterMatchMode="contains" filterBy="#{item.usuarioUltimoEstado.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListResolucionesTitle_usuarioUltimoEstado}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                                    </p:column>
+                -->
+                <!--
+                                    <p:column sortBy="#{item.empresa.id}" filterMatchMode="contains" filterBy="#{item.empresa.id}">
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListResolucionesTitle_empresa}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.empresa.id}"/>
+                                    </p:column>
+                -->
+
+            </p:dataTable>
+
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+<!--
+
+            <p:panel>
+                <h:outputText value="Fecha de Carga" style="padding-right: 20px;"/>
+
+                <p:outputLabel value="Desde" for="fechaAltaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                <p:calendar style="padding-right: 10px" id="fechaAltaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" required="false" requiredMessage="Fecha Desde: campo requerido" navigator="true" value="#{resolucionesController.fechaAltaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaAltaHasta" />
+                <p:calendar style="padding-right: 10px" id="fechaAltaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" required="false" requiredMessage="Fecha Hasta: campo requerido" navigator="true" value="#{resolucionesController.fechaAltaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                <p:commandButton value="Buscar por Fecha de Carga" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist" action="#{resolucionesController.buscarPorFechaAlta()}"></p:commandButton>
+            </p:panel>
+            <p:panel>
+                <h:outputText value="Fecha Resolucion" style="padding-right: 20px;"/>
+
+                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px; padding-left: 20px"/>
+                <p:calendar style="padding-right: 10px" id="fechaDesde" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" required="false" requiredMessage="Fecha Desde: campo requerido" navigator="true" value="#{resolucionesController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+
+                <p:outputLabel style="padding-right: 5px" value="Hasta" for="fechaHasta" />
+                <p:calendar style="padding-right: 10px" id="fechaHasta" yearRange="c-100:c+0"  pattern="dd/MM/yyyy" required="false" requiredMessage="Fecha Hasta: campo requerido" navigator="true" value="#{resolucionesController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+
+                <p:commandButton value="Buscar por Fecha de Resolucion" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist" action="#{resolucionesController.buscarPorFechaResolucion()}"></p:commandButton>
+            </p:panel>
+-->

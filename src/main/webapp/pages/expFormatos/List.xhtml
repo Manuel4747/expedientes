@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <script>
+            CKEDITOR.on("instanceReady", function (event) {
+                event.editor.on("beforeCommandExec", function (event) {
+                    // Show the paste dialog for the paste buttons and right-click paste
+                    if (event.data.name == "paste") {
+                        event.editor._.forcePasteDialog = true;
+                    }
+                    // Don't show the paste dialog for Ctrl+Shift+V
+                    if (event.data.name == "pastetext") {
+                        if (event.data.commandData.from == "keystrokeHandler") {
+                            event.cancel();
+                        }
+                    }
+                })
+            });
+            CKEDITOR.editorConfig = function (config) {
+                config.toolbarGroups = [
+                    {name: 'document', groups: ['mode', 'document', 'doctools']},
+                    {name: 'clipboard', groups: ['clipboard', 'undo']},
+                    {name: 'editing', groups: ['find', 'selection', 'spellchecker', 'editing']},
+                    {name: 'forms', groups: ['forms']},
+                    '/',
+                    {name: 'basicstyles', groups: ['basicstyles', 'cleanup']},
+                    {name: 'paragraph', groups: ['list', 'indent', 'blocks', 'align', 'bidi', 'paragraph']},
+                    {name: 'links', groups: ['links']},
+                    {name: 'insert', groups: ['insert']},
+                    '/',
+                    {name: 'styles', groups: ['styles']},
+                    {name: 'colors', groups: ['colors']},
+                    {name: 'tools', groups: ['tools']},
+                    {name: 'others', groups: ['others']},
+                    {name: 'about', groups: ['about']}
+                ];
+            };
+        </script>
+        <h:form id="ExpFormatosListForm">
+
+            <p:panel header="Formatos de Actuaciones">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton" icon="ui-icon-plus" value="#{mensajes.Create}" actionListener="#{expFormatosController.prepareCreate}" update=":ExpFormatosCreateForm" oncomplete="PF('ExpFormatosCreateDialog').show()"/>
+                    <p:commandButton id="editButton" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":ExpFormatosEditForm" oncomplete="PF('ExpFormatosEditDialog').show()" disabled="#{empty expFormatosController.selected}"/>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{expFormatosController.items}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{expFormatosController.selected}">
+                        <p:ajax event="rowSelect" update="@form:editButton, ExpFormatosListForm:editor" />
+                        <p:ajax event="rowUnselect" update="@form:editButton, ExpFormatosListForm:editor" />
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoActuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Descripción"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Borrar"/>
+                            </f:facet>
+                            <p:commandButton id="borrarDocButton" value="Borrar" disabled="#{item.tipoActuacion.id == 9 or item.tipoActuacion.id == 21 or item.tipoActuacion.id == 20 or item.tipoActuacion.id == 22 or item.tipoActuacion.id == 23 or item.tipoActuacion.id == 24 or item.tipoActuacion.id == 25}" update=":ExpFormatosListForm:datalist, :growl" actionListener="#{expFormatosController.borrar(item)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <pe:ckEditor id="editor" width="100%" height="800px" value="#{expFormatosController.selected.texto}" readonly="true" skin="office2013"/>
+                </div>
+
+                <ui:remove>
+                                <!--
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <pe:ckEditor id="editor" width="100%" height="800px" value="#{expFormatosController.selected.texto}" readonly="true" skin="office2013"/>
+                </div>
+                    <p:inputTextarea id="editor1" widgetVar="editor1" style="width: 100%" rows="4" value="#{expFormatosController.selected.texto}">
+                        <p:ajax event="focus" oncomplete="CKEDITOR.replace('ExpFormatosListForm:editor1', {allowedContent: true,extraPlugins: 'wysiwygarea'})"/>
+                    </p:inputTextarea>
+                                -->
+                </ui:remove>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

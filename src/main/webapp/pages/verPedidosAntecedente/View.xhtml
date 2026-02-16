@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AntecedentesViewDlg" widgetVar="AntecedentesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewAntecedentesTitle}" closeOnEscape="true">
+
+            <h:form id="AntecedentesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{antecedentesController.selected != null}">
+
+                       
+                        <h:outputText value="#{mensajes.ViewAntecedentesLabel_descripcion}"/>
+                        <h:outputText value="#{antecedentesController.selected.descripcion}" title="#{mensajes.ViewAntecedentesTitle_descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewAntecedentesLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{antecedentesController.selected.fechaHoraAlta}" title="#{mensajes.ViewAntecedentesTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewAntecedentesLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{antecedentesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewAntecedentesTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        
+                        <h:outputText value="#{mensajes.ViewAntecedentesLabel_usuarioAlta}"/>
+                        <h:outputText value="#{antecedentesController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewAntecedentesLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{antecedentesController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('AntecedentesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

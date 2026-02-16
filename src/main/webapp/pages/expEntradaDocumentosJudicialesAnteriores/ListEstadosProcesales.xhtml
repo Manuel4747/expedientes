@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DocumentosJudicialesListEstadosProcesalesDlg" widgetVar="DocumentosJudicialesListEstadosProcesalesDialog" modal="true" resizable="false"  appendTo="@(body)" header="Estados" closeOnEscape="true">
+
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                    <p:dataTable id="datalistEstadosProcesales"
+                                 value="#{documentosJudicialesAnterioresController.listaEstadosProcesales}"
+                                 tableStyle="width: auto"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="top"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+
+                        <p:column priority="1">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Hora"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column priority="1">
+                            <f:facet name="header">
+                                <h:outputText value="descripcion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estadoProcesal}"/>
+                        </p:column>
+
+                        <p:column priority="1">
+                            <f:facet name="header">
+                                <h:outputText value="Usuario"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaAlta}"/>
+                        </p:column>
+                    </p:dataTable>
+
+                </div>
+            </div>
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

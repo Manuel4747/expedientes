@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="ExpOrdenesDiaEditDlg" widgetVar="ExpOrdenesDiaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Orden del Día" closeOnEscape="true">
+
+                <h:form id="ExpOrdenesDiaEditForm">
+
+                    <h:panelGroup id="display" rendered="#{ordenesDiaController.selected != null}">
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                    <h:outputText style="font-size: 20px" value="Tipo sesión"/>
+                                </div>
+                                <div class="ui-sm-10 ui-md-9 ui-g-9">
+                                    <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:selectOneMenu filter="true" style="width: 100%" filterMatchMode="contains" id="objetoActuacion" value="#{ordenesDiaController.selected.tipoSesion}" required="false" converter="expTiposSesionConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{expTiposSesionController.items}"
+                                                               var="tipoSesionItem"
+                                                               itemValue="#{tipoSesionItem}"
+                                                               itemLabel="#{tipoSesionItem.descripcion}"
+                                                               />
+                                            </p:selectOneMenu>
+                                        </h:panelGroup>
+                                    </p:panelGrid>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="Fecha sesión" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:calendar pattern="MM/dd/yyyy" value="#{ordenesDiaController.selected.fechaSesion}" title="Fecha sesión" required="true" requiredMessage="Debe ingresar fecha sesión" showOn="button"/>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton actionListener="#{ordenesDiaController.save()}" value="#{mensajes.Save}" update="display,:ExpOrdenesDiaListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ExpOrdenesDiaEditDialog'));">
+                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ExpOrdenesDiaEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

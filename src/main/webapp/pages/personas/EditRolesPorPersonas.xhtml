@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RolesPorPersonasEditDlg" widgetVar="RolesPorPersonasEditDialog" positionType="absolute" position="0,0" modal="true" resizable="false"  appendTo="@(body)" header="Roles" closeOnEscape="true">
+
+            <h:form id="RolesPorPersonasEditForm">
+
+                <h:panelGroup id="display">
+                    <h:panelGroup id="roles">
+                        <h:panelGrid columns="3">
+                            <p:outputLabel value="Roles Disponibles" />
+                            <p:outputLabel />
+                            <p:outputLabel value="El usuario tiene los sgtes roles" />
+                            <p:tree id="tree1Roles" value="#{personasAdminController.root1Roles}" var="node" selectionMode="single" selection="#{personasAdminController.selectedNode1Roles}"
+                                    draggable="true" droppable="true" dragdropScope="roles">
+                                <p:ajax event="dragdrop" listener="#{personasAdminController.onDragDropRoles}" />
+                                <p:ajax event="select" update=":RolesPorPersonasEditForm:transfer1RolesButton"/>
+                                <p:ajax event="unselect" update=":RolesPorPersonasEditForm:transfer1RolesButton"/>
+                                <p:treeNode>
+                                    <h:outputText value="#{node}" />
+                                </p:treeNode>
+                            </p:tree>
+
+                            <h:panelGrid columns="1">
+                                <p:commandButton id="transfer1RolesButton" actionListener="#{personasAdminController.transferir1Roles()}" disabled="#{antecedentesRolesPorPersonasController.dehabilitarTransfer1RolesButton()}" icon="ui-icon-plus" update="tree1Roles, tree2Roles, transfer1RolesButton, transfer2RolesButton, :growl" />
+                                <p:commandButton id="transfer2RolesButton" actionListener="#{personasAdminController.transferir2Roles()}" disabled="#{antecedentesRolesPorPersonasController.dehabilitarTransfer2RolesButton()}" icon="ui-icon-minus" update="tree1Roles, tree2Roles, transfer1RolesButton, transfer2RolesButton, :growl" />
+                            </h:panelGrid>
+
+                            <p:tree id="tree2Roles" value="#{personasAdminController.root2Roles}" var="node" selectionMode="single" selection="#{personasAdminController.selectedNode2Roles}"
+                                    draggable="true" droppable="true" dragdropScope="roles">
+                                <p:ajax event="dragdrop" listener="#{personasAdminController.onDragDropRoles}" />
+                                <p:ajax event="select" update=":RolesPorPersonasEditForm:transfer2RolesButton"/>
+                                <p:ajax event="unselect" update=":RolesPorPersonasEditForm:transfer2RolesButton"/>
+                                <p:treeNode>
+                                    <h:outputText value="#{node}" />
+                                </p:treeNode>
+                            </p:tree>
+                        </h:panelGrid>
+                    </h:panelGroup>
+                    <p:commandButton actionListener="#{personasAdminController.guardarRoles()}" value="#{mensajes.Save}" update="display,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RolesPorPersonasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RolesPorPersonasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

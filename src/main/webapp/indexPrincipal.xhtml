@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <ui:composition template="/WEB-INF/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{mensajes.AppName}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <p:panel header="#{mensajes.Welcome} #{personasController.nombreUsu}"/>
+            <center>
+                <h:form id="indexForm">
+                    <div class="ui-g">
+                        <div class="ui-sm-1 ui-md-1 ui-lg-1 ui-g-1">
+                        </div>
+                        <div class="ui-sm-10 ui-md-10 ui-lg-10 ui-g-10">
+                            <div class="ui-md-2 ui-lg-2 ui-g-2">
+                            </div>
+                            <div class="ui-sm-12 ui-md-8 ui-lg-8 ui-g-8">
+                                <ui:remove>
+                                    <p:panelGrid columns="1" styleClass="ui-noborder" rendered="#{not personasController.deshabilitarAntecedentes()}">
+                                        <p align="justify">El sistema de antecedentes se encuentra en mantenimiento por lo que las solicitudes a ser realizadas deberán ser dirigidas al correo institucional de la Secretaría Jurídica <a href="mailto:secretariajuridica@jem.gov.py">secretariajuridica@jem.gov.py</a> para lo cual, los solicitantes en sus requerimientos enviados deberán suscribir los siguientes datos: nombres y apellidos, cargo que ocupa, número de cédula de identidad, archivo pdf con la imagen de la cédula de identidad (anverso y reverso) y correo electrónico personal actual. Los antecedentes serán enviados dentro del plazo de 3 días hábiles al correo electrónico proporcionado por el solicitante desde el correo de la Secretaría Jurídica.
+                                            <br/>
+                                            <br/>
+                                        </p>
+                                    </p:panelGrid>
+                                </ui:remove>
+                                <p:panelGrid columns="1" styleClass="ui-noborder" rendered="#{not personasController.deshabilitarAntecedentes()}">
+                                    <p align="justify">Para hacer su solicitud debe darle click en el botón "Solicitar Antecedentes". Esto producirá una solicitud de antecedentes a la Secretaría Jurídica, dependencia que, en el plazo máximo de 3 días hábiles, deberá responder. Una vez generado el antecedente, Ud recibirá un email de aviso y entonces deberá ingresar al sistema de antecedentes y darle click en el botón “Último Antecedente Generado”, con lo cual podrá descargar el documento solicitado.
+                                        <br/>
+                                        <br/>
+                                    </p>
+                                </p:panelGrid>
+                            </div>
+                            <div class="ui-md-2 ui-lg-2 ui-g-2">
+                            </div>
+                        </div>
+                        <div class="ui-sm-1 ui-md-1 ui-lg-1 ui-g-1">
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="center">
+                            <p:commandButton value="VOLVER" id="volver" disabled="#{personasController.deshabilitarMenues(2)}" actionListener="#{personasController.menu(1)}" update=":menuform:menuPrincipal, :indexForm:fluido, :indexForm:volver, :growl" />
+                        </div>
+
+                        <div class="ui-sm-12 ui-md-8 ui-lg-10 ui-g-10" align="center">
+
+                            <pe:fluidGrid id="fluido" hGutter="30" vGutter="100" style="margin-top: 10px;"  styleClass="modalResponsivoTodo">
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+
+                                    <p:commandLink actionListener="#{pedidosAntecedenteController.solicitarAntecedentes()}" ajax="false" update=":growl">
+                                        <h:graphicImage name="images/antecedentes_otro2.jpeg" title="SOLICITAR ANTECEDENTES" styleClass="modalResponsivo" />
+                                    </p:commandLink>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="SOLICITAR ANTECEDENTES" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+
+
+                                <ui:remove>
+                                    <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+
+                                        <p:commandLink actionListener="#{pedidosAntecedenteController.prepareEdit()}" update=":growl" >
+                                            <h:graphicImage name="images/antecedentes_otro2.jpeg" title="SOLICITAR ANTECEDENTES" styleClass="modalResponsivo" />
+                                        </p:commandLink>
+
+                                        <div align="center">
+                                            <h:outputText style="font-family: 'Arial'" value="SOLICITAR ANTECEDENTES" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </pe:fluidGridItem>
+                                </ui:remove>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink  action="#{pedidosAntecedenteController.obtenerUltimoAntecedente()}" ajax="false" update=":growl">
+                                        <h:graphicImage name="images/historico_otro2.jpeg" title="ÚLTIMO ANTECEDENTE GENERADO" styleClass="modalResponsivo" />
+                                    </p:commandLink>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="ÚLTIMO ANTECEDENTE GENERADO" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <a href="#{pedidosAntecedenteController.linkTutorial}" target="_blank">
+                                        <h:graphicImage name="images/tutorial2.jpeg" title="VIDEO TUTORIAL" styleClass="modalResponsivo" />
+                                    </a>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="VIDEO TUTORIAL" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                               
+                                <ui:remove>
+                                    <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+
+                                        <p:commandLink action="#{personasController.imprimirRepAntecedentes(personasController.selected)}" ajax="false" update=":growl">
+                                            <h:graphicImage name="images/antecedentes_otro2.jpeg" title="GENERAR ANTECEDENTES" styleClass="modalResponsivo" />
+                                        </p:commandLink>
+
+                                        <div align="center">
+                                            <h:outputText style="font-family: 'Arial'" value="GENERAR ANTECEDENTES" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </pe:fluidGridItem>
+
+                                    <pe:fluidGridItem rendered="#{not personasController.deshabilitarAntecedentes()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                        <p:commandLink action="/pages/antecedentes/index" ajax="false" update=":growl">
+                                            <h:graphicImage name="images/historico_otro2.jpeg" title="HISTÓRICO" styleClass="modalResponsivo" />
+                                        </p:commandLink>
+
+                                        <div align="center">
+                                            <h:outputText style="font-family: 'Arial'" value="HISTÓRICO" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </pe:fluidGridItem>
+                                </ui:remove>
+                                
+                                 <pe:fluidGridItem rendered="#{not personasController.deshabilitarlink()}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                   
+                                    <a href="#{pedidosAntecedenteController.linkBiblioteca}" target="_blank">
+                                        <h:graphicImage name="images/biblioteca.jpg" title="BIBLIOTECA" styleClass="modalResponsivo" />
+                                    </a>
+                                  
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="BIBLIOTECA" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'CREAR', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=crear">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="INGRESO CAUSAS" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="INGRESO CAUSAS" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'FORMULARIO', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=formulario">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="INGRESO CAUSAS." styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="INGRESO CAUSAS." styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                
+                                
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR_ANTERIOR', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="INGRESO ANTERIORES" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="INGRESO CAUSAS ANTERIORES" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR_PAPEL', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear_en_papel">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="INGRESO CAUSAS PAPEL" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="INGRESO CAUSAS PAPEL" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR_INVESTIGACION', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear_investigacion">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="INGRESO CAUSA GENÉRICA" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="INGRESO CAUSA GENÉRICA" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues(1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink action="#{personasController.menu(2)}" ajax="false" update=":menuform:menuPrincipal, :indexForm:fluido, :growl">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="GESTIÓN DE EXPEDIENTES" styleClass="modalResponsivo" />
+                                    </p:commandLink>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="GESTIÓN DE EXPEDIENTES" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'CONSULTA', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link  outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=consulta">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="CONSULTAR CAUSAS" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="CONSULTAR CAUSAS" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesPorSecretaria/index.xhtml', 'CONSULTA', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesPorSecretaria/index?tipo=consulta">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="CONSULTAR CAUSAS." styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="CONSULTAR CAUSAS." styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'REGISTRAR', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=registrar">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR PRESENTACIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR PRESENTACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesPorSecretaria/index.xhtml', 'REGISTRAR', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesPorSecretaria/index?tipo=registrar_actuacion_secretaria">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR ACTUACIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR ACTUACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'RECURSO', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=recurso" >
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR RECURSO" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR RECURSO" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'INCIDENTE', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=incidente">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR INCIDENTES / RECUSACIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR INCIDENTE / RECUSACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'PROVIDENCIA', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=providencia" >
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR PROVIDENCIA" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR PROVIDENCIA" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'OFICIO', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=oficio">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR OFICIO" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR OFICIO" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'RESOLUCION', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=resolucion">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR RESOLUCIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR RESOLUCIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'REGISTRAR', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=registrar">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR INSTRUMENTAL" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR INSTRUMENTAL" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'EXP_JEM', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=exp_jem">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR EXPEDIENTE JEM" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR EXPEDIENTE JEM" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'REGISTRAR_SECRETARIA', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=registrar_secretaria">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR PRESENTACIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR PRESENTACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'NOTIFICACION', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=notificacion">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="REGISTRAR NOTIFICACIÓN" styleClass="modalResponsivo" />
+                                    </h:link>
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="REGISTRAR NOTIFICACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('/pages/expFiscalesJurado/index.xhtml', 2)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <h:link outcome="/pages/expFiscalesJurado/index.xhtml">
+                                        <h:graphicImage name="images/denuncia2.jpg" title="FISCALES ACUSADORES" styleClass="modalResponsivo" />
+                                    </h:link>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="FISCALES ACUSADORES" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                <ui:remove>
+                                    <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('sistemaAdministrativo', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+
+                                        <a id="abrirInterno" value="Abrir" target="_blank" href="#{personasController.enviarSistemaAdministrativo()}" >
+                                            <h:graphicImage name="images/denuncia2.jpg" title="MESA DE ENTRADA" styleClass="modalResponsivo" />
+                                        </a>
+                                        <p:commandButton value="abrir" actionListener="#{personasController.enviarSistemaAdministrativo(true)}" />
+
+                                        <div align="center">
+                                            <h:outputText style="font-family: 'Arial'" value="MESA DE ENTRADA" styleClass="modalResponsivoLabels" />
+                                        </div>
+                                    </pe:fluidGridItem>
+                                </ui:remove>
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('sistemaAdministrativo', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+                                    <p:commandLink target="_blank" ajax="false" actionListener="#{personasController.enviarSistemaAdministrativo(true)}" >
+                                        <h:graphicImage name="images/denuncia2.jpg" title="MESA DE ENTRADA" styleClass="modalResponsivo" />
+                                    </p:commandLink>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="MESA DE ENTRADA" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                                <pe:fluidGridItem rendered="#{not personasController.deshabilitarMenues('carpetaDigitalizacion', 1)}" styleClass="ui-widget-header h2 w2 modalResponsivo">
+
+                                    <a id="abrirInterno" value="Abrir" href="#{personasController.enviarCarpetaDigitalizacion()}" >
+                                        <h:graphicImage name="images/denuncia2.jpg" title="CARPETA DIGITALIZACIÓN" styleClass="modalResponsivo" />
+                                    </a>
+
+                                    <div align="center">
+                                        <h:outputText style="font-family: 'Arial'" value="CARPETA DIGITALIZACIÓN" styleClass="modalResponsivoLabels" />
+                                    </div>
+                                </pe:fluidGridItem>
+                            </pe:fluidGrid>
+                        </div>
+                    </div>
+                </h:form>
+
+            </center>
+
+            <h:outputStylesheet id="fluidGridCSS">
+                .pe-fluidgrid {
+                max-width: 700px;
+                }
+
+                .pe-fluidgrid .pe-fluidgrid-item {
+                width:  60px;
+                height: 60px;
+                border-radius: 5px;
+                text-align: center;
+                }
+
+                .pe-fluidgrid-item.w2 {width: 200px;}
+                .pe-fluidgrid-item.w3 {width: 200px;}    
+                .pe-fluidgrid-item.h2 {height: 200px;}
+                .pe-fluidgrid-item.h3 {height: 130px;}
+            </h:outputStylesheet>
+
+            <ui:include src="/pages/pedidosAntecedente/Edit.xhtml"/>
+        </ui:define>
+
+    </ui:composition>
+
+</html>

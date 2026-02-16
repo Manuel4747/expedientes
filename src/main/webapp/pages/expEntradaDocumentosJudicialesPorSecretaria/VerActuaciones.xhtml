@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/manhattan">
+
+    <ui:composition>
+        <div class="ui-g">
+
+            <p:dialog id="ExpActuacionesViewDlg" positionType="absolute" position="0,0" style="width: 100px" widgetVar="ExpActuacionesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{documentosJudicialesPorSecretariaController.tituloVerActuacion}" closeOnEscape="false">
+
+                <h:form id="ExpActuacionesViewForm">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesPorSecretariaController.selected != null}">
+                        <ui:remove>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="obsButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarObservacion()}" value="Agregar Obs al público" update="DocumentosJudicialesEditObsDlg, :growl" oncomplete="PF('DocumentosJudicialesEditObsDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="verObsButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarObservacion()}" value="Ver Obs al público" update="DocumentosJudicialesListObsDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareListaObservaciones()}" oncomplete="PF('DocumentosJudicialesListObsDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-1 ui-g-1">
+                                <p:commandButton id="verEstadoProcesalButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarEstadoProcesal()}" value="Ver Descripciones al público" update="DocumentosJudicialesListEstadosProcesalesDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareListaEstadosProcesales()}" oncomplete="PF('DocumentosJudicialesListEstadosProcesalesDialog').show()" />
+                            </div>
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="estadoProcesalButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarEstadoProcesal()}" value="Agregar Descripción al público" update="DocumentosJudicialesEditEstadoProcesalDlg, :growl" oncomplete="PF('DocumentosJudicialesEditEstadoProcesalDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <ui:remove>
+                                    <p:commandButton id="verLibroButton" style="height: 50px" value="Ver libro" rendered="#{documentosJudicialesPorSecretariaController.renderedVerLibro(documentosJudicialesPorSecretariaController.rolElegido)}" update="ExpAcusacionesTodoViewDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.preparePdfCompleto(documentosJudicialesPorSecretariaController.selected, documentosJudicialesPorSecretariaController.listaActuaciones)}" oncomplete="PF('ExpAcusacionesTodoViewDialog').show(); PF('ExpAcusacionesTodoViewDialog').toggleMaximize();" />
+                                </ui:remove>
+                                <p:commandButton id="verLibroButton" ajax="false" style="height: 50px" onclick="this.form.target = '_blank'" value="Ver libro" rendered="#{documentosJudicialesPorSecretariaController.renderedVerLibro(documentosJudicialesPorSecretariaController.rolElegido)}" action="#{documentosJudicialesPorSecretariaController.verDocCompleto(documentosJudicialesPorSecretariaController.selected, documentosJudicialesPorSecretariaController.listaActuaciones)}"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-1 ui-g-1">
+                                <p:commandButton id="partesButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarPartes()}" value="Partes" update="PartesCreateDlg, :growl, caratula, datalistPersonas, acusadores, abogados" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditPartes()}" oncomplete="PF('PartesCreateDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-1 ui-g-1">
+                                <p:commandButton id="inhibicionesButton" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarInhibiciones()}" value="Inhibidos" update="InhibicionesCreateDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditInhibiciones()}" oncomplete="PF('InhibicionesCreateDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="historialButton" style="height: 50px" value="Trazabilidad" rendered="#{documentosJudicialesPorSecretariaController.renderedVerHistorial(documentosJudicialesPorSecretariaController.rolElegido)}" actionListener="#{documentosJudicialesPorSecretariaController.verHistorial(documentosdocumentosJudicialesPorSecretariaControllerJudicialesController.selected)}" update=":DocumentosJudicialesHistorialForm" oncomplete="PF('DocumentosJudicialesHistorialDialog').show()"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-1 ui-g-1">
+                                <p:commandButton id="asociarButton" style="height: 50px" value="Asociar Exp.Corte" rendered="#{documentosJudicialesPorSecretariaController.renderedAsociarExpedienteCorte(documentosJudicialesPorSecretariaController.rolElegido)}" actionListener="#{documentosJudicialesPorSecretariaController.prepareAsociarExpedienteCorte()}" update=":DocumentosJudicialesAsociarForm, :growl" oncomplete="PF('DocumentosJudicialesAsociarDialog').show()"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-1 ui-g-1">
+                                <p:commandButton id="verCorteButton" style="height: 50px" value="Ver Exp.Corte" onclick="monitorExporting(startHandler(0), endHandler)" rendered="#{documentosJudicialesPorSecretariaController.renderedVerExpedienteCorte(documentosJudicialesPorSecretariaController.rolElegido)}" actionListener="#{documentosJudicialesPorSecretariaController.prepareElegirExpedienteCorte(documentosJudicialesPorSecretariaController.selected)}" update=":growl"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="createActuaciones" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarCreateActuaciones()}" value="#{documentosJudicialesPorSecretariaController.botonRegistrar}" disabled="#{empty documentosJudicialesPorSecretariaController.selected}" update=":DocumentosCreateActuacionForm" oncomplete="PF('DocumentosCreateActuacionDialog').show()" actionListener="#{documentosJudicialesPorSecretariaController.prepareCreateActuacion(true, false)}" />
+                                <p:commandButton id="createResoluciones" style="height: 50px" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarCreateResoluciones()}" value="#{documentosJudicialesPorSecretariaController.botonRegistrar}" disabled="#{empty documentosJudicialesPorSecretariaController.selected}" update="ResolucionesCreateForm" oncomplete="PF('ResolucionesCreateDialog').show()" actionListener="#{documentosJudicialesPorSecretariaController.prepareCreateResolucion()}" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_fechaPresentacion}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText value="#{documentosJudicialesPorSecretariaController.selected.fechaPresentacion}" disabled="true" title="#{mensajes.ViewDocumentosJudicialesTitle_fechaPresentacion}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion" />
+                                            </p:inputText>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_nroCausa}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText value="#{documentosJudicialesPorSecretariaController.nroCausaExp}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarModificarCausa()}" title="#{mensajes.ViewDocumentosJudicialesTitle_nroCausa}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Año"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputNumber id="ano" decimalSeparator="," maxValue="9999" decimalPlaces="0" thousandSeparator="." value="#{documentosJudicialesPorSecretariaController.selected.ano}" minValue="0" required="false"  disabled="#{documentosJudicialesPorSecretariaController.deshabilitarModificarAno()}" requiredMessage="Ingrese año" title="Año" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_tipoExpediente}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="1" style="width: 100%;" styleClass="ui-noborder">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" style="width: 100%" id="tipoExpediente" value="#{documentosJudicialesPorSecretariaController.selected.tipoExpediente}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarModificarTipoExpediente()}" converter="tiposExpedienteConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{tiposExpedienteController.items}"
+                                                               var="tipoExpedienteItem"
+                                                               itemValue="#{tipoExpedienteItem}"
+                                                               itemLabel="#{tipoExpedienteItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_personaInformada}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="right">
+                                        <h:panelGroup style="width:100%">
+                                            <h:panelGrid columns="1" style="width:100%" styleClass="ui-noborder">
+                                                <p:dataTable id="datalistPersonasInformadas"
+                                                             value="#{documentosJudicialesPorSecretariaController.listaPersonasInformadasActivas}"
+                                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                             rowKey="#{item.codigo}"
+                                                             var="item"
+                                                             style="width: 100%"
+                                                             paginator="false">
+
+                                                    <p:ajax event="rowSelect"   update="" />
+                                                    <p:ajax event="rowUnselect" update="" />
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.ci}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.nombresApellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_persona}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="right">
+                                        <h:panelGroup style="width:100%">
+                                            <h:panelGrid columns="1" style="width:100%" styleClass="ui-noborder">
+                                                <p:dataTable id="datalistPersonas"
+                                                             value="#{documentosJudicialesPorSecretariaController.listaPersonasActivas}"
+                                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                             rowKey="#{item.codigo}"
+                                                             var="item"
+                                                             style="width: 100%"
+                                                             paginator="false">
+
+                                                    <p:ajax event="rowSelect"   update="" />
+                                                    <p:ajax event="rowUnselect" update="" />
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.ci}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.nombresApellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <h:outputText value="#{mensajes.CreateDocumentosJudicialesTitle_juzgado}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText style="width: 100%" value="#{documentosJudicialesPorSecretariaController.selected.juzgado}" disabled="true" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_fechaHoraAlta}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText style="width: 100%" disabled="true" value="#{documentosJudicialesPorSecretariaController.selected.fechaHoraAlta}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern3()}" timeZone="America/Asuncion" />
+                                            </p:inputText>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{documentosJudicialesPorSecretariaController.renderedMostrarExpedienteWeb()}">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-4 ui-g-4" align="left">
+                                        <h:outputText value="Mostrar Primer Escrito en la Buscador" rendered="#{documentosJudicialesPorSecretariaController.renderedMostrarExpedienteWeb()}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-8 ui-g-8">
+                                        <p:selectOneMenu id="mostrarExpedienteWeb" rendered="#{documentosJudicialesPorSecretariaController.renderedMostrarExpedienteWeb()}" value="#{documentosJudicialesPorSecretariaController.selected.mostrarExpedienteWeb}" >
+                                            <p:ajax event="change" listener="#{documentosJudicialesPorSecretariaController.actualizarMostrarExpedienteWeb()}" />
+                                            <f:selectItem itemLabel="SI" itemValue="SI"/>
+                                            <f:selectItem itemLabel="NO" itemValue="NO"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <h:outputText value="#{mensajes.CreateDocumentosJudicialesLabel_caratula}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" readonly="#{documentosJudicialesPorSecretariaController.deshabilitarModificarCaratula()}" rows="3"  id="caratula" value="#{documentosJudicialesPorSecretariaController.selected.caratula}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_caratula}" title="#{mensajes.CreateDocumentosJudicialesTitle_caratula}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+
+                                        <h:outputText value="Expediente judicial / Cuaderno de investigación fiscal"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" readonly="#{documentosJudicialesPorSecretariaController.deshabilitarModificarMotivoProceso()}" rows="3" cols="50" id="motivoProceso" value="#{documentosJudicialesPorSecretariaController.selected.motivoProceso}" title="Expediente Judicial / Carpeta Fiscal" required="false" requiredMessage="Expediente Judicial / Carpeta Fiscal: campo requerido" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Acusador informado"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText disabled="true" id="acusadoresInformados" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.obtenerPersonaAcusadoraInformada(documentosJudicialesPorSecretariaController.selected)}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Acusador"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText disabled="true" id="acusadores" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.obtenerPersonaAcusadora(documentosJudicialesPorSecretariaController.selected)}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Abogado"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText disabled="true" id="abogados" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.obtenerAbogadoAcusador(documentosJudicialesPorSecretariaController.selected)}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{documentosJudicialesPorSecretariaController.renderedRestringido()}">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Restringido" rendered="#{documentosJudicialesPorSecretariaController.renderedRestringido()}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2">
+                                        <h:selectBooleanCheckbox id="restringido" rendered="#{documentosJudicialesPorSecretariaController.renderedRestringido()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarRestringido()}" value="#{documentosJudicialesPorSecretariaController.selected.restringido}" >
+                                        </h:selectBooleanCheckbox>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                        <p:outputLabel style="font-size: 20px" value="excepto a:"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-6 ui-g-6">
+                                        <p:panelGrid columns="3" styleClass="ui-noborder">
+                                            <p:selectOneMenu filter="true" id="restringidos" filterMatchMode="contains" value="#{documentosJudicialesPorSecretariaController.restringido}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarListaRestringidosAlta()}" converter="personasConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{documentosJudicialesPorSecretariaController.listaRestringidosAlta}"
+                                                               var="personaItem"
+                                                               itemValue="#{personaItem}"
+                                                               itemLabel="#{personaItem.ci} - #{personaItem.nombresApellidos}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                            <p:commandButton id="agregarRestringidoButton" value="Agregar" actionListener="#{documentosJudicialesPorSecretariaController.agregarRestringido()}" update="datalistRestringidos"/>
+                                        </p:panelGrid>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <p:dataTable id="datalistRestringidos"
+                                                     value="#{documentosJudicialesPorSecretariaController.listaRestringidosActivos}"
+                                                     lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                     rowKey="#{item.id}"
+                                                     var="item"
+                                                     tableStyle="width:auto"
+                                                     paginator="false"
+                                                     selectionMode="single"
+                                                     selection="#{documentosJudicialesPorSecretariaController.restringidoSelected}">
+
+
+                                            <p:ajax event="rowSelect"   update="" />
+                                            <p:ajax event="rowUnselect" update="" />
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Cedula"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.ci}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Nombre"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.nombresApellidos}"/>
+                                            </p:column>
+
+                                            <p:column style="width:15px;">
+                                                <p:commandButton id="borrarPersonaButton" value="Borrar" actionListener="#{documentosJudicialesPorSecretariaController.borrarRestringido(item)}" update="datalistRestringidos"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                    <ui:remove>
+                                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                            <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" actionListener="#{documentosJudicialesPorSecretariaController.saveRestringidos()}" ajax="true" value="#{mensajes.Save}" update="display,:DocumentosJudicialesListForm:datalist,:growl, :ExpActuacionesViewForm:datalistActuaciones" oncomplete="handleSubmit(xhr,status,args,PF('RestringidoCreateDialog'));" >
+                                                <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                                            </p:commandButton>
+
+                                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RestringidoCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                                        </div>
+                                    </ui:remove>
+                                    <ui:remove>
+                                        <div class="ui-sm-12 ui-md-8 ui-g-8">
+                                            <p:commandButton id="restringidoButton" style="height: 50px" rendered="#{documentosJudicialesPorSecretariaController.renderedRestringido()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarRestringido()}" value="Habilitados" update="RestringidoCreateDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditRestringidos()}" oncomplete="PF('RestringidoCreateDialog').show()" />
+                                        </div>
+                                    </ui:remove>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{documentosJudicialesPorSecretariaController.renderedInhibiciones()}">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <p:outputLabel value="Inhibidos"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="right">
+                                        <h:panelGroup style="width:100%" rendered="#{documentosJudicialesPorSecretariaController.renderedInhibiciones()}">
+                                            <h:panelGrid columns="1" style="width:100%" styleClass="ui-noborder" rendered="#{documentosJudicialesPorSecretariaController.renderedInhibiciones()}">
+                                                <p:dataTable id="datalistInhibidos"
+                                                             value="#{documentosJudicialesPorSecretariaController.listaInhibidosActivos}"
+                                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                             rendered="#{documentosJudicialesPorSecretariaController.renderedInhibiciones()}"
+                                                             rowKey="#{item.codigo}"
+                                                             var="item"
+                                                             style="width: 100%"
+                                                             paginator="false">
+
+                                                    <p:ajax event="rowSelect"   update="" />
+                                                    <p:ajax event="rowUnselect" update="" />
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.ci}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.nombresApellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+
+                        <ui:remove>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                                    <p:fieldset style="width: 100%" id="fEstadoProceso" styleClass="#{documentosJudicialesPorSecretariaController.rowClassEstadoProceso(documentosJudicialesPorSecretariaController.selected)}" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6" align="left">
+                                            <p:outputLabel value="Estado" for="estadoProceso" />
+                                        </div>
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6" align="right">
+                                            <h:panelGroup>
+                                                <p:selectOneMenu rendered="true" filter="true" filterMatchMode="contains" id="estadoProceso" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarEstadoProcesoEE()}" value="#{documentosJudicialesPorSecretariaController.selected.estadoProcesoExpedienteElectronico}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_estadoProceso}" converter="estadosProcesoExpedienteElectronicoConverter">
+                                                    <p:ajax event="change" update="plazo, fPlazo, fFechaInicio, fEstadoProceso" />
+                                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                    <f:selectItems value="#{estadosProcesoExpedienteElectronicoController.items}"
+                                                                   var="estadoProcesoItem"
+                                                                   itemValue="#{estadoProcesoItem}"
+                                                                   itemLabel="#{estadoProcesoItem.descripcion}"
+                                                                   />
+
+                                                </p:selectOneMenu>
+                                            </h:panelGroup>
+                                        </div>
+                                    </p:fieldset>
+                                </div>
+                                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                                    <p:fieldset style="width: 100%" id="fFechaInicio" styleClass="#{documentosJudicialesPorSecretariaController.rowClassEstadoProceso(documentosJudicialesPorSecretariaController.selected)}">
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6">
+                                            <div align="left">
+                                                <p:outputLabel value="Fecha Inicio Enjuiciamiento" for="fechaInicio" style="padding-right: 5px" />
+                                            </div>
+                                        </div>
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6">
+                                            <div align="left">
+                                                <p:calendar size="7" id="fechaInicio" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{documentosJudicialesPorSecretariaController.selected.fechaInicioEnjuiciamiento}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarEstadoProcesoEE()}" title="Fecha"  showOn="button">
+                                                    <p:ajax event="change" update="plazo, fPlazo, fFechaInicio, fEstadoProceso" />
+                                                </p:calendar>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </div>
+                                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                                    <p:fieldset style="width: 100%" id="fPlazo" styleClass="#{documentosJudicialesPorSecretariaController.rowClassEstadoProceso(documentosJudicialesPorSecretariaController.selected)}">
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6">
+                                            <div align="left">
+                                                <p:outputLabel value="Plazo transcurrido" for="plazo" style="padding-right: 5px" />
+                                            </div>
+                                        </div>
+                                        <div class="ui-sm-12 ui-md-12 ui-lg-6 ui-g-6">
+                                            <div align="left">
+                                                <p:inputText disabled="true" id="plazo" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.cantDiasEnjuiciamiento(documentosJudicialesPorSecretariaController.selected)}"/>
+                                            </div>
+                                        </div>
+                                    </p:fieldset>
+                                </div>
+                            </div>
+
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" action="#{documentosJudicialesPorSecretariaController.saveEditExpediente()}" rendered="#{(not documentosJudicialesPorSecretariaController.deshabilitarModificarCaratula()) or (not documentosJudicialesPorSecretariaController.deshabilitarModificarCausa()) or (not documentosJudicialesPorSecretariaController.deshabilitarModificarAno()) or (not documentosJudicialesPorSecretariaController.deshabilitarModificarTipoExpediente())}" ajax="true" value="#{mensajes.Save}" update=":DocumentosJudicialesListForm:datalist, :growl">
+                                <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <p:selectOneRadio id="filtroRadio" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.filtroRadio}" rendered="#{documentosJudicialesPorSecretariaController.renderedFiltroRadio(documentosJudicialesPorSecretariaController.rolElegido)}">
+                                <p:ajax event="change" update="datalistActuaciones, :growl" listener="#{documentosJudicialesPorSecretariaController.buscarActuaciones()}"  />
+                                <f:selectItem itemLabel="Todas las actuaciones, ordenadas de la mas nueva a la mas vieja" itemValue="1"/>
+                                <f:selectItem itemLabel="Solo pendientes de firma, ordenadas de la mas vieja a la mas nueva" itemValue="2"/>
+                            </p:selectOneRadio>
+
+                        </div>
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                            <p:dataTable id="datalistActuaciones"
+                                         value="#{documentosJudicialesPorSecretariaController.listaActuaciones}"
+                                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                         rendered="#{documentosJudicialesPorSecretariaController.renderedVerActuaciones(documentosJudicialesPorSecretariaController.rolElegido)}" 
+                                         rowKey="#{item.id}"
+                                         rowStyleClass="#{documentosJudicialesPorSecretariaController.rowClass(item)}"
+                                         var="item"
+                                         selectionMode="single"
+                                         scrollable="true" scrollHeight="300"
+                                         selection="#{documentosJudicialesPorSecretariaController.selectedActuacion}">
+
+                                <ui:remove>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListExpActuacionesTitle_id}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>
+                                </ui:remove>
+
+                                <p:column rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarFechaHoraAlta()}" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaHoraAlta}" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarFechaHoraAlta()}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarFechaHoraAlta()}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern3()}" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaPresentacion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaPresentacion}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern3()}" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_descripcion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.descripcion}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_tipoActuacion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.tipoActuacion}" escape="false"/>
+                                </p:column>
+                                <ui:remove>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListExpActuacionesTitle_objetoActuacion}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.objetoActuacion}" escape="false"/>
+                                    </p:column>
+                                </ui:remove>
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Nro"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nroFinalString}"/>
+                                </p:column>
+
+                                <ui:remove>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListExpActuacionesTitle_objetoActuacion}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.objetoActuacion}" escape="false"/>
+                                    </p:column>
+                                </ui:remove>
+
+                                <p:column rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarUsuario()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Alzado por"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.personaAlta.nombresApellidos}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Destinatario"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.destinatario.nombresApellidos}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.estado.descripcion}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Visible" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox id="visible" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarVisible(item)}" value="#{item.visible}" >
+                                        <p:ajax event="change" listener="#{documentosJudicialesPorSecretariaController.actualizarActuacion(item)}" update="visible, :ExpActuacionesViewForm:datalistActuaciones"/>
+                                    </h:selectBooleanCheckbox>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Visibilizado por" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.personaVisible.nombresApellidos}" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                </p:column>
+
+                                <ui:remove>
+                                    <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha finalización" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.fechaHoraVisible}" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                            <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern3()}" timeZone="America/Asuncion" />
+                                        </h:outputText>
+                                    </p:column>
+                                </ui:remove>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedFirmantes()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Firmantes"/>
+                                    </f:facet>
+                                    <p:commandButton rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarFirmantes(item)}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarFirmantes(item)}" id="firmantesDocButton" value="Firmantes" update="FirmantesCreateDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditFirmantes(item)}" oncomplete="PF('FirmantesCreateDialog').show()" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado Firmas"/>
+                                    </f:facet>
+                                    <p:commandButton rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarBotonRevisado(item)}" id="verFirmantesDocButton" value="Estado Firmas" update="FirmantesVerDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareVerFirmantes(item)}" oncomplete="PF('FirmantesVerDialog').show()" />
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedEditarActuacion()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Editar"/>
+                                    </f:facet>
+                                    <p:commandButton rendered="#{documentosJudicialesPorSecretariaController.renderedEditarActuacion()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarEditarActuacion(item)}" value="Editar" update=":growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditActuacion(item)}" />
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedNotificarManualmente()}" >
+                                    <f:facet name="header">
+                                        <h:outputText value="Notificar"/>
+                                    </f:facet>
+                                    <p:commandButton rendered="#{documentosJudicialesPorSecretariaController.renderedNotificarManualmente()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarNotificarManualmente(item)}" value="Notificar" update=":growl, datalistActuaciones" actionListener="#{documentosJudicialesPorSecretariaController.notificarManualmente(item)}" >
+                                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="¿Desea notificar esta actuación?" icon="ui-icon-alert"/>
+                                    </p:commandButton>
+                                </p:column>
+
+                                <ui:remove>
+                                    <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedRegenerarQR()}" >
+                                        <f:facet name="header">
+                                            <h:outputText value="Impresión"/>
+                                        </f:facet>
+                                        <p:commandButton rendered="#{documentosJudicialesPorSecretariaController.renderedRegenerarQR()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarRegenerarQR(item)}" value="Regenerar QR" update=":growl, datalistActuaciones" actionListener="#{documentosJudicialesPorSecretariaController.regenerarQR(item)}" >
+                                            <p:confirm header="#{mensajes.ConfirmationHeader}" message="¿Desea notificar esta actuación?" icon="ui-icon-alert"/>
+                                        </p:commandButton>
+                                    </p:column>
+                                </ui:remove>
+
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedRegenerarQR()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Impresión QR"/>
+                                    </f:facet>
+                                    <p:commandButton id="versionImpresionButton" update=":growl" ajax="false" onclick="this.form.target = '_blank'" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarRegenerarQR(item)}" rendered="#{documentosJudicialesPorSecretariaController.renderedRegenerarQR()}" value="Impresión QR" action="#{documentosJudicialesPorSecretariaController.versionImpresion(item)}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedEnviarManualmenteCorte()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Enviar Corte" rendered="#{documentosJudicialesPorSecretariaController.renderedEnviarManualmenteCorte()}"/>
+                                    </f:facet>
+                                    <p:commandButton id="enviarCorte" rendered="#{documentosJudicialesPorSecretariaController.renderedEnviarManualmenteCorte()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarEnviarManualmenteCorte(item)}" value="Enviar Corte" update=":growl, datalistActuaciones" action="#{documentosJudicialesPorSecretariaController.enviarCorte(item)}" />
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedRetrocederActuaciones()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Retroceder" rendered="#{documentosJudicialesPorSecretariaController.renderedRetrocederActuaciones()}"/>
+                                    </f:facet>
+                                    <p:commandButton id="retroceder" rendered="#{documentosJudicialesPorSecretariaController.renderedRetrocederActuaciones()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarRetrocederActuaciones(item)}" value="Retroceder" update=":growl, datalistActuaciones" action="#{documentosJudicialesPorSecretariaController.retrocederActuaciones(item)}" />
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedFinalizarActuaciones()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Finalizar" rendered="#{documentosJudicialesPorSecretariaController.renderedFinalizarActuaciones()}"/>
+                                    </f:facet>
+                                    <p:commandButton id="finalizar" rendered="#{documentosJudicialesPorSecretariaController.renderedFinalizarActuaciones()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarFinalizarActuaciones(item)}" value="Finalizar" update=":growl, datalistActuaciones" action="#{documentosJudicialesPorSecretariaController.finalizarActuaciones(item)}" />
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedCorregirFirmantes()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Corregir firmantes" rendered="#{documentosJudicialesPorSecretariaController.renderedCorregirFirmantes()}"/>
+                                    </f:facet>
+                                    <p:commandButton id="corregirfirmantes" rendered="#{documentosJudicialesPorSecretariaController.renderedCorregirFirmantes()}" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarCorregirFirmantes(item)}" value="Corregir firmantes" update="CorregirFirmantesDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareCorregirFirmantes(item)}" oncomplete="PF('CorregirFirmantesDialog').show()" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Ver"/>
+                                    </f:facet>
+                                    <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" rendered="#{documentosJudicialesPorSecretariaController.deshabilitarBotonVerEnVentana(item)}" value="Ver" action="#{documentosJudicialesPorSecretariaController.verDoc(item)}" disabled="#{empty item.archivo and empty item.formato}"/>
+                                    <p:commandButton id="verDocButton" value="Ver" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarBotonVerEnVentana(item)}" update="ExpAcusacionesViewForm, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareDialogoVerDoc(item)}" oncomplete="PF('ExpAcusacionesViewDialog').show(); PF('ExpAcusacionesViewDialog').toggleMaximize();"  disabled="#{empty item.archivo and empty item.formato}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Borrar"/>
+                                    </f:facet>
+                                    <p:commandButton id="borrarDocButton" value="Borrar" rendered="#{documentosJudicialesPorSecretariaController.renderedBotonBorrarDoc() and not documentosJudicialesPorSecretariaController.deshabilitarBotonBorrarDoc(item)}" update="datalistActuaciones, :growl" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarBotonBorrarDoc(item)}" actionListener="#{documentosJudicialesPorSecretariaController.borrarDoc(item)}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                            <h:inputHidden id="hiddenSizeId" value="#{documentosJudicialesPorSecretariaController.itemsSize}" />
+                            <h:inputHidden id="hiddenIxId" value="#{documentosJudicialesPorSecretariaController.newItemIx}" />
+
+
+                        </div>
+
+                        <ui:remove>
+
+                            <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                <f:facet name="header">
+                                    <h:outputText value="Visible" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                </f:facet>
+                                <h:selectBooleanCheckbox id="visible" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}" disabled="true" value="#{item.visibleNuevo}" >
+                                    <p:ajax event="change" listener="#{documentosJudicialesPorSecretariaController.prepareVerifVisible(item)}" update="visible, :ExpAcusacionesVerifVisibleForm" oncomplete="PF('ExpAcusacionesVerifVisibleDialog').show()"/>
+                                </h:selectBooleanCheckbox>
+                            </p:column>
+
+                            <p:column rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}">
+                                <f:facet name="header">
+                                    <h:outputText value="Visibilizado por" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.personaVisible.nombresApellidos}" rendered="#{documentosJudicialesPorSecretariaController.renderedVisible()}"/>
+                            </p:column>
+
+                            <p:column rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarRevisiones(item)}">
+                                <f:facet name="header">
+                                    <h:outputText value="Revisiones"/>
+                                </f:facet>
+                                <p:commandButton rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarRevisiones(item)}" id="revisionesDocButton" style="visibility: visible;" icon="ui-icon-search" value="Revisiones" update="RevisionesCreateDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareEditRevisiones(item)}" oncomplete="PF('RevisionesCreateDialog').show()" />
+                            </p:column>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_personaAlta}"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText style="width: 100%" value="#{documentosJudicialesPorSecretariaController.selected.personaAlta.nombresApellidos}" disabled="true"/>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                <h:outputText value="Fecha Última Actuación"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText disabled="true" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.selected.fechaHoraEstadoProcesal}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                                    </p:inputText>
+                                </h:panelGroup>
+                            </div>
+                            <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_caratulaAnterior}" for="caratulaAnterior" />
+                            <h:panelGroup>
+                                <p:inputTextarea autoResize="false" rows="6"  cols="100" id="caratulaAnterior" value="#{documentosJudicialesPorSecretariaController.selected.caratulaAnterior}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_caratulaAnterior}" title="#{mensajes.CreateDocumentosJudicialesTitle_caratulaAnterior}"/>
+                                <p:tooltip for="caratulaAnterior" value="#{documentosJudicialesPorSecretariaController.getComponentMessages('caratulaAnterior', mensajes.CreateDocumentosJudicialesHelpText_caratulaAnterior)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Última Actuación" for="estadoProcesal" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerEstadoProcesal()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerEstadoProcesal()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="estadoProcesal" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesPorSecretariaController.selected.estadoProcesal}" required="false" requiredMessage="Última Actuación: campo requerido" title="Última Actuación"/>
+                                    <p:tooltip for="estadoProcesal" value="#{documentosJudicialesPorSecretariaController.getComponentMessages('estadoProcesal', 'Ingrese Última Actuación')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Observacion" for="observacion" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerObs()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerObs()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="observacion" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesPorSecretariaController.selected.ultimaObservacion}" required="false" title="Observacion"/>
+                                    <p:tooltip for="observacion" value="#{documentosJudicialesPorSecretariaController.getComponentMessages('observacion', 'Ingrese Observacion')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Observacion Antecedente" for="observacionAntecedente" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerObsAntecedente()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarVerObsAntecedente()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="observacionAntecedente" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesPorSecretariaController.selected.ultimaObservacionAntecedente}" required="false" title="Observacion Antecedente"/>
+                                    <p:tooltip for="observacionAntecedente" value="#{documentosJudicialesPorSecretariaController.getComponentMessages('observacionAntecedente', 'Ingrese Observacion Antecedente')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton value="#{mensajes.Close}" onclick="PF('ExpActuacionesViewDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+
+        </div>
+
+    </ui:composition>
+
+</html>

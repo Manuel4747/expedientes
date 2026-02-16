@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="DocumentosJudicialesListForm">
+
+        <p:panel header="#{documentosJudicialesPorSecretariaController.titulo}">    
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-2 ui-g-2">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">
+                                <p:outputLabel value="Nro Causa" for="nroCausa" style="padding-right: 5px;" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">                            
+                                <p:inputText id="nroCausa" value="#{documentosJudicialesPorSecretariaController.nroCausa}" title="#{mensajes.CreateDocumentosJudicialesTitle_nroCausa}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_nroCausa}" size="10" maxlength="10"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-2 ui-g-2">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">
+                                <p:outputLabel value="Año" for="ano" style="padding-right: 5px;" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">                            
+                                <p:inputNumber id="ano" value="#{documentosJudicialesPorSecretariaController.ano}" title="#{mensajes.CreateDocumentosJudicialesTitle_nroCausa}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_nroCausa}" size="10" decimalPlaces="0" thousandSeparator="" decimalSeparator="," maxValue="9999"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">
+                                <p:outputLabel value="Carátula" for="caratula" style="padding-right: 5px;" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">                            
+                                <p:inputTextarea rows="1" cols="50" id="caratula" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.caratulaBusqueda}" title="#{mensajes.CreateDocumentosJudicialesTitle_caratula}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_caratula}" maxlength="50"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-2 ui-g-2">
+                    <p:fieldset style="width: 100%" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">
+                                <p:outputLabel value="Estado" for="estadosProceso" style="padding-right: 5px;" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div align="left">  
+                                <p:selectCheckboxMenu label="Estados" filter="true" filterMatchMode="contains" id="estadosProceso" disabled="#{documentosJudicialesPorSecretariaController.deshabilitarEstadoProcesoEE()}" value="#{documentosJudicialesPorSecretariaController.estadosProcesoFiltro}" converter="estadosProcesoExpedienteElectronicoConverter">
+                                    <f:selectItems value="#{estadosProcesoExpedienteElectronicoController.items}"
+                                                   var="estadoProcesoItem"
+                                                   itemValue="#{estadoProcesoItem}"
+                                                   itemLabel="#{estadoProcesoItem.descripcion}"/>
+                                </p:selectCheckboxMenu>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2">
+                    <p:fieldset style="width: 100%" legend="Ordenar por:" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                        <p:selectOneRadio id="filtroOrden" style="width: 100%" value="#{documentosJudicialesPorSecretariaController.filtroOrden}" >
+                            <f:selectItem itemLabel="Fecha" itemValue="1"/>
+                            <f:selectItem itemLabel="Plazo" itemValue="2"/>
+                        </p:selectOneRadio>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaDesde" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{documentosJudicialesPorSecretariaController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaHasta" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{documentosJudicialesPorSecretariaController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-lg-2 ui-g-2">
+                    <p:commandButton style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, :growl" action="#{documentosJudicialesPorSecretariaController.buscar()}"></p:commandButton>
+                </div>
+            </div>
+            <p:panel>
+                <p:commandButton id="createButtonAcusacion" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarAcusacion()}" icon="ui-icon-plus" value="#{mensajes.ListDocumentosJudicialesBtnAcusacion}" actionListener="#{documentosJudicialesPorSecretariaController.prepareCreateAcusacion()}" update=":DocumentosCreateAcusacionForm" oncomplete="PF('DocumentosCreateAcusacionDialog').show();"/>
+                <p:commandButton id="createButtonInvestigacionPreliminar" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarInvestigacionPreliminar()}" icon="ui-icon-plus" value="#{mensajes.ListDocumentosJudicialesBtnInvestigacionPreliminar}" actionListener="#{documentosJudicialesPorSecretariaController.prepareCreateInvestigacionPreliminar()}" update=":DocumentosCreateInvestigacionPreliminarForm, :DocumentosCreateInvestigacionPreliminarForm2" oncomplete="PF('DocumentosCreateInvestigacionPreliminarDialog').show();"/>
+                <p:commandButton id="createButtonPedidoDesafuero" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarPedidoDesafuero()}" icon="ui-icon-plus" value="#{mensajes.ListDocumentosJudicialesBtnPedidoDesafuero}" actionListener="#{documentosJudicialesPorSecretariaController.prepareCreatePedidoDesafuero()}" update=":DocumentosCreatePedidoDesafueroForm, :DocumentosCreatePedidoDesafueroForm2" oncomplete="PF('DocumentosCreatePedidoDesafueroDialog').show();"/>
+            </p:panel>
+
+            <div class="ui-g">
+                <p:dataTable id="datalist"
+                             value="#{documentosJudicialesPorSecretariaController.items}"
+                             tableStyle="width: auto"
+                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                             rowKey="#{item.id}"
+                             rowStyleClass="#{documentosJudicialesPorSecretariaController.rowClassEstadoProceso(item)}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="top"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{documentosJudicialesPorSecretariaController.selected}">
+
+
+                    <p:ajax event="rowSelect" listener="#{documentosJudicialesPorSecretariaController.prepareVerActuaciones()}" update=":ExpActuacionesViewForm:datalistActuaciones"/>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_nroCausa}" styleClass="estiloHeader"/>
+                        </f:facet>
+                        <h:outputText value="#{item.causa}"/>
+                    </p:column>
+
+                    <p:column priority="2">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_tipoExpediente}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.tipoExpediente.descripcion}"/>
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="Fecha Ingreso"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaPresentacion}">
+                            <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column  priority="2">
+                        <f:facet name="header">
+                            <h:outputText value="Año"/>
+                        </f:facet>
+                        <h:outputText value="#{item.ano}"/>
+                    </p:column>
+
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_persona}"/>
+                        </f:facet>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.obtenerPersonas(item)}" escape="false"/>
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_caratula}"/>
+                        </f:facet>
+
+                        <div align="center">
+                            <h:outputText value="#{item.caratulaString}" escape="false"/>
+                        </div>
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="Expediente judicial / Cuaderno de investigación fiscal"/>
+                        </f:facet>
+                        <div align="center">
+                            <h:outputText value="#{item.motivoProcesoString}" escape="false"/>
+                        </div>
+                    </p:column>
+
+                    <p:column priority="1" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                        <f:facet name="header" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                            <h:outputText value="Inicio Enjuiciamiento" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaInicioEnjuiciamiento}" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                            <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column priority="1" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                        <f:facet name="header" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                            <h:outputText value="Plazo transcurrido" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}"/>
+                        </f:facet>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.cantDiasEnjuiciamiento(item)}" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}"/>
+                    </p:column>
+
+                    <p:column priority="1" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                        <f:facet name="header" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}">
+                            <h:outputText value="Estado" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.estadoProcesoExpedienteElectronico.descripcion}" rendered="#{documentosJudicialesPorSecretariaController.renderedEstadoProcesoEE()}"/>
+                    </p:column>
+
+                    <ui:remove>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Última Actuación"/>
+                            </f:facet>
+                            <div align="center">
+                                <h:outputText value="#{item.estadoProcesalString}" escape="false"/>
+                            </div>
+                        </p:column>  
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="contains" filterBy="#{documentosJudicialesPorSecretariaController.obtenerPersonaAcusadora(item)}">
+                            <f:facet name="header">
+                                <h:outputText value="Acusador/Denunciante"/>
+                            </f:facet>
+                            <h:outputText value="#{documentosJudicialesPorSecretariaController.obtenerPersonaAcusadora(item)}" escape="false"/>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="contains" filterBy="#{documentosJudicialesPorSecretariaController.obtenerAbogadoAcusador(item)}">
+                            <f:facet name="header">
+                                <h:outputText value="Abogado"/>
+                            </f:facet>
+                            <h:outputText value="#{documentosJudicialesPorSecretariaController.obtenerAbogadoAcusador(item)}" escape="false"/>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="startsWith" filterBy="#{documentosJudicialesPorSecretariaController.customFormatDate(item.fechaHoraEstadoProcesal)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Última Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraEstadoProcesal}">
+                                <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="contains" filterBy="#{item.juzgado}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_juzgado}"/>
+                            </f:facet>
+                            <div align="center">
+                                <h:outputText value="#{item.juzgado}" escape="false"/>
+                            </div>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="contains" filterBy="#{item.personaAlta.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_personaAlta}"/>
+                            </f:facet>
+                            <div align="center">
+                                <h:outputText value="#{item.personaAlta.nombresApellidos}" escape="false"/>
+                            </div>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column filterMatchMode="startsWith" filterBy="#{documentosJudicialesPorSecretariaController.customFormatDate3(item.fechaHoraAlta)}}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_fechaHoraAlta}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="Tiene Documento Adjunto"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tieneDocumento}"/>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column sortBy="#{item.responsable}" filterMatchMode="contains" filterBy="#{item.responsable}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_responsable}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responsable}"/>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_estadoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estadoProceso.descripcion}"/>
+                        </p:column>
+                    </ui:remove>
+
+                    <ui:remove>
+                        <p:column >
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_mostrarWeb}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.mostrarWeb}"/>
+                        </p:column>
+                    </ui:remove>
+                </p:dataTable>
+            </div>
+
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

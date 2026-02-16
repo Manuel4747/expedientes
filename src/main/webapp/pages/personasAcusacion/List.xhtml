@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PersonasListForm">
+
+        <p:panel header="Personas Acusación">
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{personasAcusacionController.prepareCreate}" update=":PersonasAdminCreateForm" oncomplete="PF('PersonasAdminCreateDialog').show()"/>
+            <p:commandButton id="editButton" rendered="true" icon="ui-icon-pencil" value="#{mensajes.Edit}" update=":PersonasEditForm" oncomplete="PF('PersonasEditDialog').show()" disabled="#{empty personasAcusacionController.selected}"/>
+            <p:commandButton id="deleteButton" rendered="true" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{personasAcusacionController.delete}" oncomplete="PF('datalistWidgetVar').filter()" update=":growl,datalist" disabled="#{empty personasAcusacionController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:dataTable id="datalist"
+                         widgetVar="datalistWidgetVar"
+                         value="#{personasAcusacionController.items}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{personasAcusacionController.selected}">
+
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{personasAcusacionController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:editButton,@form:deleteButton" listener="#{personasAcusacionController.resetParents}"/>
+
+
+                <p:column sortBy="#{item.ci}" filterBy="#{item.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombresApellidos}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.estado}" filterBy="#{item.estado}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_empresa}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estado}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+
+<!--
+
+            
+            <p:contextMenu id="PersonasDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('PersonasListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('PersonasListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('PersonasListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('PersonasListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.PersonasMenuItem_cargoPersona}" icon="ui-icon-search"  actionListener="#{personasAcusacionController.prepareCargoPersona}" update=":CargosPersonaViewForm" oncomplete="PF('CargosPersonaViewDialog').show()" disabled="#{empty personasAcusacionController.selected.cargoPersona}"/>  
+                <p:menuitem value="#{mensajes.PersonasMenuItem_empresa}" icon="ui-icon-search"  actionListener="#{personasAcusacionController.prepareEmpresa}" update=":EmpresasViewForm" oncomplete="PF('EmpresasViewDialog').show()" disabled="#{empty personasAcusacionController.selected.empresa}"/>  
+            </p:contextMenu>
+-->

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpNotificacionesListForm">
+
+        <p:panel header="#{expNotificacionesController.titulo}">
+            <p:commandButton id="viewButton" rendered="false" icon="ui-icon-search" value="#{mensajes.View}" update=":ExpNotificacionesViewForm" oncomplete="PF('ExpNotificacionesViewDialog').show()" disabled="#{empty expNotificacionesController.selected}"/>
+            <p:dataTable id="datalist"
+                         value="#{expNotificacionesController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{expNotificacionesController.selected}">
+
+                <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpNotificacionesTitle_causa}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.documentoJudicial.causa}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpNotificacionesTitle_caratula}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpNotificacionesTitle_motivoProceso}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpNotificacionesTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column sortBy="#{item.remitente.nombresApellidos}" filterBy="#{item.remitente.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpNotificacionesTitle_remitente}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.remitente.nombresApellidos}"/>
+                </p:column>  
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Ver"/>
+                    </f:facet>
+                    <p:commandLink action="#{expNotificacionesController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                        Ver
+                    </p:commandLink>
+                </p:column>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.estado.descripcion}" filterBy="#{item.estado.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListExpNotificacionesTitle_estado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.estado.descripcion}"/>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove>
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Ver"/>
+                        </f:facet>
+                        <p:commandButton id="verDocButton"   style="visibility: visible;" icon="ui-icon-search" value="Ver" update="ExpNotificacionesViewDlg, @form:datalist, :growl" actionListener="#{expNotificacionesController.prepareDialogoVerDoc(item)}" oncomplete="PF('ExpNotificacionesViewDialog').show(); PF('ExpNotificacionesViewDialog').toggleMaximize();"  disabled="#{empty item.actuacion.archivo}"/>
+                    </p:column>
+                </ui:remove>
+
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

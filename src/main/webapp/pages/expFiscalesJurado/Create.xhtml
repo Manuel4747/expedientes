@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ExpFiscalesJuradoCreateDlg" widgetVar="ExpFiscalesJuradoCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateExpFiscalesJuradoTitle}" closeOnEscape="true">
+
+            <h:form id="ExpFiscalesJuradoCreateForm">
+
+                <h:panelGroup id="display" rendered="#{expFiscalesJuradoController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateExpFiscalesJuradoLabel_persona}" for="persona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="persona" filter="true" filterMatchMode="contains" value="#{expFiscalesJuradoController.selected.persona}"  converter="personasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{expFiscalesJuradoController.listaPersonas}"
+                                               var="personaItem"
+                                               itemValue="#{personaItem}"
+                                               itemLabel="#{personaItem.ci} - #{personaItem.nombresApellidos}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="persona" value="#{expFiscalesJuradoController.getComponentMessages('persona', mensajes.CreateExpFiscalesJuradoHelpText_persona)}"/>
+                        </h:panelGroup> 
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{expFiscalesJuradoController.saveNew()}" value="#{mensajes.Save}" update="display,:ExpFiscalesJuradoListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ExpFiscalesJuradoCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ExpFiscalesJuradoCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

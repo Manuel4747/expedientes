@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ExpNotificacionesEditDlg" widgetVar="ExpNotificacionesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditExpNotificacionesTitle}" closeOnEscape="true">
+
+            <h:form id="ExpNotificacionesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{expNotificacionesController.selected != null}">
+
+
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputText id="ci" value="#{expNotificacionesController.selected.ci}" title="#{mensajes.EditExpNotificacionesTitle_ci}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_ci}" size="20" maxlength="20"/>
+                            <p:tooltip for="ci" value="#{expNotificacionesController.getComponentMessages('ci', mensajes.EditExpNotificacionesHelpText_ci)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" value="#{expNotificacionesController.selected.nombresApellidos}" title="#{mensajes.EditExpNotificacionesTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                            <p:tooltip for="nombresApellidos" value="#{expNotificacionesController.getComponentMessages('nombresApellidos', mensajes.EditExpNotificacionesHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_tipoPersona}" for="tipoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="tipoPersona" value="#{expNotificacionesController.selected.tipoPersona}"  converter="tiposPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposPersonaController.items}"
+                                               var="tipoPersonaItem"
+                                               itemValue="#{tipoPersonaItem}"
+                                               itemLabel="#{tipoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoPersona" value="#{expNotificacionesController.getComponentMessages('tipoPersona', mensajes.EditExpNotificacionesHelpText_tipoPersona)}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_cargoPersona}" for="cargoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="cargoPersona" filter="true" filterMatchMode="contains" value="#{expNotificacionesController.selected.cargoPersona}"  converter="cargosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{cargosPersonaController.items}"
+                                               var="cargoPersonaItem"
+                                               itemValue="#{cargoPersonaItem}"
+                                               itemLabel="#{cargoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="cargoPersona" value="#{expNotificacionesController.getComponentMessages('cargoPersona', mensajes.EditExpNotificacionesHelpText_cargoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_despachoPersona}" for="despachoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="despachoPersona" filter="true" filterMatchMode="contains" value="#{expNotificacionesController.selected.despachoPersona}"  converter="despachosPersonaConverter">
+                                <p:ajax event="change" update="departamentoPersona, localidadPersona" listener="#{expNotificacionesController.actualizarDptoYLocalidad()}"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{despachosPersonaController.items}"
+                                               var="despachoPersonaItem"
+                                               itemValue="#{despachoPersonaItem}"
+                                               itemLabel="#{despachoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="despachoPersona" value="#{expNotificacionesController.getComponentMessages('despachoPersona', mensajes.EditExpNotificacionesHelpText_despachoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_departamentoPersona}" for="departamentoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="departamentoPersona" filter="true" filterMatchMode="contains" value="#{expNotificacionesController.departamentoPersona}"  converter="departamentosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosPersonaController.items}"
+                                               var="departamentoPersonaItem"
+                                               itemValue="#{departamentoPersonaItem}"
+                                               itemLabel="#{departamentoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamentoPersona" value="#{expNotificacionesController.getComponentMessages('departamentoPersona', mensajes.EditExpNotificacionesHelpText_departamentoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_localidadPersona}" for="localidadPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="localidadPersona" filter="true" filterMatchMode="contains" value="#{expNotificacionesController.localidadPersona}"  converter="localidadesPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{localidadesPersonaController.items}"
+                                               var="localidadPersonaItem"
+                                               itemValue="#{localidadPersonaItem}"
+                                               itemLabel="#{localidadPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="localidadPersona" value="#{expNotificacionesController.getComponentMessages('localidadPersona', mensajes.EditExpNotificacionesHelpText_localidadPersona)}"/>
+                        </h:panelGroup>
+
+                        <ui:remove>
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_estado}" for="estado" />
+                            <h:panelGroup>
+                                <p:inputText id="estado" value="#{expNotificacionesController.selected.estado}" title="#{mensajes.EditExpNotificacionesTitle_estado}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_estado}" size="2" maxlength="2"/>
+                                <p:tooltip for="estado" value="#{expNotificacionesController.getComponentMessages('estado', mensajes.EditExpNotificacionesHelpText_estado)}"/>
+                            </h:panelGroup>
+
+                            <h:outputLabel value="#{mensajes.EditExpNotificacionesLabel_id}" for="id" />
+                            <h:panelGroup>
+                                <h:outputText id="id" value="#{expNotificacionesController.selected.id}" />
+                                <p:tooltip for="id" value="#{expNotificacionesController.getComponentMessages('id', mensajes.EditExpNotificacionesHelpText_id)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{expNotificacionesController.selected.fechaHoraAlta}" title="#{mensajes.EditExpNotificacionesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                                <p:tooltip for="fechaHoraAlta" value="#{expNotificacionesController.getComponentMessages('fechaHoraAlta', mensajes.EditExpNotificacionesHelpText_fechaHoraAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_usuarioAlta}" for="usuarioAlta" />
+                            <h:panelGroup>
+                                <p:inputText id="usuarioAlta" value="#{expNotificacionesController.selected.usuarioAlta}" title="#{mensajes.EditExpNotificacionesTitle_usuarioAlta}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_usuarioAlta}"/>
+                                <p:tooltip for="usuarioAlta" value="#{expNotificacionesController.getComponentMessages('usuarioAlta', mensajes.EditExpNotificacionesHelpText_usuarioAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{expNotificacionesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditExpNotificacionesTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="fechaHoraUltimoEstado" value="#{expNotificacionesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditExpNotificacionesHelpText_fechaHoraUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="usuarioUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{expNotificacionesController.selected.usuarioUltimoEstado}" title="#{mensajes.EditExpNotificacionesTitle_usuarioUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="usuarioUltimoEstado" value="#{expNotificacionesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditExpNotificacionesHelpText_usuarioUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditExpNotificacionesLabel_empresa}" for="empresa" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="empresa" value="#{expNotificacionesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditExpNotificacionesRequiredMessage_empresa}" converter="empresasConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{empresasController.items}"
+                                                   var="empresaItem"
+                                                   itemValue="#{empresaItem}"
+                                                   itemLabel="#{empresaItem.id.toString()}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="empresa" value="#{expNotificacionesController.getComponentMessages('empresa', mensajes.EditExpNotificacionesHelpText_empresa)}"/>
+                            </h:panelGroup>
+                        </ui:remove>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{expNotificacionesController.save()}" value="#{mensajes.Save}" update="display,:ExpNotificacionesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ExpNotificacionesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ExpNotificacionesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

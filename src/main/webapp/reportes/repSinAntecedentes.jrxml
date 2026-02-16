@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Reporte Sin Antecedentes" pageWidth="595" pageHeight="842" columnWidth="435" leftMargin="80" rightMargin="80" topMargin="20" bottomMargin="20" uuid="57f40aab-b8bc-48ba-b897-2606ae477ae5">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<subDataset name="Dataset1" uuid="8fe30e27-0834-40ea-8b4f-c8be9d5b801b">
+		<queryString>
+			<![CDATA[]]>
+		</queryString>
+		<field name="texto" class="java.lang.String"/>
+		<field name="label" class="java.lang.String"/>
+	</subDataset>
+	<parameter name="cedula" class="java.lang.String"/>
+	<parameter name="departamento" class="java.lang.String"/>
+	<parameter name="nombre" class="java.lang.String"/>
+	<parameter name="despacho" class="java.lang.String"/>
+	<parameter name="datasourceDenuncias" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="datasourceAcusaciones" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="datasourcePreliminares" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="datasourceEnjuiciamientos" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="datasourceFiniquitados" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="datasourceAntecedentesCSJ" class="net.sf.jasperreports.engine.JRDataSource"/>
+	<parameter name="qr" class="java.lang.String"/>
+	<parameter name="fechaEmision" class="java.util.Date"/>
+	<parameter name="titulo" class="java.lang.String"/>
+	<parameter name="borrador" class="java.lang.String"/>
+	<parameter name="codigoArchivo" class="java.lang.String"/>
+	<parameter name="valido" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<background>
+		<band height="802" splitType="Stretch">
+			<image>
+				<reportElement x="2" y="10" width="430" height="448" uuid="43a1414a-fc11-40a3-943c-96f1c449b4a7">
+					<printWhenExpression><![CDATA[$P{borrador} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["borrador.png"]]></imageExpression>
+			</image>
+			<image>
+				<reportElement x="3" y="350" width="430" height="448" uuid="09474b76-e355-45f1-872d-352096bf1bfe">
+					<printWhenExpression><![CDATA[$P{borrador} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA["borrador.png"]]></imageExpression>
+			</image>
+		</band>
+	</background>
+	<title>
+		<band height="588" splitType="Stretch">
+			<line>
+				<reportElement x="10" y="151" width="420" height="1" uuid="c48f3c6a-edc8-42e4-a17a-8ef50a97796d">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+			</line>
+			<line>
+				<reportElement x="10" y="111" width="420" height="1" uuid="687dc6b2-847b-4f63-8247-68fff553d314">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+			</line>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="151" width="430" height="20" uuid="70615656-82ac-497f-af6e-c218ed2e146e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{nombre} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombre}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="171" width="430" height="18" uuid="cb036dc0-d6f3-47eb-b526-6d0bdbed996f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{despacho} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{despacho}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement positionType="Float" x="0" y="189" width="430" height="18" uuid="95704ba1-cbb0-40d1-9f3d-b37217914baf">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{departamento} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{departamento}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="130" y="207" width="171" height="18" uuid="703a944f-841b-4e30-a973-572eaf65f324">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{cedula} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Con cedula de identidad N°]]></text>
+			</staticText>
+			<textField>
+				<reportElement positionType="Float" x="301" y="207" width="129" height="18" uuid="86b725de-9550-4ce8-9301-4ec19dda213a">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{cedula} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{cedula}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="259" width="430" height="49" uuid="97d3daa1-20f7-486a-b619-f4b76bb33d38"/>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO REGISTRA DENUNCIA, ACUSACIÓN, INVESTIGACIÓN PRELIMINAR, PROCESO DE ENJUICIAMIENTO EN TRÁMITE NI SENTENCIA SANCIONATORIA ANTE ESTE ÓRGANO CONSTITUCIONAL.]]></text>
+			</staticText>
+			<image>
+				<reportElement x="10" y="14" width="420" height="50" uuid="26e0632d-4fb7-4e84-af1c-a1d4c8866673"/>
+				<imageExpression><![CDATA["logoJEM.png"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement x="10" y="70" width="421" height="41" uuid="f6aab18c-f0c7-41ee-a6b6-c067642a6914"/>
+				<textElement>
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Misión: Juzgar el desempeño de los Magistrados Judiciales, Agentes Fiscales y Defensores Públicos, por la supuesta comisión de delitos o mal desempeño en el ejercicio de sus funciones, con imparcialidad, transparencia y justicia.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="0" y="311" width="431" height="21" uuid="14c8f768-e180-4dac-9dd5-55587520b529">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="8" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Obs. El presente informe de antecedentes corresponde a los últimos cinco años, conforme a los registros obrantes en la Secretaría General.]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="Float" x="10" y="357" width="420" height="1" uuid="945fb44b-516f-4d03-96bd-45270a64c813">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="363" width="120" height="14" uuid="ca29013a-786c-4c3f-ab8d-76fe2a662e40"/>
+				<text><![CDATA[Fecha de emision:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement positionType="Float" x="130" y="363" width="300" height="14" uuid="05316ff4-caf1-4fc6-9c94-61fdcb735a5b"/>
+				<textFieldExpression><![CDATA[$P{fechaEmision}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement positionType="Float" x="15" y="402" width="85" height="85" uuid="e1acc63b-3053-4c93-a8c5-f53b36dd296d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<printWhenExpression><![CDATA[$P{qr} != null]]></printWhenExpression>
+				</reportElement>
+				<imageExpression><![CDATA[com.google.zxing.client.j2se.MatrixToImageWriter.toBufferedImage(
+    new com.google.zxing.qrcode.QRCodeWriter().encode(
+            $P{qr}, com.google.zxing.BarcodeFormat.QR_CODE, 200, 200));]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement positionType="Float" x="10" y="385" width="120" height="14" uuid="6681f242-cc47-473c-be80-360c7d955b94">
+					<printWhenExpression><![CDATA[$P{codigoArchivo} != null]]></printWhenExpression>
+				</reportElement>
+				<text><![CDATA[Código de Verificación:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="118" width="430" height="29" uuid="f0fdc38b-ce43-4861-9dca-9f7657d4ace1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{titulo}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy HH:mm:ss">
+				<reportElement positionType="Float" x="130" y="382" width="300" height="14" uuid="12406a6b-357c-4154-afa3-59640e3932e4">
+					<printWhenExpression><![CDATA[$P{codigoArchivo} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{codigoArchivo}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="336" width="431" height="18" uuid="bd53d55e-71de-4807-a6fb-d8e7b99a31e0">
+					<printWhenExpression><![CDATA[$P{valido} != null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[VÁLIDO POR 30 DIAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement positionType="Float" x="1" y="336" width="431" height="18" uuid="83ec4db5-bd8c-4140-9bec-0971f44133ce">
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<printWhenExpression><![CDATA[$P{valido} == null]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center">
+					<font size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[ESTE DOCUMENTO NO ES VALIDO COMO ANTECEDENTE]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageFooter>
+		<band height="50">
+			<line>
+				<reportElement positionType="Float" x="5" y="2" width="420" height="1" uuid="0c2ca290-10f3-490d-85db-1a4a1d1797f0">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement x="5" y="3" width="421" height="41" uuid="4359f88a-e48d-41e5-950e-e3274a9f6638"/>
+				<textElement textAlignment="Center">
+					<font size="6" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Visión: Ser una institución transparente y confiable que actúa para la protección de los intereses públicos, contra el ejercicio abusivo del poder oficial, descuido del deber o conducta incompatible con la dignidad del cargo.]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

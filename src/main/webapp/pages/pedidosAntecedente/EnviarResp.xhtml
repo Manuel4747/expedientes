@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PedidosAntecedenteEnviarRespDlg" widgetVar="PedidosAntecedenteEnviarRespDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <div class="ui-g">
+                <h:form id="PedidosAntecedenteEnviarRespForm">
+
+                    <h:panelGroup id="display">
+                        <div class="ui-sm-12 ui-md-3 ui-g-3">
+                            <p:outputLabel value="Escriba un justificativo a enviar por email"/>
+                        </div>
+                        <div class="ui-sm-12 ui-md-9 ui-g-9">
+                            <p:inputTextarea rows="4" required="true" style="width: 100%" requiredMessage="Observacion: campo requerido" value="#{pedidosAntecedenteController.pedidoRechazar.observacion}" title="Observacion" />
+                        </div>
+                        <p:commandButton value="Rechazar y enviar email" icon="ui-icon-arrow-u" update=":PedidosAntecedenteListForm:datalistPend,:PedidosAntecedenteListForm:datalistAut,:growl" actionListener="#{pedidosAntecedenteController.rechazar(pedidosAntecedenteController.pedidoRechazar, true)}" disabled="false" oncomplete="handleSubmit(xhr,status,args,PF('PedidosAntecedenteEnviarRespDialog'));"/>
+                        <p:commandButton value="Rechazar sin enviar email" icon="ui-icon-arrow-u" update=":PedidosAntecedenteListForm:datalistPend,:PedidosAntecedenteListForm:datalistAut,:growl" actionListener="#{pedidosAntecedenteController.rechazar(pedidosAntecedenteController.pedidoRechazar, false)}" disabled="false" oncomplete="handleSubmit(xhr,status,args,PF('PedidosAntecedenteEnviarRespDialog'));"/>
+                        <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PedidosAntecedenteEnviarRespDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                    </h:panelGroup>
+
+                </h:form>
+            </div>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <p:dialog id="ExpNotificacionesViewDlg" positionType="absolute" widgetVar="ExpNotificacionesViewDialog"  maximizable="true" modal="true" resizable="true"  appendTo="@(body)" header="#{mensajes.ViewExpActuacionesTitle}" closeOnEscape="true">
+            <p:ajax event="close" listener="#{expNotificacionesController.prepareCerrarDialogoVerDoc()}" />
+            <div id="container2" style="width: 98%; justify-content: center; position: absolute !important; vertical-align: top !important;">
+                    <p:panel rendered="#{filtroURL.verifPermiso('firmaDigital')}">
+                    <h:form>
+                        <p:commandButton id="firmarButton" style="visibility: visible;" icon="ui-icon-arrow" value="#{mensajes.Firmar}" update=":ExpNotificacionesVerifTokenForm" oncomplete="PF('ExpNotificacionesVerifTokenDialog').show()" />
+                    </h:form>
+                </p:panel>
+            </div>
+
+            <pe:documentViewer id="visualizacion" style="height: 100%; width: 100%" value="#{expNotificacionesController.content}" />
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+<div id="container" style="width: 98%; justify-content: center; position: absolute !important; top: 0px !important; vertical-align: top !important;">
+                <p:panel rendered="#{documentosController.desabilitarPdfViewer}">
+                    <p:commandButton icon="ui-icon-arrowreturnthick-1-w" rendered="#{documentosController.desabilitarPdfViewer}" value="Rotar Izq"
+                                     onclick="PF('rotateAndResizeWidget').rotateLeft(90);return false;"/>
+                    <p:commandButton icon="ui-icon-arrowreturnthick-1-e" rendered="#{documentosController.desabilitarPdfViewer}" value="Rotar Der"
+                                     onclick="PF('rotateAndResizeWidget').rotateRight(90);return false;"/>
+                    <p:commandButton icon="ui-icon-zoomin" rendered="#{documentosController.desabilitarPdfViewer}" value="Zoom +"
+                                     onclick="PF('rotateAndResizeWidget').scale(1.05);return false;"/>
+                    <p:commandButton icon="ui-icon-zoomout" rendered="#{documentosController.desabilitarPdfViewer}" value="Zoom -"
+                                     onclick="PF('rotateAndResizeWidget').scale(0.95);return false;"/>
+                </p:panel>
+            </div>
+
+            <p:media id="visualizador" player="pdf" style="height: 100%; width: 100%" rendered="#{not documentosController.desabilitarPdfViewer}" value="#{documentosController.content}" />
+
+            <div id="container3" style="width: 98%; justify-content: center; position: absolute !important; top: 8% !important; vertical-align: bottom !important;">
+                <p:panel id="visualizacion" >
+                    <verify-viewer url="#{documentosController.content}" show-signature-if-present="false" notify-if-not-signed="false" sign="false" download="false" search="false" root-certificates="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"></verify-viewer>
+                </p:panel>
+            </div>
+            <script type="module" src="https://verify.ink/webcomponent/index.js"></script>
+
+            <p:panel rendered="#{documentosController.desabilitarPdfViewer}">
+                <h:graphicImage id="myImage" style="height: 90%; width: 100%" rendered="#{documentosController.desabilitarPdfViewer}" value="#{documentosController.content}" />
+                <pe:imageRotateAndResize id="rotateAndResize" rendered="#{documentosController.desabilitarPdfViewer}" for="myImage" widgetVar="rotateAndResizeWidget"/>
+            </p:panel>
+-->

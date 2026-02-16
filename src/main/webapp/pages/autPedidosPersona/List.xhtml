@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PedidosPersonaListForm">
+
+        <p:panel header="Pendientes">
+            <p:dataTable id="datalistPend"
+                         value="#{pedidosPersonaAutController.listaPend}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         paginatorPosition="bottom"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{pedidosPersonaAutController.selectedPedido}">
+
+                <p:ajax event="rowSelect"   update=":PedidosPersonaListForm:datalistDet" listener="#{pedidosPersonaAutController.buscarDet()}"/>
+                <p:ajax event="rowUnselect" update=":PedidosPersonaListForm:datalistDet" listener="#{pedidosPersonaAutController.buscarDet()}"/>
+
+
+                <p:column sortBy="#{item.ci}" filterBy="#{item.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nombresApellidos}" filterBy="#{item.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombresApellidos}"/>
+                </p:column>
+
+                
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Carácter Solicitante"/>
+                    </f:facet>
+                    <h:outputText value="#{item.caracterSolicitante}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Email"/>
+                    </f:facet>
+                    <h:outputText value="#{item.email}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_tipoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tipoPersona.descripcion}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Expediente JEM"/>
+                    </f:facet>
+                    <h:outputText value="#{item.expediente}"/>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionCargoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionCargoPersona}"/>
+                </p:column>
+
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionDespachoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionDespachoPersona}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.descripcionLocalidadPersona}" filterBy="#{item.descripcionLocalidadPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionLocalidadPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionLocalidadPersona}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.descripcionDepartamentoPersona}" filterBy="#{item.descripcionDepartamentoPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionDepartamentoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionDepartamentoPersona}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_fechaHoraPedido}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraPedido}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Email Validado"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox id="emailValidado" disabled="true" value="#{item.emailValidado}" >
+                    </h:selectBooleanCheckbox>
+                </p:column>
+
+                <p:column priority="1">
+                    <f:facet name="header">
+                        <h:outputText value="Aceptar"/>
+                    </f:facet>
+                    <p:commandButton id="aceptarButton" disabled="#{pedidosPersonaAutController.deshabilitarAutorizar(item)}" value="Aceptar" update=":PedidosPersonaListForm:datalistPend, :PedidosPersonaListForm:datalistDet, :PedidosPersonaListForm:datalistAut, :PedidosPersonaListForm:datalistDetAut, :growl" actionListener="#{pedidosPersonaAutController.actualizar(item, 'SI', true)}"/>
+                </p:column>
+
+                <p:column priority="1">
+                    <f:facet name="header">
+                        <h:outputText value="Rechazar"/>
+                    </f:facet>
+                    <p:commandButton id="rechazarButton" value="Rechazar" actionListener="#{pedidosPersonaAutController.prepareRechazarPedido(item)}" update=":PedidosPersonaEnviarRespForm" oncomplete="PF('PedidosPersonaEnviarRespDialog').show()"/>
+                </p:column>
+                
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.usuarioAlta}" filterBy="#{item.usuarioAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta}"/>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"  timeZone="America/Asuncion"/>
+                        </h:outputText>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.usuarioUltimoEstado}" filterBy="#{item.usuarioUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+            <p:dataTable id="datalistDet"
+                         value="#{pedidosPersonaAutController.listaDet}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50">
+
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Descripción"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+                
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Documento"/>
+                    </f:facet>
+                    <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" icon="ui-icon-search" value="Ver" action="#{pedidosPersonaAutController.verDoc(item)}" disabled="#{empty item.ruta}"/>
+                </p:column>
+
+
+            </p:dataTable>
+        </p:panel>
+        <p:panel header="Respondidos">
+            <p:dataTable id="datalistAut"
+                         value="#{pedidosPersonaAutController.listaAut}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{pedidosPersonaAutController.selectedAut}">
+                
+                <p:ajax event="rowSelect"   update=":PedidosPersonaListForm:datalistDetAut" listener="#{pedidosPersonaAutController.buscarDetAut()}"/>
+                <p:ajax event="rowUnselect" update=":PedidosPersonaListForm:datalistDetAut" listener="#{pedidosPersonaAutController.buscarDetAut()}"/>
+
+
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosPersonaTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+                </ui:remove>
+
+                <p:column sortBy="#{item.ci}" filterBy="#{item.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nombresApellidos}" filterBy="#{item.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombresApellidos}"/>
+                </p:column>
+
+                
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Carácter Solicitante"/>
+                    </f:facet>
+                    <h:outputText value="#{item.caracterSolicitante}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Email"/>
+                    </f:facet>
+                    <h:outputText value="#{item.email}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_tipoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.tipoPersona.descripcion}"/>
+                </p:column>
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Expediente JEM"/>
+                    </f:facet>
+                    <h:outputText value="#{item.expediente}"/>
+                </p:column>
+                
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionCargoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionCargoPersona}"/>
+                </p:column>
+
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionDespachoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionDespachoPersona}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.descripcionLocalidadPersona}" filterBy="#{item.descripcionLocalidadPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionLocalidadPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionLocalidadPersona}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.descripcionDepartamentoPersona}" filterBy="#{item.descripcionDepartamentoPersona}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_descripcionDepartamentoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcionDepartamentoPersona}"/>
+                </p:column>
+
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosPersonaTitle_fechaHoraPedido}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraPedido}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Email Validado"/>
+                    </f:facet>
+                    <h:selectBooleanCheckbox id="emailValidado" disabled="true" value="#{item.emailValidado}" >
+                    </h:selectBooleanCheckbox>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Fecha Hora Respuesta"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraRespuesta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Usuario respuesta"/>
+                    </f:facet>
+                    <h:outputText value="#{item.personaRespuesta}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Respuesta"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estado}"/>
+                </p:column>
+
+            </p:dataTable>
+            <p:dataTable id="datalistDetAut"
+                         value="#{pedidosPersonaAutController.listaDetAut}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50">
+
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Descripción"/>
+                    </f:facet>
+                    <h:outputText value="#{item.descripcion}"/>
+                </p:column>
+                
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Documento"/>
+                    </f:facet>
+                    <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" icon="ui-icon-search" value="Ver" action="#{pedidosPersonaAutController.verDoc(item)}" disabled="#{empty item.ruta}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

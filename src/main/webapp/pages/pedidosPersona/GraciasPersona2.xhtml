@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="FormularioListForm">
+        <div align="center">
+            <div class="ui-g">
+                <div class="ui-md-3 ui-g-3">
+                </div>
+                <div class="ui-sm-12 ui-md-6 ui-g-6" align="center">
+                    <div align="center">
+                        <p:graphicImage library="manhattan-layout" style="width: 300px; align-content: center" value="/resources/images/imagen_logo.jpg"/>
+                    </div>
+                    <div align="center">
+                        <p:panelGrid columns="1" styleClass="ui-noborder">
+                            <div align="center" style="font-size: 25px">
+                                <p align="center">
+                                    COMPRUEBE SU CORREO ELECTRONICO.<br/>
+                                </p>
+                            </div>
+                            <div align="center" style="font-size: 20px">
+                                <p align="center">
+                                    <br/>VERIFIQUE SU CORRE ELECTRÓNICO PARA ACCEDER A SU CUENTA<br/>
+                                </p>
+                                    <p:outputLabel style="font-size: 20px; width: 100%; align-self: center"  value="#{graciasPersonaController.mensaje}" />
+
+                                    <p align="center">
+                                        ¿HA RECIBIDO EL CORREO ELECTRÓNICO? SI NO LO HA RECIBIDO, CONSULTE A SU CARPETA SPAM, O COMUNÍQUESE A<br/>
+                                    secretaria@jem.gov.py O AL 021442662, interno 224<br/>
+                                </p>
+                            </div>
+                        </p:panelGrid>
+                    </div>
+                    <div align="center">
+                        <div class="ui-g-12 button-container">
+                            <a href="#{personasController.volver()}">Volver</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="ui-md-3 ui-g-3">
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

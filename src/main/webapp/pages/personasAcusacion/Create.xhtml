@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonasAdminCreateDlg" widgetVar="PersonasAdminCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="Personas Acusación" closeOnEscape="true">
+
+            <h:form id="PersonasAdminCreateForm">
+
+                <h:panelGroup id="display" rendered="#{personasAcusacionController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreatePersonasLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputNumber id="ci" value="#{personasAcusacionController.selected.ci}" title="#{mensajes.CreatePersonasTitle_ci}" decimalSeparator="," decimalPlaces="0" thousandSeparator="" maxValue="99999999" required="false" requiredMessage="#{mensajes.CreatePersonasRequiredMessage_ci}" size="20" maxlength="20"/>
+                            <p:tooltip for="ci" value="#{personasAcusacionController.getComponentMessages('ci', mensajes.CreatePersonasHelpText_ci)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreatePersonasLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" onblur="value = value.toUpperCase()" style="text-transform:uppercase;" value="#{personasAcusacionController.selected.nombresApellidos}" title="#{mensajes.CreatePersonasTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.CreatePersonasRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                            <p:tooltip for="nombresApellidos" value="#{personasAcusacionController.getComponentMessages('nombresApellidos', mensajes.CreatePersonasHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personasAcusacionController.saveNew()}" value="#{mensajes.Save}" update="display,:PersonasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PersonasAdminCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PersonasAdminCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

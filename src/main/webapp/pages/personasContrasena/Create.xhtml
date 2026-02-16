@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsuariosCreateDlg" widgetVar="UsuariosCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateUsuariosTitle}" closeOnEscape="true">
+
+            <h:form id="UsuariosCreateForm">
+
+                <h:panelGroup id="display" rendered="#{usuariosController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_usuario}" for="usuario" />
+                        <h:panelGroup>
+                            <p:inputText id="usuario" value="#{usuariosController.selected.usuario}" title="#{mensajes.CreateUsuariosTitle_usuario}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_usuario}" size="50" maxlength="60"/>
+                            <p:tooltip for="usuario" value="#{usuariosController.getComponentMessages('usuario', mensajes.CreateUsuariosHelpText_usuario)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.ContrasenaUsuariosLabel_contrasena}" for="contrasena" />
+                        <h:panelGroup>
+                            <p:inputText type="password" id="contrasena" value="#{usuariosController.cambioContrasena1}" title="#{mensajes.ContrasenaUsuariosTitle_contrasena}" required="true" requiredMessage="#{mensajes.ContrasenaUsuariosRequiredMessage_contrasena}" size="50" maxlength="60"/>
+                            <p:tooltip for="contrasena" value="#{usuariosController.getComponentMessages('contrasena', mensajes.ContrasenaUsuariosHelpText_contrasena)}"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="#{mensajes.ContrasenaUsuariosLabel_otracontrasena}" for="otracontrasena" />
+                        <h:panelGroup>
+                            <p:inputText id="otracontrasena" type="password" value="#{usuariosController.cambioContrasena2}" title="#{mensajes.ContrasenaUsuariosTitle_contrasena}" required="true" requiredMessage="#{mensajes.ContrasenaUsuariosRequiredMessage_contrasena}" size="50" maxlength="60"/>
+                            <p:tooltip for="otracontrasena" value="#{usuariosController.getComponentMessages('otracontrasena', mensajes.ContrasenaUsuariosHelpText_otracontrasena)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" value="#{usuariosController.selected.nombresApellidos}" title="#{mensajes.CreateUsuariosTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_nombresApellidos}" size="50" maxlength="60"/>
+                            <p:tooltip for="nombresApellidos" value="#{usuariosController.getComponentMessages('nombresApellidos', mensajes.CreateUsuariosHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_direccion}" for="direccion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="30" id="direccion" value="#{usuariosController.selected.direccion}" title="#{mensajes.CreateUsuariosTitle_direccion}" />
+                            <p:tooltip for="direccion" value="#{usuariosController.getComponentMessages('direccion', mensajes.CreateUsuariosHelpText_direccion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_telefono}" for="telefono" />
+                        <h:panelGroup>
+                            <p:inputText id="telefono" value="#{usuariosController.selected.telefono}" title="#{mensajes.CreateUsuariosTitle_telefono}" size="50" maxlength="60"/>
+                            <p:tooltip for="telefono" value="#{usuariosController.getComponentMessages('telefono', mensajes.CreateUsuariosHelpText_telefono)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_celular}" for="celular" />
+                        <h:panelGroup>
+                            <p:inputText id="celular" value="#{usuariosController.selected.celular}" title="#{mensajes.CreateUsuariosTitle_celular}" size="50" maxlength="50"/>
+                            <p:tooltip for="celular" value="#{usuariosController.getComponentMessages('celular', mensajes.CreateUsuariosHelpText_celular)}"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputText id="ci" value="#{usuariosController.selected.ci}" title="#{mensajes.CreateUsuariosTitle_ci}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_ci}" size="50" maxlength="60"/>
+                            <p:tooltip for="ci" value="#{usuariosController.getComponentMessages('ci', mensajes.CreateUsuariosHelpText_ci)}"/>
+                        </h:panelGroup>
+                                                
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_departamento}" for="departamento" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{usuariosController.selected.departamento}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_departamento}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{usuariosController.getComponentMessages('departamento', mensajes.CreateUsuariosHelpText_departamento)}"/>
+                        </h:panelGroup>
+                                                
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_sexo}" for="sexo" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="sexo" value="#{usuariosController.selected.sexo}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_sexo}" converter="sexosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{sexosController.items}"
+                                               var="sexoItem"
+                                               itemValue="#{sexoItem}"
+                                               itemLabel="#{sexoItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="sexo" value="#{usuariosController.getComponentMessages('sexo', mensajes.CreateUsuariosHelpText_sexo)}"/>
+                        </h:panelGroup>
+                        
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_pantallaPrincipal}" for="pantallaPrincipal" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="pantallaPrincipal" value="#{usuariosController.selected.pantallaPrincipal}" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_pantallaPrincipal}" converter="pantallasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{pantallasController.items}"
+                                               var="pantallaPrincipalItem"
+                                               itemValue="#{pantallaPrincipalItem}"
+                                               itemLabel="#{pantallaPrincipalItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="pantallaPrincipal" value="#{usuariosController.getComponentMessages('pantallaPrincipal', mensajes.CreateUsuariosHelpText_pantallaPrincipal)}"/>
+                        </h:panelGroup>
+                                                
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_estado}" for="estado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="estado" value="#{usuariosController.selected.estado}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_estado}" converter="estadosUsuarioConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{estadosUsuarioController.items}"
+                                               var="estadoItem"
+                                               itemValue="#{estadoItem}"
+                                               itemLabel="#{estadoItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="estado" value="#{usuariosController.getComponentMessages('estado', mensajes.CreateUsuariosHelpText_estado)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{usuariosController.saveNew}" value="#{mensajes.Save}" update="display,:UsuariosListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('UsuariosCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('UsuariosCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+<!--
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" timeZone="America/Asuncion" value="#{usuariosController.selected.fechaHoraAlta}" title="#{mensajes.CreateUsuariosTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{usuariosController.getComponentMessages('fechaHoraAlta', mensajes.CreateUsuariosHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" timeZone="America/Asuncion" value="#{usuariosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateUsuariosTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{usuariosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateUsuariosHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{usuariosController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{usuariosController.getComponentMessages('empresa', mensajes.CreateUsuariosHelpText_empresa)}"/>
+                        </h:panelGroup>
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.CreateUsuariosLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{usuariosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateUsuariosRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{usuariosController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateUsuariosHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,1129 @@
+.ui-widget {
+    font-size: 16px !important;
+}
+.ui-layout-north {
+    z-index:20 !important;
+    overflow:visible !important;;
+}
+.ui-layout-north .ui-layout-unit-content {
+    overflow:visible !important;
+}
+.ui-widget-header {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.ui-datatable .ui-datatable-footer .footer-section {
+    text-align: left;
+}
+
+.dialog-estilo {
+    height: auto !important;
+}
+
+.column {
+    font-weight: bold;
+    background-color: lightgray;
+}
+
+.ui-datatable .ui-state-highlight.red {
+            background-image: none;
+            background-color: #525252 !important;
+            color: white !important;
+        }
+        
+.ui-datatable .ui-state-highlight.green {
+            background-image: none;
+            background-color: #525252 !important;
+            color: white !important;
+        }
+
+.red{
+    background-color:rgba(252,192,192,1) !important;
+    background-image:none !important;
+    color:#000000 !important;
+}
+
+.rojo{
+    background-color:#111111 !important;
+    background-image:none !important;
+    color:#111111 !important;
+}
+
+.yellow{
+    background-color:rgba(245,242,191,1) !important;
+    background-image:none !important;
+    color:#000000 !important;
+}
+
+.redOscuro{
+    background-color:#ff0000 !important;
+    background-image:none !important;
+    color:#000000 !important;
+}
+
+.green{
+    background-color:rgba(216,255,216,1) !important;
+    background-image:none !important;
+    color:#000000 !important;
+}
+
+.ui-diagram-success {
+    background-color: #9CB071;
+    color: #ffffff;
+    border-color: #7ab02c;
+}
+
+.ui-diagram-fail {
+    background-color: #C34A2C;
+    color: #ffffff;
+}
+
+.flow-label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #816A51;
+}
+
+.estiloPanelPrincipal{
+    background: transparent !important;
+}
+body .ui-menu .ui-separator {
+    border-bottom: 1px solid #c7cdd1;
+    margin-left: 1px;
+}
+body {
+    font-size: 18px !important;
+}
+
+.ui-selectonemenu {
+    min-width: 50% !important;
+}
+
+@media screen and (max-width: 720px ) {
+  .modalResponsivo { margin-top: 0px; width: 100px !important; height: 100px !important}
+  .modalResponsivoTodo { margin-left: 50px !important} 
+}
+
+@media screen and (min-width: 720px ) {
+  .modalResponsivo { margin-top: 0px; width: 200px !important; height: 200px !important }
+  .modalResponsivoTodo { margin-left: 100px !important} 
+}
+
+@media screen and (max-width: 720px ) {
+  .modalResponsivoLabels { margin-top: 0px; font-size: 14px !important; color: #3d72b4} 
+}
+
+@media screen and (min-width: 720px ) {
+  .modalResponsivoLabels { margin-top: 0px; font-size: 20px !important; color: #3d72b4 }
+}
+
+@media screen and (max-width: 720px ) {
+  .modalResponsivo2 { margin-top: 0px; width: 10px !important; height: 10px !important}
+  .modalResponsivoTodo2 { margin-left: 5px !important} 
+}
+
+@media screen and (min-width: 720px ) {
+  .modalResponsivo2 { margin-top: 0px; width: 25px !important; height: 25px !important }
+  .modalResponsivoTodo2 { margin-left: 12px !important} 
+}
+
+/*
+.diagrama1 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama2 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama3 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama4 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama5 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama6 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama7 {   
+    width:14em; 
+    height:4em;     
+    text-align: center;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+*/
+
+.diagrama1 {   
+    width:16em; 
+    height:6em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama2 {   
+    width:16em; 
+    height:6em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama3 {  
+    width:16em; 
+    height:6em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama4 {   
+    width:16em; 
+    height:6em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama5 {  
+    width:16em; 
+    height:6em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama6 {   
+    width:16em; 
+    height:6em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama7 {   
+    width:16em; 
+    height:6em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama11 {   
+    width:16em; 
+    height:12em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama21 {   
+    width:16em; 
+    height:12em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama31 {  
+    width:16em; 
+    height:12em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama41 {   
+    width:16em; 
+    height:12em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama51 {  
+    width:16em; 
+    height:12em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama61 {   
+    width:16em; 
+    height:12em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama71 {   
+    width:16em; 
+    height:12em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+.diagrama12 {   
+    width:16em; 
+    height:18em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama22 {   
+    width:16em; 
+    height:18em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama32 {  
+    width:16em; 
+    height:18em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama42 {   
+    width:16em; 
+    height:18em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama52 {  
+    width:16em; 
+    height:18em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama62 {   
+    width:16em; 
+    height:18em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama72 {   
+    width:16em; 
+    height:18em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama13 {   
+    width:16em; 
+    height:24em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama23 {   
+    width:16em; 
+    height:24em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama33 {  
+    width:16em; 
+    height:24em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama43 {   
+    width:16em; 
+    height:24em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama53 {  
+    width:16em; 
+    height:24em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama63 {   
+    width:16em; 
+    height:24em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama73 {   
+    width:16em; 
+    height:24em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama14 {   
+    width:16em; 
+    height:30em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama24 {   
+    width:16em; 
+    height:30em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama34 {  
+    width:16em; 
+    height:30em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama44 {   
+    width:16em; 
+    height:30em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama54 {  
+    width:16em; 
+    height:30em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama64 {   
+    width:16em; 
+    height:30em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama74 {   
+    width:16em; 
+    height:30em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama15 {   
+    width:16em; 
+    height:36em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama25 {   
+    width:16em; 
+    height:36em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama35 {  
+    width:16em; 
+    height:36em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama45 {   
+    width:16em; 
+    height:36em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama55 {  
+    width:16em; 
+    height:36em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama65 {   
+    width:16em; 
+    height:36em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama75 {   
+    width:16em; 
+    height:36em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama16 {   
+    width:16em; 
+    height:42em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama26 {   
+    width:16em; 
+    height:42em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama36 {  
+    width:16em; 
+    height:42em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama46 {   
+    width:16em; 
+    height:42em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama56 {  
+    width:16em; 
+    height:42em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama66 {   
+    width:16em; 
+    height:42em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama76 {   
+    width:16em; 
+    height: 42em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+
+.diagrama17 {   
+    width:16em; 
+    height:48em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama27 {   
+    width:16em; 
+    height:48em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama37 {  
+    width:16em; 
+    height:48em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama47 {   
+    width:16em; 
+    height:48em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama57 {  
+    width:16em; 
+    height:48em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama67 {   
+    width:16em; 
+    height:48em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama77 {   
+    width:16em; 
+    height:48em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+.diagrama18 {   
+    width:16em; 
+    height:54em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama28 {   
+    width:16em; 
+    height:54em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama38 {  
+    width:16em; 
+    height:54em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama48 {   
+    width:16em; 
+    height:54em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama58 {  
+    width:16em; 
+    height:54em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama68 {   
+    width:16em; 
+    height:54em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama78 {   
+    width:16em; 
+    height:54em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}
+.diagrama19 {   
+    width:16em; 
+    height:60em;     
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 159, 64);
+    background-color: rgba(255, 159, 64, 0.5);
+}
+
+.diagrama29 {   
+    width:16em; 
+    height:60em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(75, 192, 192);
+    background-color:rgba(75, 192, 192, 0.5);
+}
+
+.diagrama39 {  
+    width:16em; 
+    height:60em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border-top: 1px solid;
+    border-color: rgb(255, 99, 132);
+    background-color: rgba(255, 99, 132, 0.5);
+}
+
+.diagrama49 {   
+    width:16em; 
+    height:60em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(54, 162, 235);
+    background-color: rgba(54, 162, 235, 0.5);
+}
+
+.diagrama59 {  
+    width:16em; 
+    height:60em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(255, 205, 86);
+    background-color: rgba(255, 205, 86, 0.5);
+}
+
+.diagrama69 {   
+    width:16em; 
+    height:60em;       
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(153, 102, 255);
+    background-color: rgba(153, 102, 255, 0.5);
+}
+
+.diagrama79 {   
+    width:16em; 
+    height:60em;      
+    text-align: left; padding-left: 5px; padding-right: 5px;
+    font-size: 12px;
+    color: #000000;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.8);
+    border-radius: 4px;
+    border: 1px solid;
+    border-color: rgb(201, 203, 207);
+    background-color: rgba(201, 203, 207, 0.5);
+}

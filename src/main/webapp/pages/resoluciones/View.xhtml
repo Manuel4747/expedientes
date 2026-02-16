@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="ResolucionesViewDlg" widgetVar="ResolucionesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewResolucionesTitle}" closeOnEscape="true">
+
+            <h:form id="ResolucionesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{resolucionesController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_nroResolucion}"/>
+                        <h:outputText value="#{resolucionesController.selected.nroResolucion}" title="#{mensajes.ViewResolucionesTitle_nroResolucion}"/>
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_tipoResolucion}"/>
+                        <h:outputText value="#{resolucionesController.selected.tipoResolucion.descripcion}" title="#{mensajes.ViewResolucionesTitle_tipoResolucion}"/>
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_fecha}"/>
+                        <h:outputText value="#{resolucionesController.selected.fecha}" title="#{mensajes.ViewResolucionesTitle_fecha}">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                        
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_caratula}"/>
+                        <h:outputText value="#{resolucionesController.selected.caratula}" title="#{mensajes.ViewResolucionesTitle_caratula}"/>
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{resolucionesController.selected.fechaHoraAlta}" title="#{mensajes.ViewResolucionesTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                        
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_usuarioAlta}"/>
+                        <h:outputText value="#{resolucionesController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{resolucionesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewResolucionesTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                        </h:outputText>
+                        
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{resolucionesController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('ResolucionesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_empresa}"/>
+                        <h:outputText value="#{resolucionesController.selected.empresa.id}"/>
+
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_documento}"/>
+                        <h:outputText value="#{resolucionesController.selected.documento}" title="#{mensajes.ViewResolucionesTitle_documento}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewResolucionesLabel_id}"/>
+                        <h:outputText value="#{resolucionesController.selected.id}" title="#{mensajes.ViewResolucionesTitle_id}"/>
+-->

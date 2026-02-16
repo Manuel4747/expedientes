@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DocumentosJudicialesEditObsDlg" widgetVar="DocumentosJudicialesEditObsDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesEditObsForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{documentosJudicialesController.selected != null}">
+
+                        <p:outputLabel value="Observacion" for="observacion" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="100" id="observacion" required="true" requiredMessage="Observacion: campo requerido" value="#{documentosJudicialesController.selected.ultimaObservacionAux}" title="Observacion" maxlength="1000" />
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Save}" icon="ui-icon-arrow-u" update=":growl" actionListener="#{documentosJudicialesController.agregarObs()}" disabled="false" oncomplete="handleSubmit(xhr,status,args,PF('DocumentosJudicialesEditObsDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('DocumentosJudicialesEditObsDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+                        <h:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{documentosJudicialesController.selected.id}" />
+                            <p:tooltip for="id" value="#{documentosJudicialesController.getComponentMessages('id', mensajes.EditDocumentosJudicialesHelpText_id)}"/>
+                        </h:panelGroup>
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_entradaDocumento}" for="entradaDocumento" />
+                        <h:panelGroup>
+                            <p:inputText id="entradaDocumento" value="#{documentosJudicialesController.selected.entradaDocumento}" title="#{mensajes.EditDocumentosJudicialesTitle_entradaDocumento}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_entradaDocumento}"/>
+                            <p:tooltip for="entradaDocumento" value="#{documentosJudicialesController.getComponentMessages('entradaDocumento', mensajes.EditDocumentosJudicialesHelpText_entradaDocumento)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_descripcionMesaEntrada}" for="descripcionMesaEntrada" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="4" cols="30" id="descripcionMesaEntrada" value="#{documentosJudicialesController.selected.descripcionMesaEntrada}" title="#{mensajes.EditDocumentosJudicialesTitle_descripcionMesaEntrada}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_descripcionMesaEntrada}"/>
+                            <p:tooltip for="descripcionMesaEntrada" value="#{documentosJudicialesController.getComponentMessages('descripcionMesaEntrada', mensajes.EditDocumentosJudicialesHelpText_descripcionMesaEntrada)}"/>
+                        </h:panelGroup>
+
+-->
+<!--
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_departamento}" for="departamento" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="departamento" value="#{documentosJudicialesController.selected.departamento}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_departamento}" converter="departamentosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosController.items}"
+                                               var="departamentoItem"
+                                               itemValue="#{departamentoItem}"
+                                               itemLabel="#{departamentoItem.nombre.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamento" value="#{documentosJudicialesController.getComponentMessages('departamento', mensajes.EditDocumentosJudicialesHelpText_departamento)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{documentosJudicialesController.selected.fechaHoraAlta}" title="#{mensajes.EditDocumentosJudicialesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{documentosJudicialesController.getComponentMessages('fechaHoraAlta', mensajes.EditDocumentosJudicialesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{documentosJudicialesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditDocumentosJudicialesTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{documentosJudicialesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditDocumentosJudicialesHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{documentosJudicialesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{documentosJudicialesController.getComponentMessages('empresa', mensajes.EditDocumentosJudicialesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{documentosJudicialesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{documentosJudicialesController.getComponentMessages('usuarioAlta', mensajes.EditDocumentosJudicialesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditDocumentosJudicialesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{documentosJudicialesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.nombresApellidos.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{documentosJudicialesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditDocumentosJudicialesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosJudicialesViewObsDlg" widgetVar="DocumentosJudicialesViewObsDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesViewObsForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{documentosJudicialesController.selected != null}">
+
+                        <h:outputText value="Fecha ultima observacion"/>
+                        <h:outputText value="#{documentosJudicialesController.selected.fechaUltimaObservacion}" title="Fecha Ultima Observacion">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                        </h:outputText>
+                        <h:outputText value="Observacion"/>
+                        <p:inputTextarea rows="4" cols="30" id="obs" readonly="true" value="#{documentosJudicialesController.selected.ultimaObservacion}" title="Observacion" />
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DocumentosJudicialesViewObsDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_id}"/>
+                        <h:outputText value="#{documentosJudicialesController.selected.id}" title="#{mensajes.ViewDocumentosJudicialesTitle_id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_departamento}"/>
+                        <h:outputText value="#{documentosJudicialesController.selected.departamento.nombre}"/>
+-->
+
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_empresa}"/>
+                        <h:outputText value="#{documentosJudicialesController.selected.empresa.id}"/>
+-->

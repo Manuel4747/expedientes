@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="pedidoCambioContrasenaCreateForm" enctype="multipart/form-data" >
+        <div align="left">
+            <div class="ui-g">
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-8 ui-g-8">
+                    <div align="center">
+                        <p:graphicImage library="manhattan-layout" style="width: 300px" value="/resources/images/imagen_logo.jpg"/>
+
+                    </div>
+                    <h:panelGroup id="display" >
+                        <p:fieldset legend="OLVIDÉ MI CONTRASEÑA" style="margin-top: 10px;" >
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel for="email" style="font-size: 20px" value="Ingrese el email asociado a su cuenta de usuario" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="height: 30px; width: 100%">
+                                    <p:inputText id="email" style="height: 30px; width: 100%" value="#{pedidosCambioContrasenaController.selected.email}" title="Ingrese el email asociado a su cuenta de usuario" required="true" requiredMessage="Ingrese el email asociado a su cuenta de usuario" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                        </p:fieldset>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                    <div align="center">
+                        <p:commandButton id="botonGuardar" ajax="false" actionListener="#{pedidosCambioContrasenaController.saveNew()}" value="Enviar pedido" update=":growl"/>
+
+                        <p:commandButton actionListener="#{pedidosCambioContrasenaController.volver()}"  value="Volver" update=":growl"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="#{mensajes.DocumentosTitle}"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/List.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreateAcusacion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreateActuacion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/VerActuaciones.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreateInvestigacionPreliminar.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreatePedidoDesafuero.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/OtroArchivo.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreateResolucion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreateFirmantes.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/VerFirmantes.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/CreatePartes.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/EditObs.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/EditEstadoProcesal.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/ListObs.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/ListEstadosProcesales.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/VerifVisible.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudiciales/VerifRevisado.xhtml"/>
+        
+    </ui:define>
+
+</ui:composition>

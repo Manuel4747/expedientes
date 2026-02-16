@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ValidacionForm">
+
+        <div align="left">
+            <div class="ui-g">
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-8 ui-g-8">
+                    <div align="center">
+                        <p:graphicImage library="manhattan-layout" styleClass="login-image" value="/resources/images/logoJEM.png"/>
+                    </div>
+                    <h:panelGroup id="display" >
+                        <p:fieldset legend="VALIDACION EMAIL" style="margin-top: 10px;" >
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                <p:outputLabel value="Ingrese Nueva Contraseña" for="contrasena1" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="contrasena1" type="password" style="width: 100%" value="#{validacionesEmailController.contrasena1}" required="false" requiredMessage="Ingrese Nueva Contrasena" size="20" maxlength="20"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                <p:outputLabel value="Ingrese Otra Vez" for="contrasena2" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="contrasena2" type="password" style="width: 100%" value="#{validacionesReseteoController.contrasena2}" required="false" requiredMessage="Ingrese Otra Vez" size="20" maxlength="20"/>
+                                </h:panelGroup>
+                            </div>
+                        </p:fieldset>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                    <div align="center">
+                        <p:commandButton actionListener="#{validacionesReseteoController.validar()}" value="Validar" update=":growl">
+                            <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmReseteoMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

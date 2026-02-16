@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="RolesPorPersonasEditDlg" widgetVar="RolesPorPersonasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditRolesPorPersonasTitle}" closeOnEscape="true">
+
+            <h:form id="RolesPorPersonasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{rolesPorUsuariosController.selected != null}">
+
+                         
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_roles}" for="roles" />
+                        <h:panelGroup>
+                            <p:inputText id="roles" value="#{rolesPorUsuariosController.selected.roles}" title="#{mensajes.EditRolesPorPersonasTitle_roles}" required="true" requiredMessage="#{mensajes.EditRolesRequiredMessage_roles}" size="50" maxlength="60"/>
+                            <p:tooltip for="roles" value="#{rolesPorUsuariosController.getComponentMessages('roles', mensajes.EditRolesPorPersonasHelpText_roles)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_usuarios}" for="usuarios" />
+                        <h:panelGroup>
+                            <p:inputText id="usuarios" value="#{rolesPorUsuariosController.selected.usuarios}" title="#{mensajes.EditRolesPorPersonasTitle_usuarios}" required="true" requiredMessage="#{mensajes.EditRolesRequiredMessage_usuarios}" size="50" maxlength="60"/>
+                            <p:tooltip for="usuarios" value="#{rolesPorUsuariosController.getComponentMessages('usuarios', mensajes.EditRolesPorPersonasHelpText_usuarios)}"/>
+                        </h:panelGroup>
+
+                        
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_estado}" for="estado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="estado" value="#{rolesPorUsuariosController.selected.estado}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_estado}" converter="estadosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{estadosController.items}"
+                                               var="estadoItem"
+                                               itemValue="#{estadoItem}"
+                                               itemLabel="#{estadoItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="estado" value="#{rolesPorUsuariosController.getComponentMessages('estado', mensajes.EditRolesPorPersonasHelpText_estado)}"/>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{rolesPorUsuariosController.save}" value="#{mensajes.Save}" update="display,:RolesPorPersonasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('RolesPorPersonasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RolesPorPersonasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_rolesPorUsuariosPK_usuario}" for="rolesPorUsuariosPK_usuario" />
+                        <h:panelGroup>
+                            <h:outputText id="rolesPorUsuariosPK_usuario" value="#{rolesPorUsuariosController.selected.rolesPorUsuariosPK.usuario}" />
+                            <p:tooltip for="rolesPorUsuariosPK_usuario" value="#{rolesPorUsuariosController.getComponentMessages('rolesPorUsuariosPK_usuario', mensajes.EditRolesPorPersonasHelpText_rolesPorUsuariosPK_usuario)}"/>
+                        </h:panelGroup>
+
+
+                        <h:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_rolesPorUsuariosPK_rol}" for="rolesPorUsuariosPK_rol" />
+                        <h:panelGroup>
+                            <h:outputText id="rolesPorUsuariosPK_rol" value="#{rolesPorUsuariosController.selected.rolesPorUsuariosPK.rol}" />
+                            <p:tooltip for="rolesPorUsuariosPK_rol" value="#{rolesPorUsuariosController.getComponentMessages('rolesPorUsuariosPK_rol', mensajes.EditRolesPorPersonasHelpText_rolesPorUsuariosPK_rol)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rolesPorUsuariosController.selected.fechaHoraAlta}" title="#{mensajes.EditRolesPorPersonasTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{rolesPorUsuariosController.getComponentMessages('fechaHoraAlta', mensajes.EditRolesPorPersonasHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{rolesPorUsuariosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditRolesPorPersonasTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{rolesPorUsuariosController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditRolesPorPersonasHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{rolesPorUsuariosController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{rolesPorUsuariosController.getComponentMessages('empresa', mensajes.EditRolesPorPersonasHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_estado}" for="estado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="estado" value="#{rolesPorUsuariosController.selected.estado}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_estado}" converter="estadosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{estadosController.items}"
+                                               var="estadoItem"
+                                               itemValue="#{estadoItem}"
+                                               itemLabel="#{estadoItem.descripcion.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="estado" value="#{rolesPorUsuariosController.getComponentMessages('estado', mensajes.EditRolesPorPersonasHelpText_estado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioAlta" value="#{rolesPorUsuariosController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{rolesPorUsuariosController.getComponentMessages('usuarioAlta', mensajes.EditRolesPorPersonasHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{rolesPorUsuariosController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditRolesPorPersonasRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{rolesPorUsuariosController.getComponentMessages('usuarioUltimoEstado', mensajes.EditRolesPorPersonasHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+                       <h:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_roles}" for="roles" />
+                        <h:panelGroup>
+                            <h:outputText id="roles" value="#{rolesPorUsuariosController.selected.roles}" />
+                            <p:tooltip for="roles" value="#{rolesPorUsuariosController.getComponentMessages('roles', mensajes.EditRolesPorPersonasHelpText_roles)}"/>
+                        </h:panelGroup>
+                      <h:outputLabel value="#{mensajes.EditRolesPorPersonasLabel_usuarios}" for="usuarios" />
+                        <h:panelGroup>
+                            <h:outputText id="usuarios" value="#{rolesPorUsuariosController.selected.usuarios}" title="#{mensajes.EditRolesPorPersonasTitle_roles}"/>
+                            <p:tooltip for="usuarios" value="#{rolesPorUsuariosController.getComponentMessages('usuarios', mensajes.EditRolesPorPersonasHelpText_usuarios)}"/>
+                        </h:panelGroup>
+
+-->

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="FormularioListForm">
+        <div align="center">
+            <div class="ui-g">
+                <div class="ui-g-3">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-6" align="center">
+                    <p:panelGrid columns="1" style="align-content: center">
+                        <div align="center">
+                            <p:graphicImage library="manhattan-layout" styleClass="login-image" value="/resources/images/imagen_logo.jpg"/>
+                        </div>
+                        <div align="center">
+                            <p:outputLabel style="font-size: 20px; width: 100%; align-self: center"  value="SU CONTRASEÑA FUE RESETEADA" />
+                        </div>
+                        <div align="center">
+                            <div class="ui-g-12 button-container">
+                                <a href="#{personasController.volver()}">Volver</a>
+                            </div>
+                        </div>
+                    </p:panelGrid>
+
+                </div>
+                <div class="ui-g-3">
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

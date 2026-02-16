@@ -1,0 +1,466 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+
+            <p:dialog id="ExpActuacionesViewDlg" positionType="absolute" position="0,0" style="width: 100px" widgetVar="ExpActuacionesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{documentosJudicialesAnterioresController.tituloVerActuacion}" closeOnEscape="false">
+
+                <h:form id="ExpActuacionesViewForm">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesAnterioresController.selected != null}">
+                        <ui:remove>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="obsButton" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarObservacion()}" value="Agregar Obs al público" update="DocumentosJudicialesEditObsDlg, :growl" oncomplete="PF('DocumentosJudicialesEditObsDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="verObsButton" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarObservacion()}" value="Ver Obs al público" update="DocumentosJudicialesListObsDlg, :growl" actionListener="#{documentosJudicialesAnterioresController.prepareListaObservaciones()}" oncomplete="PF('DocumentosJudicialesListObsDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="verEstadoProcesalButton" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarEstadoProcesal()}" value="Ver Descripciones al público" update="DocumentosJudicialesListEstadosProcesalesDlg, :growl" actionListener="#{documentosJudicialesAnterioresController.prepareListaEstadosProcesales()}" oncomplete="PF('DocumentosJudicialesListEstadosProcesalesDialog').show()" />
+                            </div>
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="estadoProcesalButton" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarEstadoProcesal()}" value="Agregar Descripción al público" update="DocumentosJudicialesEditEstadoProcesalDlg, :growl" oncomplete="PF('DocumentosJudicialesEditEstadoProcesalDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="verLibroButton" style="height: 50px" value="Ver libro" rendered="#{documentosJudicialesPorSecretariaController.renderedVerLibro(documentosJudicialesAnterioresController.rolElegido)}" update="ExpAcusacionesTodoViewDlg, :growl" actionListener="#{documentosJudicialesPorSecretariaController.preparePdfCompleto(documentosJudicialesAnterioresController.selected, documentosJudicialesAnterioresController.listaActuaciones)}" oncomplete="PF('ExpAcusacionesTodoViewDialog').show(); PF('ExpAcusacionesTodoViewDialog').toggleMaximize();" />
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="partesButton" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarPartes()}" value="Partes" update="PartesCreateDlg, :growl, caratula, datalistPersonas, acusadores, abogados" actionListener="#{documentosJudicialesAnterioresController.prepareEditPartes()}" oncomplete="PF('PartesCreateDialog').show()" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="historialButton" style="height: 50px" value="Trazabilidad" rendered="#{documentosJudicialesPorSecretariaController.renderedVerHistorial(documentosJudicialesAnterioresController.rolElegido)}" actionListener="#{documentosJudicialesPorSecretariaController.verHistorial(documentosJudicialesController.selected)}" update=":DocumentosJudicialesHistorialForm" oncomplete="PF('DocumentosJudicialesHistorialDialog').show()"/>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-2 ui-g-2">
+                                <p:commandButton id="createActuaciones" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarCreateActuaciones()}" value="#{documentosJudicialesAnterioresController.botonRegistrar}" disabled="#{empty documentosJudicialesAnterioresController.selected}" update=":DocumentosCreateActuacionForm" oncomplete="PF('DocumentosCreateActuacionDialog').show()" actionListener="#{documentosJudicialesAnterioresController.prepareCreateActuacion(true)}" />
+                                <p:commandButton id="createResoluciones" style="height: 50px" rendered="#{not documentosJudicialesAnterioresController.deshabilitarCreateResoluciones()}" value="#{documentosJudicialesAnterioresController.botonRegistrar}" disabled="#{empty documentosJudicialesAnterioresController.selected}" update="ResolucionesCreateForm" oncomplete="PF('ResolucionesCreateDialog').show()" actionListener="#{documentosJudicialesAnterioresController.prepareCreateResolucion()}" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_fechaPresentacion}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText value="#{documentosJudicialesAnterioresController.selected.fechaPresentacion}" disabled="true" title="#{mensajes.ViewDocumentosJudicialesTitle_fechaPresentacion}">
+                                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm" timeZone="America/Asuncion" />
+                                            </p:inputText>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_nroCausa}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText value="#{documentosJudicialesAnterioresController.nroCausaExp}" disabled="#{documentosJudicialesAnterioresController.deshabilitarModificarCausa()}" title="#{mensajes.ViewDocumentosJudicialesTitle_nroCausa}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Año"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputNumber id="ano" decimalSeparator="," maxValue="9999" decimalPlaces="0" thousandSeparator="." value="#{documentosJudicialesAnterioresController.selected.ano}" minValue="0" required="false" disabled="#{documentosJudicialesAnterioresController.deshabilitarModificarAno()}" requiredMessage="Ingrese año" title="Año" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_tipoExpediente}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="1" style="width: 100%;" styleClass="ui-noborder">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" style="width: 100%" id="tipoExpediente" value="#{documentosJudicialesAnterioresController.selected.tipoExpediente}" disabled="#{documentosJudicialesAnterioresController.deshabilitarModificarTipoExpediente()}" converter="tiposExpedienteConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{tiposExpedienteController.items}"
+                                                               var="tipoExpedienteItem"
+                                                               itemValue="#{tipoExpedienteItem}"
+                                                               itemLabel="#{tipoExpedienteItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_persona}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="right">
+                                        <h:panelGroup style="width:100%">
+                                            <h:panelGrid columns="1" style="width:100%" styleClass="ui-noborder">
+                                                <p:dataTable id="datalistPersonas"
+                                                             value="#{documentosJudicialesAnterioresController.listaPersonasActivas}"
+                                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                             rowKey="#{item.codigo}"
+                                                             var="item"
+                                                             style="width: 100%"
+                                                             paginator="false">
+
+                                                    <p:ajax event="rowSelect"   update="" />
+                                                    <p:ajax event="rowUnselect" update="" />
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.ci}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.nombresApellidos}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <h:outputText value="#{mensajes.CreateDocumentosJudicialesTitle_juzgado}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText style="width: 100%" value="#{documentosJudicialesAnterioresController.selected.juzgado}" disabled="true" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_fechaHoraAlta}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText style="width: 100%" disabled="true" value="#{documentosJudicialesAnterioresController.selected.fechaHoraAlta}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern3()}" timeZone="America/Asuncion" />
+                                            </p:inputText>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{documentosJudicialesAnterioresController.renderedMostrarExpedienteWeb()}">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-4 ui-g-4" align="left">
+                                        <h:outputText value="Mostrar Primer Escrito en la Buscador" rendered="#{documentosJudicialesAnterioresController.renderedMostrarExpedienteWeb()}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-8 ui-g-8">
+                                        <p:selectOneMenu id="mostrarExpedienteWeb" rendered="#{documentosJudicialesAnterioresController.renderedMostrarExpedienteWeb()}" value="#{documentosJudicialesAnterioresController.selected.mostrarExpedienteWeb}" >
+                                            <p:ajax event="change" listener="#{documentosJudicialesAnterioresController.actualizarMostrarExpedienteWeb()}" />
+                                            <f:selectItem itemLabel="SI" itemValue="SI"/>
+                                            <f:selectItem itemLabel="NO" itemValue="NO"/>
+                                        </p:selectOneMenu>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                        <h:outputText value="#{mensajes.CreateDocumentosJudicialesLabel_caratula}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" readonly="#{documentosJudicialesAnterioresController.deshabilitarModificarCaratula()}" rows="3"  cols="50" id="caratula" value="#{documentosJudicialesAnterioresController.selected.caratula}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_caratula}" title="#{mensajes.CreateDocumentosJudicialesTitle_caratula}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+
+                                        <h:outputText value="Expediente judicial / Cuaderno de investigación fiscal"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" rows="3" cols="50" id="motivoProceso" readonly="#{documentosJudicialesAnterioresController.deshabilitarModificarMotivoProceso()}" value="#{documentosJudicialesAnterioresController.selected.motivoProceso}" title="Expediente Judicial / Carpeta Fiscal" required="false" requiredMessage="Expediente Judicial / Carpeta Fiscal: campo requerido" />
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Acusador"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText disabled="true" id="acusadores" style="width: 100%" value="#{documentosJudicialesAnterioresController.obtenerPersonaAcusadora(documentosJudicialesAnterioresController.selected)}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                        <h:outputText value="Abogado"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputText disabled="true" id="abogados" style="width: 100%" value="#{documentosJudicialesAnterioresController.obtenerAbogadoAcusador(documentosJudicialesAnterioresController.selected)}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" action="#{documentosJudicialesAnterioresController.saveEditExpediente()}" rendered="#{(not documentosJudicialesAnterioresController.deshabilitarModificarCaratula()) or (not documentosJudicialesAnterioresController.deshabilitarModificarCausa()) or (not documentosJudicialesAnterioresController.deshabilitarModificarAno()) or (not documentosJudicialesAnterioresController.deshabilitarModificarTipoExpediente())}" ajax="true" value="#{mensajes.Save}" update=":DocumentosJudicialesListForm:datalist, :growl">
+                                <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                            <p:dataTable id="datalistActuaciones"
+                                         value="#{documentosJudicialesAnterioresController.listaActuaciones}"
+                                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                         rendered="#{documentosJudicialesPorSecretariaController.renderedVerActuaciones(documentosJudicialesAnterioresController.rolElegido)}" 
+                                         rowKey="#{item.id}"
+                                         var="item"
+                                         selectionMode="single"
+                                         scrollable="true" scrollHeight="300"
+                                         selection="#{documentosJudicialesAnterioresController.selectedActuacion}">
+
+                                <ui:remove>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListExpActuacionesTitle_id}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.id}"/>
+                                    </p:column>
+                                </ui:remove>
+
+
+                                <p:column sortBy="#{documentosJudicialesAnterioresController.customFormatDate(item.fechaHoraAlta)}" rendered="#{not documentosJudicialesAnterioresController.deshabilitarFechaHoraAlta()}" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaHoraAlta}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraAlta}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern3()}" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column sortBy="#{documentosJudicialesAnterioresController.customFormatDate(item.fechaPresentacion)}" >
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaPresentacion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaPresentacion}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern3()}" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_descripcion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.descripcion}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_tipoActuacion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.tipoActuacion}" escape="false"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="#{mensajes.ListExpActuacionesTitle_objetoActuacion}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.objetoActuacion}" escape="false"/>
+                                </p:column>
+
+                                <ui:remove>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="#{mensajes.ListExpActuacionesTitle_objetoActuacion}"/>
+                                        </f:facet>
+                                        <h:outputText value="#{item.objetoActuacion}" escape="false"/>
+                                    </p:column>
+                                </ui:remove>
+
+                                <p:column rendered="#{not documentosJudicialesAnterioresController.deshabilitarUsuario()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Alzado por"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.personaAlta.nombresApellidos}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Destinatario"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.destinatario.nombresApellidos}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesAnterioresController.renderedEstadoActuacion()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Estado"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.estado.descripcion}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesAnterioresController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Visible" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}"/>
+                                    </f:facet>
+                                    <h:selectBooleanCheckbox id="visible" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}" disabled="#{documentosJudicialesAnterioresController.deshabilitarVisible(item)}" value="#{item.visible}" >
+                                        <p:ajax event="change" listener="#{documentosJudicialesAnterioresController.actualizarActuacion(item)}" update="visible, :ExpActuacionesViewForm:datalistActuaciones"/>
+                                    </h:selectBooleanCheckbox>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesAnterioresController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Visibilizado por" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.personaVisible.nombresApellidos}" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesAnterioresController.renderedVisible()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Fecha finalización" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.fechaHoraVisible}" rendered="#{documentosJudicialesAnterioresController.renderedVisible()}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern3()}" timeZone="America/Asuncion" />
+                                    </h:outputText>
+                                </p:column>
+
+                                <p:column rendered="#{not documentosJudicialesAnterioresController.deshabilitarFirmantes(item)}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Firmantes"/>
+                                    </f:facet>
+                                    <p:commandButton rendered="#{not documentosJudicialesAnterioresController.deshabilitarFirmantes(item)}" id="firmantesDocButton" icon="ui-icon-search" value="Firmantes" update="FirmantesCreateDlg, :growl" actionListener="#{documentosJudicialesAnterioresController.prepareEditFirmantes(item)}" oncomplete="PF('FirmantesCreateDialog').show()" />
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Ver"/>
+                                    </f:facet>
+                                    <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" icon="ui-icon-search" rendered="#{documentosJudicialesPorSecretariaController.deshabilitarBotonVerEnVentana(item)}" value="Ver" action="#{documentosJudicialesPorSecretariaController.verDoc(item)}" disabled="#{empty item.archivo and empty item.formato}"/>
+                                    <p:commandButton id="verDocButton"   style="visibility: visible;" icon="ui-icon-search" value="Ver" rendered="#{not documentosJudicialesPorSecretariaController.deshabilitarBotonVerEnVentana(item)}" update="ExpAcusacionesViewForm, :growl" actionListener="#{documentosJudicialesPorSecretariaController.prepareDialogoVerDoc(item)}" oncomplete="PF('ExpAcusacionesViewDialog').show(); PF('ExpAcusacionesViewDialog').toggleMaximize();"  disabled="#{empty item.archivo and empty item.formato}"/>
+                                </p:column>
+
+                                <p:column rendered="#{documentosJudicialesAnterioresController.renderedBotonBorrarDoc()}">
+                                    <f:facet name="header">
+                                        <h:outputText value="Borrar"/>
+                                    </f:facet>
+                                    <p:commandButton id="borrarDocButton"   style="visibility: visible;" icon="ui-icon-search" value="Borrar" rendered="#{documentosJudicialesAnterioresController.renderedBotonBorrarDoc()}" update="datalistActuaciones, :growl" disabled="#{documentosJudicialesAnterioresController.deshabilitarBotonBorrarDoc(item)}" actionListener="#{documentosJudicialesAnterioresController.borrarDoc(item)}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                            <h:inputHidden id="hiddenSizeId" value="#{documentosJudicialesAnterioresController.itemsSize}" />
+                            <h:inputHidden id="hiddenIxId" value="#{documentosJudicialesAnterioresController.newItemIx}" />
+
+
+                        </div>
+
+                        <ui:remove>
+
+                            <p:column rendered="#{not documentosJudicialesAnterioresController.deshabilitarRevisiones(item)}">
+                                <f:facet name="header">
+                                    <h:outputText value="Revisiones"/>
+                                </f:facet>
+                                <p:commandButton rendered="#{not documentosJudicialesAnterioresController.deshabilitarRevisiones(item)}" id="revisionesDocButton" style="visibility: visible;" icon="ui-icon-search" value="Revisiones" update="RevisionesCreateDlg, :growl" actionListener="#{documentosJudicialesAnterioresController.prepareEditRevisiones(item)}" oncomplete="PF('RevisionesCreateDialog').show()" />
+                            </p:column>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                <h:outputText value="#{mensajes.ListDocumentosJudicialesTitle_personaAlta}"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText style="width: 100%" value="#{documentosJudicialesAnterioresController.selected.personaAlta.nombresApellidos}" disabled="true"/>
+                                </h:panelGroup>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-2 ui-g-2" align="left">
+                                <h:outputText value="Fecha Última Actuación"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-10 ui-g-10">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText disabled="true" style="width: 100%" value="#{documentosJudicialesAnterioresController.selected.fechaHoraEstadoProcesal}">
+                                        <f:convertDateTime pattern="#{documentosJudicialesAnterioresController.datePattern()}" timeZone="America/Asuncion" />
+                                    </p:inputText>
+                                </h:panelGroup>
+                            </div>
+                            <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_caratulaAnterior}" for="caratulaAnterior" />
+                            <h:panelGroup>
+                                <p:inputTextarea autoResize="false" rows="6"  cols="100" id="caratulaAnterior" value="#{documentosJudicialesAnterioresController.selected.caratulaAnterior}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_caratulaAnterior}" title="#{mensajes.CreateDocumentosJudicialesTitle_caratulaAnterior}"/>
+                                <p:tooltip for="caratulaAnterior" value="#{documentosJudicialesAnterioresController.getComponentMessages('caratulaAnterior', mensajes.CreateDocumentosJudicialesHelpText_caratulaAnterior)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Última Actuación" for="estadoProcesal" rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerEstadoProcesal()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerEstadoProcesal()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="estadoProcesal" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesAnterioresController.selected.estadoProcesal}" required="false" requiredMessage="Última Actuación: campo requerido" title="Última Actuación"/>
+                                    <p:tooltip for="estadoProcesal" value="#{documentosJudicialesAnterioresController.getComponentMessages('estadoProcesal', 'Ingrese Última Actuación')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Observacion" for="observacion" rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerObs()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerObs()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="observacion" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesAnterioresController.selected.ultimaObservacion}" required="false" title="Observacion"/>
+                                    <p:tooltip for="observacion" value="#{documentosJudicialesAnterioresController.getComponentMessages('observacion', 'Ingrese Observacion')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="Observacion Antecedente" for="observacionAntecedente" rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerObsAntecedente()}" />
+                            <h:panelGroup rendered="#{not documentosJudicialesAnterioresController.deshabilitarVerObsAntecedente()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="observacionAntecedente" autoResize="false" rows="6" cols="100" value="#{documentosJudicialesAnterioresController.selected.ultimaObservacionAntecedente}" required="false" title="Observacion Antecedente"/>
+                                    <p:tooltip for="observacionAntecedente" value="#{documentosJudicialesAnterioresController.getComponentMessages('observacionAntecedente', 'Ingrese Observacion Antecedente')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreateDocumentosJudicialesLabel_estadoProceso}" for="estadoProceso" />
+                            <h:panelGroup>
+                                <p:selectOneMenu rendered="true" filter="true" filterMatchMode="contains" id="estadoProceso" disabled="#{documentosJudicialesAnterioresController.deshabilitarEstadoProceso()}" value="#{documentosJudicialesAnterioresController.selected.estadoProceso}" required="false" requiredMessage="#{mensajes.CreateDocumentosJudicialesRequiredMessage_estadoProceso}" converter="estadosProcesoConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{estadosProcesoController.items}"
+                                                   var="estadoProcesoItem"
+                                                   itemValue="#{estadoProcesoItem}"
+                                                   itemLabel="#{estadoProcesoItem.descripcion}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="estadoProceso" value="#{documentosJudicialesAnterioresController.getComponentMessages('estadoProceso', mensajes.CreateDocumentosJudicialesHelpText_estadoProceso)}"/>
+                            </h:panelGroup>
+                        </ui:remove>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton value="#{mensajes.Close}" onclick="PF('ExpActuacionesViewDialog').hide()"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+
+        </div>
+
+    </ui:composition>
+
+</html>

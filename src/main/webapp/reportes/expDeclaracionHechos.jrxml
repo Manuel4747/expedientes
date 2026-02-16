@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="ExpDeclaracionHechos" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f34678b1-12c0-4db2-99a2-f8a0e7304fc7">
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+	<parameter name="fecha" class="java.util.Date"/>
+	<parameter name="hechos" class="java.lang.String"/>
+	<parameter name="nombrePersona" class="java.lang.String"/>
+	<parameter name="labelPersona" class="java.lang.String"/>
+	<parameter name="labelAbogado" class="java.lang.String"/>
+	<parameter name="nombreAbogado" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<title>
+		<band height="351" splitType="Stretch">
+			<staticText>
+				<reportElement x="16" y="22" width="64" height="18" uuid="10dc4032-4688-4b3f-ac51-92e8dee65782"/>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="80" y="22" width="100" height="18" uuid="5f832641-117d-40e0-a5ff-511e486f81b8"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight">
+				<reportElement x="16" y="113" width="534" height="28" uuid="715fa556-51e9-49a9-9459-19acf3a05857">
+					<printWhenExpression><![CDATA[$P{hechos} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{hechos}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="40" width="64" height="20" uuid="6171197a-2821-4005-bdb8-b3aac2ca1404">
+					<printWhenExpression><![CDATA[$P{labelPersona} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{labelPersona}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="40" width="470" height="20" uuid="bf5a934b-1722-4789-9559-961920c6d277">
+					<printWhenExpression><![CDATA[$P{nombrePersona} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{nombrePersona}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="16" y="60" width="64" height="20" uuid="e59ba130-d777-4197-a252-973194456907">
+					<printWhenExpression><![CDATA[$P{labelAbogado} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{labelAbogado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="60" width="470" height="20" uuid="b69c253c-a630-4e5b-9960-abad74122778">
+					<printWhenExpression><![CDATA[$P{nombreAbogado} != null]]></printWhenExpression>
+				</reportElement>
+				<textFieldExpression><![CDATA[$P{nombreAbogado}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="16" y="83" width="154" height="17" uuid="6603d3c4-6c08-421a-86e2-c07aa3fffd76"/>
+				<textElement>
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Declaracion de Hechos]]></text>
+			</staticText>
+		</band>
+	</title>
+</jasperReport>

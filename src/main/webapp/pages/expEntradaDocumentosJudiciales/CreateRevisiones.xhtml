@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="RevisionesCreateDlg" positionType="absolute" widgetVar="RevisionesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateRevisionesTitle}" closeOnEscape="true">
+
+                <h:form id="RevisionesCreateForm" enctype="multipart/form-data">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesController.selected != null}">
+
+                        <div class="ui-sm-12 ui-md-3 ui-g-3">
+
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateRevisionesLabel_persona}"/>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:panelGrid columns="2" styleClass="ui-noborder">
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{documentosJudicialesController.revision}" required="false" requiredMessage="#{mensajes.EditDocumentosJudicialesRequiredMessage_persona}" converter="personasConverter">
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{personasController.items}"
+                                                           var="personaItem"
+                                                           itemValue="#{personaItem}"
+                                                           itemLabel="#{personaItem.ci} - #{personaItem.nombresApellidos}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:commandButton id="agregarFirmanteButton" value="Agregar" actionListener="#{documentosJudicialesController.agregarRevision()}" update="datalistRevisiones"/>
+                                    </p:panelGrid>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:dataTable id="datalistRevisiones"
+                                                 value="#{documentosJudicialesController.listaRevisionesActivas}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 tableStyle="width:auto"
+                                                 paginator="false"
+                                                 selectionMode="single"
+                                                 selection="#{documentosJudicialesController.revisionSelected}">
+
+
+                                        <p:ajax event="rowSelect"   update="" />
+                                        <p:ajax event="rowUnselect" update="" />
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Cedula"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.ci}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nombresApellidos}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Revisado"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.revisadoString}"/>
+                                        </p:column>
+
+                                        <p:column style="width:15px;">
+                                            <p:commandButton id="borrarPersonaButton" value="Borrar" actionListener="#{documentosJudicialesController.borrarRevision(item)}" update="datalistRevisiones"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" actionListener="#{documentosJudicialesController.saveRevisiones()}" ajax="true" value="#{mensajes.Save}" update="display,:DocumentosJudicialesListForm:datalist,:growl, :ExpActuacionesViewForm:datalistActuaciones" oncomplete="handleSubmit(xhr,status,args,PF('RevisionesCreateDialog'));" >
+                                        <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('RevisionesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

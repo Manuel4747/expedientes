@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="ExpOrdenesDiaListForm">
+
+            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                <p:panel header="Ordenes del día a futuro">
+                    <p:dataTable id="datalistPend"
+                                 value="#{avisoOrdenesDiaController.listaDetallesOrdenDiaPend}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Sesion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ordenDia.fechaSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo sesión"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ordenDia.tipoSesion.descripcion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nro orden"/>
+                            </f:facet>
+                            <h:outputText value="#{item.orden}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{avisoOrdenesDiaController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                <p:panel header="Ordenes del día Anteriores">
+
+                    <p:dataTable id="datalistAnt"
+                                 value="#{avisoOrdenesDiaController.listaDetallesOrdenDiaAnt}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Sesion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ordenDia.fechaSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo sesión"/>
+                            </f:facet>
+                            <h:outputText value="#{item.ordenDia.tipoSesion.descripcion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nro orden"/>
+                            </f:facet>
+                            <h:outputText value="#{item.orden}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{avisoOrdenesDiaController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </p:panel>
+            </div>
+        </h:form>
+    </div>
+
+</ui:composition>

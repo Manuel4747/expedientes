@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="FirmantesCreateDlg" positionType="absolute" widgetVar="FirmantesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateFirmantesTitle}" closeOnEscape="true">
+
+                <h:form id="FirmantesCreateForm" enctype="multipart/form-data">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesAnterioresController.selected != null}">
+
+                        <div class="ui-sm-12 ui-md-3 ui-g-3">
+
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateFirmantesLabel_personaFirmante}"/>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:panelGrid columns="2" styleClass="ui-noborder">
+                                        <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{documentosJudicialesAnterioresController.personaFirmante}" required="false" requiredMessage="#{mensajes.EditFirmantesRequiredMessage_personaFirmante}" converter="personasConverter">
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{documentosJudicialesAnterioresController.listaPosiblesFirmantes}"
+                                                           var="personaItem"
+                                                           itemValue="#{personaItem}"
+                                                           itemLabel="#{personaItem.ci} - #{personaItem.nombresApellidos}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:commandButton id="agregarPersonaFirmanteButton" value="Agregar" actionListener="#{documentosJudicialesAnterioresController.agregarPersonaFirmante()}" update="datalistPersonasFirmantes"/>
+                                    </p:panelGrid>
+                                </div>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:dataTable id="datalistPersonasFirmantes"
+                                                 value="#{documentosJudicialesAnterioresController.listaPersonasFirmantesActivas}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 tableStyle="width:auto"
+                                                 paginator="false"
+                                                 selectionMode="single"
+                                                 selection="#{documentosJudicialesAnterioresController.personaFirmanteSelected}">
+
+
+                                        <p:ajax event="rowSelect"   update="" />
+                                        <p:ajax event="rowUnselect" update="" />
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Cedula"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.ci}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nombresApellidos}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Firmado"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.firmadoString}"/>
+                                        </p:column>
+
+                                        <p:column style="width:15px;">
+                                            <p:commandButton id="borrarPersonaFirmanteButton" value="Borrar" actionListener="#{documentosJudicialesAnterioresController.borrarPersonaFirmante(item)}" update="datalistPersonasFirmantes"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </div>
+
+                                <ui:remove>
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateFirmantesLabel_rolFirmante}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{documentosJudicialesAnterioresController.rolFirmante}" required="false" requiredMessage="#{mensajes.EditFirmantesRequiredMessage_rolFirmante}" converter="antecedentesRolesConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{documentosJudicialesAnterioresController.listaRoles}"
+                                                               var="rolItem"
+                                                               itemValue="#{rolItem}"
+                                                               itemLabel="#{rolItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                            <p:commandButton id="agregarFirmanteButton" value="Agregar" actionListener="#{documentosJudicialesAnterioresController.agregarRolFirmante()}" update="datalistRolesFirmantes"/>
+                                        </p:panelGrid>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <p:dataTable id="datalistRolesFirmantes"
+                                                     value="#{documentosJudicialesAnterioresController.listaRolesFirmantesActivas}"
+                                                     lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                     rowKey="#{item.id}"
+                                                     var="item"
+                                                     tableStyle="width:auto"
+                                                     paginator="false"
+                                                     selectionMode="single"
+                                                     selection="#{documentosJudicialesAnterioresController.rolFirmanteSelected}">
+
+
+                                            <p:ajax event="rowSelect"   update="" />
+                                            <p:ajax event="rowUnselect" update="" />
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Nombre"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.descripcion}"/>
+                                            </p:column>
+
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Firmado"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.firmadoString}"/>
+                                            </p:column>
+
+                                            <p:column style="width:15px;">
+                                                <p:commandButton id="borrarPersonaButton" value="Borrar" actionListener="#{documentosJudicialesAnterioresController.borrarRolFirmante(item)}" update="datalistRolesFirmantes"/>
+                                            </p:column>
+                                        </p:dataTable>
+                                    </div>
+                                </ui:remove>
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" actionListener="#{documentosJudicialesAnterioresController.saveFirmantes()}" ajax="true" value="#{mensajes.Save}" update="display,:DocumentosJudicialesListForm:datalist,:growl, :ExpActuacionesViewForm:datalistActuaciones" oncomplete="handleSubmit(xhr,status,args,PF('FirmantesCreateDialog'));" >
+                                        <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                                    </p:commandButton>
+
+                                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('FirmantesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="EnviarEmailDlg" widgetVar="EnviarEmailDialog" modal="true" resizable="false" appendTo="@(body)" header="Enviar Reseteo Contraseña" closeOnEscape="true">
+
+            <h:form id="EnviarEmailForm">
+                <div align="center">
+
+                    <div class="ui-g">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <p:panelGrid columns="1" styleClass="ui-noborder">
+                                <p:outputLabel style="font-size: 20px; width: 100%; align-self: center" value="#{pedidosPersonaController.avisoReseteo}" />
+                                <p:outputLabel style="font-size: 20px; width: 100%; align-self: center" value="#{pedidosPersonaController.avisoReseteo2}" />
+                                <p:outputLabel style="font-size: 20px; width: 100%; align-self: center" value="#{pedidosPersonaController.avisoReseteo3}" />
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-md-4 ui-lg-4 ui-g-4">
+                        </div>
+                        <div class="ui-sm-6 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton actionListener="#{pedidosPersonaController.enviarReseteo()}" value="Enviar Reseteo" update=":growl"/>
+                        </div>
+                        <div class="ui-sm-6 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('EnviarEmailDialog').hide()" update=":growl" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                        <div class="ui-md-4 ui-lg-4 ui-g-4">
+                        </div>
+                    </div>
+                </div>
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

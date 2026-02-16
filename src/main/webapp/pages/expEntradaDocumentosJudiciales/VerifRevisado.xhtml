@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ExpAcusacionesVerifRevisadoDlg" widgetVar="ExpAcusacionesVerifRevisadoDialog" modal="true" resizable="false"  appendTo="@(body)" header="Estado" closeOnEscape="true">
+
+            <h:form id="ExpAcusacionesVerifRevisadoForm" enctype="multipart/form-data">
+                <div align="center">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                        <p:outputLabel value="Esta seguro que desea marcar como revisada esta actuacion?" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                        <p:outputLabel value="#{documentosJudicialesController.mensajeAviso}" />
+                    </div>
+                </div>
+                <div align="center">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <p:commandButton actionListener="#{documentosJudicialesController.actualizarRevisado(documentosJudicialesController.selectedPersonaFirmantePorActuacion)}" value="SI" update=":growl, :ExpActuacionesViewForm:datalistActuaciones, :FirmantesVerForm:datalistPersonasFirmantes" oncomplete="handleSubmit(xhr,status,args,PF('ExpAcusacionesVerifRevisadoDialog'));"/>
+                            <p:commandButton value="NO" oncomplete="PF('ExpAcusacionesVerifRevisadoDialog').hide()" process="@this" immediate="true" resetValues="true"/>
+                        </p:panelGrid>
+                    </div>
+                </div>
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+
+                        <p:outputLabel value="#{mensajes.EditFlujosGestionLabel_documentoJudicial}" for="documentoJudicial" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="documentoJudicial" value="#{flujosGestionController.selected.documentoJudicial}" required="true" requiredMessage="#{mensajes.EditFlujosGestionRequiredMessage_documentoJudicial}" converter="flujosGestionJudicialesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{flujosGestionJudicialesController.items}"
+                                               var="documentoJudicialItem"
+                                               itemValue="#{documentoJudicialItem}"
+                                               itemLabel="#{documentoJudicialItem.descripcionMesaEntrada.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="documentoJudicial" value="#{flujosGestionController.getComponentMessages('documentoJudicial', mensajes.EditFlujosGestionHelpText_documentoJudicial)}"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel value="#{mensajes.EditFlujosGestionLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{flujosGestionController.selected.id}" />
+                            <p:tooltip for="id" value="#{flujosGestionController.getComponentMessages('id', mensajes.EditFlujosGestionHelpText_id)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditFlujosGestionLabel_ruta}" for="ruta" />
+                        <h:panelGroup>
+                            <p:inputText id="ruta" value="#{flujosGestionController.selected.ruta}" title="#{mensajes.EditFlujosGestionTitle_ruta}" size="100" maxlength="100"/>
+                            <p:tooltip for="ruta" value="#{flujosGestionController.getComponentMessages('ruta', mensajes.EditFlujosGestionHelpText_ruta)}"/>
+                        </h:panelGroup>
+-->

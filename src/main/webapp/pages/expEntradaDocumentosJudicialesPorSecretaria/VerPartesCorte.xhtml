@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/manhattan">
+
+    <ui:composition>
+        <div class="ui-g">
+
+            <p:dialog id="ExpPartesCorteViewDlg" positionType="absolute" position="0,0" style="width: 100px" widgetVar="ExpPartesCorteViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="Datos de la parte" closeOnEscape="false">
+
+                <h:form id="ExpPartesCorteViewForm">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesPorSecretariaController.selectedParteCorte != null}">
+                        <p:tabView id="UsuariosTabView" orientation="top" effect="fade" effectDuration="slow">
+                            <p:tab id="UsuariosTab1" title="Parte">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo parte"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.tipoParteCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo persona"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.tipoPersonaCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo documento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.tipoDocumentoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Nro documento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.nroDocumento}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Nombres Apellidos"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.nombresApellidos}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Fecha nacimiento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.fechaNacimiento}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Sexo"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.sexoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Edad"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.tipoDocumentoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Estado civil"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.estadoCivilCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Ocupación"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedParteCorte.ocupacionCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </p:tab>
+                            <p:tab id="UsuariosTab5" title="Domicilios">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                                    <p:dataTable id="datalistDomiciliosCorte"
+                                                 value="#{documentosJudicialesPorSecretariaController.listaDomiciliosCorte}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 scrollable="true" scrollHeight="300">
+
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Tipo domicilio"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.descriptionTipoDomicilio}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Localidad"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.localidad}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Calle"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.calle}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Telefono"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.telefono}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Email"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.email}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                </div>
+                            </p:tab>
+                            <p:tab id="UsuariosTab6" title="Abogados">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+
+                                    <p:dataTable id="datalistProfesionalesCorte"
+                                                 value="#{documentosJudicialesPorSecretariaController.listaProfesionalesCorte}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 scrollable="true" scrollHeight="300">
+
+
+                                        <ui:remove>
+                                            <p:column>
+                                                <f:facet name="header">
+                                                    <h:outputText value="Tipo profesional"/>
+                                                </f:facet>
+                                                <h:outputText value="#{item.tipoProfesional}"/>
+                                            </p:column>
+                                        </ui:remove>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre profesional"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.nombreProfesional}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Representacion"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.representacion}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Habilitado"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.profesionalHabilitado}"/>
+                                        </p:column>
+
+                                    </p:dataTable>
+
+                                </div>
+                            </p:tab>
+                        </p:tabView>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton value="#{mensajes.Close}" onclick="PF('ExpPartesCorteViewDialog').hide()"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+
+        </div>
+
+    </ui:composition>
+
+</html>

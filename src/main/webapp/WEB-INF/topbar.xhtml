@@ -1,0 +1,27 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pa="http://primefaces.org/manhattan">
+
+    <div class="layout-topbar">
+        <a href="#" id="layout-menu-btn" class="menu-btn">
+            <i class="fa fa-bars"></i>
+        </a>        
+        <a href="http://www.jem.gov.py" target="_blank">
+            <p:graphicImage value="#{personasController.imagenLogo}" height="100%"/>
+        </a>
+        <div class="layout-topbar-menu-wrapper">            
+            <ul class="topbar-menu">
+                <li class="profile-item">
+                    <a href="#">              
+                        <p:outputLabel style="font-size: 20px; font-weight: bold" value="#{personasController.nombreUsu}"/> 
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+</ui:composition>

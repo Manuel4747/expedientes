@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <p:dialog id="PersonasContrasenaDlg" visible = "#{personasContrasenaController.visible}"  widgetVar="PersonasContrasenaDialog"  modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ContrasenaUsuariosTitle}" closeOnEscape="true">
+
+                <h:form id="PersonasContrasenaForm">
+
+                    <h:panelGroup id="display">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="Politicas"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputTextarea id="politicas" readonly="true" value="#{personasContrasenaController.politicas}" cols="50" rows="4" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.ContrasenaUsuariosLabel_contrasena}"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputText type="password" id="contrasena" value="#{personasContrasenaController.cambioContrasena1}" title="#{mensajes.ContrasenaUsuariosTitle_contrasena}" required="false" requiredMessage="#{mensajes.ContrasenaUsuariosRequiredMessage_contrasena}" maxlength="50"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.ContrasenaUsuariosLabel_otracontrasena}"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputText id="otracontrasena" type="password" value="#{personasContrasenaController.cambioContrasena2}" title="#{mensajes.ContrasenaUsuariosTitle_contrasena}" required="false" requiredMessage="#{mensajes.ContrasenaUsuariosRequiredMessage_contrasena}" maxlength="50"/>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton actionListener="#{personasContrasenaController.saveContrasena()}" value="#{mensajes.Save}" update=":growl" oncomplete="handleSubmit(xhr,status,args,PF('PersonasContrasenaDialog'));">
+                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PersonasContrasenaDialog').hide()" update=":growl" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+
+    </ui:composition>
+
+</html>

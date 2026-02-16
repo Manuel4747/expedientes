@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpNotificacionesListForm">
+
+        <div class="ui-g">
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel header="Reporte de firmantes" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_FIRMANTES')}">
+                    <p:fieldset style="width: 100%" legend="Incluir">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-6 ui-lg-1 ui-g-1">
+                                <div align="left">
+                                    <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px;" />
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-md-6 ui-lg-2 ui-g-1">
+                                <div align="left">
+                                    <p:calendar size="7" id="fechaDesde" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{repFirmantesController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-md-6 ui-lg-1 ui-g-1">
+                                <div align="left">
+                                    <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-md-6 ui-lg-2 ui-g-1">
+                                <div align="left">
+                                    <p:calendar size="7" id="fechaHasta" required="true" pattern="dd/MM/yyyy" navigator="true" value="#{repFirmantesController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                                <p:selectCheckboxMenu label="Elija firmantes" filter="true" filterMatchMode="contains" id="roles" value="#{repFirmantesController.listaPersonasSeleccionadas}" converter="personasConverter">
+                                    <f:selectItems value="#{repFirmantesController.listaPersonas}"
+                                                   var="personasItem"
+                                                   itemValue="#{personasItem}"
+                                                   itemLabel="#{personasItem.nombresApellidos}"
+                                                   />
+
+                                </p:selectCheckboxMenu>
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                                <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarResoluciones}" itemLabel="Resoluciones" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                                <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarOficios}" itemLabel="Oficios" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                                <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarProvidencias}" itemLabel="Providencias" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                                <p:commandButton id="imprimirButton"    ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en PDF" action="#{repFirmantesController.imprimir()}" />
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+                <p:panel header="Reporte de detalle de firmantes" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_FIRMANTES')}">
+                    <p:fieldset style="width: 100%" legend="Incluir">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectCheckboxMenu label="Elija firmantes" filter="true" filterMatchMode="contains" id="roles2" value="#{repFirmantesController.listaPersonasSeleccionadas2}" converter="personasConverter">
+                                <f:selectItems value="#{repFirmantesController.listaPersonas}"
+                                               var="personasItem"
+                                               itemValue="#{personasItem}"
+                                               itemLabel="#{personasItem.nombresApellidos}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarResoluciones2}" itemLabel="Resoluciones" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-1 ui-lg-1 ui-g-1">
+                            <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarAI2}" itemLabel="A.I." />
+                        </div>
+                        <div class="ui-sm-12 ui-md-1 ui-lg-1 ui-g-1">
+                            <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarSD2}" itemLabel="S.D." />
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarOficios2}" itemLabel="Oficios" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectBooleanCheckbox value="#{repFirmantesController.filtrarProvidencias2}" itemLabel="Providencias" />
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="imprimirButton3"    ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en PDF" action="#{repFirmantesController.imprimirDetalle()}" />
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+                <p:panel header="Reporte de usuarios expediente" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_USUARIOS_EXPEDIENTE')}">
+                    <p:fieldset style="width: 100%" legend="Incluir">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:selectCheckboxMenu label="Elija roles" filter="true" filterMatchMode="contains" id="roles3" value="#{repFirmantesController.listaRolesSeleccionadas}" converter="antecedentesRolesConverter">
+                                <f:selectItems value="#{repFirmantesController.listaRoles}"
+                                               var="rolItem"
+                                               itemValue="#{rolItem}"
+                                               itemLabel="#{rolItem.descripcion}"
+                                               />
+
+                            </p:selectCheckboxMenu>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="imprimirButton4"    ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en PDF" action="#{repFirmantesController.repPersonasUsuario(false)}" />
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+                <p:panel header="Reporte de personas" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_USUARIOS_EXPEDIENTE')}">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="imprimirButton5"    ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en PDF" action="#{repFirmantesController.repPersonasUsuario(true)}" />
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+                <p:panel header="Reporte de personas vinculadas a expedientes y resoluciones" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_USUARIOS_EXPEDIENTE')}">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="imprimirButton6"    ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en Excel" action="#{repFirmantesController.repPersonasUsuarioAsociados()}" />
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+                <p:panel header="Reporte de Cantidad de Usuarios" rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml', 'REP_CANT_USUARIOS')}">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="imprimirButton2"  ajax="false"    onclick="this.form.target = '_blank'" icon="ui-icon-plus"   value="Imprimir en PDF" action="#{repFirmantesController.imprimirCantUsuarios()}" />
+                        </div>
+                    </p:fieldset>
+                </p:panel>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

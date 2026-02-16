@@ -1,0 +1,161 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:pm="http://primefaces.org/manhattan">
+
+    <div class="layout-sidebar">
+        <div class="layout-sidebar-logo">
+            <a href="#" id="layout-sidebar-anchor" class="layout-sidebar-anchor" title="Toggle Menu">
+                <i class="fa"></i>
+            </a>
+        </div>
+
+        <div class="nano">
+            <div class="nano-content sidebar-scroll-content">
+                <div class="layout-menu-container">
+                    <h:form id="menuform">
+                        <pm:menu id="menuPrincipal">
+                            <p:menuitem value="#{mensajes.Home}" action="#{personasController.obtenerHome()}" oncomplete="endHandler();" icon="ui-icon-home"/>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/qr/index.xhtml')}" value="QR" outcome="/pages/qr/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/instaladores/index.xhtml')}" value="Instaladores" outcome="/pages/instaladores/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/sorteo/index.xhtml')}" value="Sorteo" outcome="/pages/sorteo/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expSorteos/index.xhtml')}" value="Sorteo fiscal acusador" outcome="/pages/expSorteos/index" />
+                            <p:menuitem rendered="false" value="Generar antecedentes" ajax="false" action="#{personasController.imprimirRepAntecedentes(personasController.selected)}" />
+                            <p:menuitem rendered="false" value="Histórico" outcome="/pages/antecedentes/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'ULTIMAS')}" value="Ultimas 10 presentaciones" outcome="/pages/expActuaciones/index?tipo=ultimas" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'OFICIO_ELECTRONICO')}" value="Oficios Electrónicos" outcome="/pages/expActuaciones/index?tipo=oficio_electronico" >
+                                <f:attribute name="badge" value="#{personasController.cantidadOficiosElectronicos}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'PENDIENTES_ABOGADO')}" value="Últimas actuaciones" outcome="/pages/expActuaciones/index?tipo=pend_ab" >
+                                <f:attribute name="badge" value="#{personasController.cantidadPresentacionesPendientesAbogados}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'PENDIENTES')}" value="Presentaciones pendientes" outcome="/pages/expActuaciones/index?tipo=pend" >
+                                <f:attribute name="badge" value="#{personasController.cantidadPresentacionesPendientes}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'PROYECTO')}" value="En elaboración" outcome="/pages/expActuaciones/index?tipo=proyecto" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesEnProyecto}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'REVISION_SECRETARIO')}" value="P/ revisión secretario" outcome="/pages/expActuaciones/index?tipo=revision_secretario" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesRevisionSecretario}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'REVISION_DIRECTOR')}" value="P/ revisión director" outcome="/pages/expActuaciones/index?tipo=revision_director" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesRevisionDirector}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'REVISION_PRESIDENTE')}" value="P/ revisión preopinante" outcome="/pages/expActuaciones/index?tipo=revision_presidente" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesRevisionPresidente}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_PRESIDENTE')}" value="P/ firma preopinante" outcome="/pages/expActuaciones/index?tipo=firma_presidente" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaPresidente}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'AGREGAR_FIRMANTES')}" value="P/ agregar firmantes" outcome="/pages/expActuaciones/index?tipo=agregar_firmantes" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesAgregarFirmantes}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_MIEMBROS')}" value="P/ firma miembros" outcome="/pages/expActuaciones/index?tipo=firma_miembros" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaMiembros}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'REVISION_PRESIDENTE_OF_PROV')}" value="P/ revisión oficios y provs" outcome="/pages/expActuaciones/index?tipo=revision_presidente_of_prov" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesRevisionPresidenteOfProv}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_PRESIDENTE_OF_PROV')}" value="P/ firma oficios y provs" outcome="/pages/expActuaciones/index?tipo=firma_presidente_of_prov" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaPresidenteOfProv}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'PENDIENTES_PRESIDENTE_OF_PROV')}" value="Pendientes oficios y provs" outcome="/pages/expActuaciones/index?tipo=pendientes_presidente_of_prov" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesPendientesPresidenteOfProv}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_PRESIDENTE_RESOLUCIONES')}" value="P/ firma resoluciones" outcome="/pages/expActuaciones/index?tipo=firma_presidente_resoluciones" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaPresidenteResoluciones}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_EXSECRETARIO')}" value="P/ firma exsecretario" outcome="/pages/expActuaciones/index?tipo=firma_exsecretario" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaExSecretario}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FIRMA_SECRETARIO')}" value="P/ firma secretario" outcome="/pages/expActuaciones/index?tipo=firma_secretario" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFirmaSecretario}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'FINALIZADAS')}" value="Actuaciones finalizadas" outcome="/pages/expActuaciones/index?tipo=finalizadas" >
+                                <f:attribute name="badge" value="#{personasController.cantidadActuacionesFinalizadas}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'PENDIENTES_FIRMA')}" value="Para la firma" outcome="/pages/expActuaciones/index?tipo=firma" >
+                                <f:attribute name="badge" value="#{personasController.cantidadParaLaFirma}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not expPersonasFirmantesPorActuacionesController.deshabilitarMultiFirma()}" value="Pendientes de firma (Multiple)" outcome="/pages/expPersonasFirmantesPorActuacionesMultiple/index" >
+                                <f:attribute name="badge" value="#{personasController.cantidadPendientesFirma}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not expPersonasFirmantesPorActuacionesController.deshabilitarPendientesFirma()}" value="Pendientes de firma" outcome="/pages/expPersonasFirmantesPorActuaciones/index" >
+                                <f:attribute name="badge" value="#{personasController.cantidadPendientesFirma}" />
+                            </p:menuitem>
+                            <ui:remove>
+                                <p:menuitem rendered="#{not personasController.deshabilitarMenues('notificaciones')}" value="Notificaciones" outcome="/pages/expNotificaciones/index?tipo=noti" >
+                                    <f:attribute name="badge" value="#{personasController.cantidadNotificaciones}" />
+                                </p:menuitem>
+                            </ui:remove>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActuaciones/index.xhtml', 'NOTIFICACIONES')}" value="Notificaciones" outcome="/pages/expActuaciones/index?tipo=noti" >
+                                <f:attribute name="badge" value="#{personasController.cantidadNotificaciones}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('nuevasCausas')}" value="Nuevas causas ingresadas" outcome="/pages/expNotificaciones/index?tipo=primer" >
+                                <f:attribute name="badge" value="#{personasController.cantidadPrimer}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('recusaciones')}" value="Recusaciones" outcome="/pages/expNotificaciones/index?tipo=recusacion" >
+                                <f:attribute name="badge" value="#{personasController.cantidadRecusaciones}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expVerOrdenesDia/index.xhtml')}" value="Ordenes del día" outcome="/pages/expVerOrdenesDia/index" >
+                                <f:attribute name="badge" value="#{personasController.cantidadOrdenesDelDia}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'PROYECTO')}" value="Actas En elaboración" outcome="/pages/expActasSesion/index?tipo=proyecto" >
+                                <f:attribute name="badge" id="badgeEnProyecto" value="#{personasController.cantidadActasSesionEnProyecto}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'REVISION_MIEMBROS')}" value="Actas p/ firma revisión" outcome="/pages/expActasSesion/index?tipo=revision_miembros" >
+                                <f:attribute name="badge" id="badgeRevisionMiembros" value="#{personasController.cantidadActasSesionRevisionMiembros}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'FIRMA_MIEMBROS')}" value="Actas p/ firma presidente" outcome="/pages/expActasSesion/index?tipo=firma_miembros" >
+                                <f:attribute name="badge" id="badgeFirmaMiembros" value="#{personasController.cantidadActasSesionFirmaMiembros}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'FIRMA_SECRETARIO')}" value="Actas p/ firma secretario" outcome="/pages/expActasSesion/index?tipo=firma_secretario" >
+                                <f:attribute name="badge" id="badgeFirmaSecretario" value="#{personasController.cantidadActasSesionFirmaSecretario}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'FINALIZADAS')}" value="Actas finalizadas" outcome="/pages/expActasSesion/index?tipo=finalizadas" >
+                                <f:attribute name="badge" id="badgeFinalizadas" value="#{personasController.cantidadActasSesionFinalizadas}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expActasSesion/index.xhtml', 'VER')}" value="Registrar acta de sesión" outcome="/pages/expActasSesion/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expOrdenesDia/index.xhtml')}" value="Registrar orden del día" outcome="/pages/expOrdenesDia/index" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues(2)}" value="Volver" action="#{personasController.menu(1)}" update=":menuform:menuPrincipal" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'CREAR', 1)}" value="Ingreso de causas" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=crear" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR', 1)}" value="Ingreso de causas anteriores" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR', 1)}" value="Ingreso de causas en papel" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear_en_papel" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'CREAR', 1)}" value="Ingreso de investigación" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=crear_investigacion" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues(1)}" value="Gestión de Expedientes" action="#{personasController.menu(2)}" update=":menuform:menuPrincipal"/>
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'CONSULTA', 2)}" value="Consultar de causas" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=consulta" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'REGISTRAR', 2)}" value="Registrar presentación" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=registrar" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'REGISTRAR_SECRETARIA', 2)}" value="Registrar presentación en secretaría" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=registrar_secretaria" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'RECURSO', 2)}" value="Registrar recurso" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=recurso" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'INCIDENTE', 2)}" value="Registrar incidente/recusación" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=incidente" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'PROVIDENCIA', 2)}" value="Registrar providencia" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=providencia" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'OFICIO', 2)}" value="Registrar oficio" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=oficio" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'NOTIFICACION', 2)}" value="Registrar notificación" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=notificacion" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudiciales/index.xhtml', 'RESOLUCION', 2)}" value="Registrar resolución" outcome="/pages/expEntradaDocumentosJudiciales/index?tipo=resolucion" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'REGISTRAR', 2)}" value="Registrar instrumentales" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=registrar" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesAnteriores/index.xhtml', 'EXP_JEM', 2)}" value="Registrar expediente JEM" outcome="/pages/expEntradaDocumentosJudicialesAnteriores/index?tipo=exp_jem" />
+                            <p:menuitem style="background-color: #3c3d52" rendered="#{not personasController.deshabilitarMenues('/pages/expEntradaDocumentosJudicialesPorSecretaria/index.xhtml', 'REGISTRAR', 2)}" value="Registrar actuaciones por secretaría" outcome="/pages/expEntradaDocumentosJudicialesPorSecretaria/index?tipo=registrar_actuacion_secretaria" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/personas/index.xhtml')}" value="Personas" outcome="/pages/personas/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/autPedidosPersona/index.xhtml')}" value="Pedidos de usuario" outcome="/pages/autPedidosPersona/index" >
+                                <f:attribute name="badge" id="badgePedidosPersona" value="#{personasController.cantidadPedidosPersona}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/pedidosAntecedente/index.xhtml')}" value="Pedidos de antecedente" outcome="/pages/pedidosAntecedente/index" >
+                                <f:attribute name="badge" id="badgePedidosAntecedente" value="#{personasController.cantidadPedidosAntecedente}" />
+                            </p:menuitem>
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/generarAntecedente/index.xhtml')}" value="Generar antecedente" outcome="/pages/generarAntecedente/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/expFormatos/index.xhtml')}" value="Formatos de actuaciones" outcome="/pages/expFormatos/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/reportes/index.xhtml')}" value="Reportes" outcome="/pages/reportes/index" />
+                            <p:menuitem rendered="#{not personasController.deshabilitarMenues('/pages/charts/index.xhtml')}" value="Gráficos" outcome="/pages/charts/index" />
+                            <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/personasContrasena/index.xhtml')}" value="Cambio contraseña" outcome="/pages/personasContrasena/index" />
+                            <p:menuitem value="#{mensajes.Logout}" action="#{personasController.cerrarSession()}"/>
+                        </pm:menu>
+                    </h:form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</ui:composition>

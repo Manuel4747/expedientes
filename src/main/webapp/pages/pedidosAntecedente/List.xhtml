@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:form id="PedidosAntecedenteListForm">
+        <div class="ui-g">
+            <p:panel header="Pendientes">
+                <p:dataTable id="datalistPend"
+                             value="#{pedidosAntecedenteController.listaPend}"
+                             lazy="false"
+                             rowKey="#{item.id}"
+                             var="item"
+                             paginator="true"
+                             rows="10"
+                             paginatorPosition="bottom"
+                             rowsPerPageTemplate="10,20,30,40,50">
+
+                    <p:column sortBy="#{item.persona.ci}" filterBy="#{item.persona.ci}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_ci}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.ci}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_nombresApellidos}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.nombresApellidos}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora pedido"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_despachoPersona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.despachoPersona.descripcion}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.persona.localidadPersona.descripcion}" filterBy="#{item.persona.localidadPersona.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_localidadPersona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.localidadPersona.descripcion}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.persona.departamentoPersona.descripcion}" filterBy="#{item.persona.departamentoPersona.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_departamentoPersona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.departamentoPersona.descripcion}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora respuesta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraRespuesta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Usuario respuesta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.personaRespuesta}"/>
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="Alzar antecedente"/>
+                        </f:facet>
+                        <p:commandButton id="aceptarButton" value="Alzar antecedente" update=":growl, :PedidosAntecedenteAlzarArchivoForm" actionListener="#{pedidosAntecedenteController.prepareAlzarArchivo(item)}" oncomplete="PF('PedidosAntecedenteAlzarArchivoDialog').show()" disabled="#{pedidosAntecedenteController.deshabilitarAlzarArchivo(item)}"/>
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="Confirmar antecedente"/>
+                        </f:facet>
+                        <p:commandButton id="confirmarButton" value="Confirmar antecedente" update="DocumentoViewForm, :growl" actionListener="#{pedidosAntecedenteController.prepareAlzarArchivo(item)}" oncomplete="PF('DocumentoViewDialog').show(); PF('DocumentoViewDialog').toggleMaximize();" disabled="#{pedidosAntecedenteController.deshabilitarConfirmarAntecedente(item)}" />
+                    </p:column>
+
+                    <p:column priority="1">
+                        <f:facet name="header">
+                            <h:outputText value="Rechazar"/>
+                        </f:facet>
+                        <p:commandButton id="rechazarButton" value="Rechazar" actionListener="#{pedidosAntecedenteController.prepareRechazarPedido(item)}" update=":PedidosAntecedenteEnviarRespForm" oncomplete="PF('PedidosAntecedenteEnviarRespDialog').show()"/>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <p:panel header="Respondidos">
+                <p:dataTable id="datalistAut"
+                             value="#{pedidosAntecedenteController.listaAut}"
+                             lazy="false"
+                             rowKey="#{item.id}"
+                             var="item"
+                             paginator="true"
+                             paginatorPosition="bottom"
+                             rows="10"
+                             rowsPerPageTemplate="10,20,30,40,50"
+                             selectionMode="single"
+                             selection="#{pedidosAntecedenteController.selectedAut}">
+
+                    <p:column sortBy="#{item.persona.ci}" filterBy="#{item.persona.ci}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_ci}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.ci}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_nombresApellidos}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.persona.nombresApellidos}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora pedido"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora respuesta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraRespuesta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Usuario respuesta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.personaRespuesta}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora confirmacion"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraConfirmacion}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Usuario confirmacion"/>
+                        </f:facet>
+                        <h:outputText value="#{item.personaConfirmacion}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Observacion"/>
+                        </f:facet>
+                        <h:outputText value="#{item.observacion}"/>
+                    </p:column>
+
+                    <p:column>
+                        <f:facet name="header">
+                            <h:outputText value="Respuesta"/>
+                        </f:facet>
+                        <h:outputText value="#{item.estadoString}"/>
+                    </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora visto"/>
+                        </f:facet>
+                        <h:outputText value="#{item.antecedente.fechaHoraVisto}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton ajax="false" onclick="this.form.target = '_blank'" value="Ver" action="#{antecedentesController.reimprimirRepAntecedentes(item.antecedente)}"  disabled="#{empty item.antecedente}"/>
+                    </p:column>
+
+                    <p:column>
+                        <p:commandButton value="Enviar email" action="#{pedidosAntecedenteController.enviarEmailAntecedente(item.antecedente)}"  disabled="#{empty item.antecedente}"/>
+                    </p:column>
+
+                    <p:column >
+                        <p:commandButton id="borrarDocButton" value="Borrar" rendered="#{not pedidosAntecedenteController.deshabilitarAdminAntecedentes()}" update=":PedidosAntecedenteListForm:datalistAut, :growl" actionListener="#{pedidosAntecedenteController.borrarAntecedente(item)}">
+                            <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </div>
+    </h:form>
+
+</ui:composition>

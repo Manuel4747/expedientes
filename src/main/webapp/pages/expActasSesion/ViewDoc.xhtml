@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="ExpActasSesionViewDlg" positionType="absolute" widgetVar="ExpActasSesionViewDialog"  maximizable="true" modal="true" resizable="true"  appendTo="@(body)" header="#{mensajes.ViewExpActuacionesTitle}" closeOnEscape="true">
+                <p:ajax event="close" listener="#{actasSesionController.prepareCerrarDialogoVerDoc()}" />
+                <h:form id="ExpActasSesionViewForm">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12" >
+                        <p:commandButton id="firmarButton" style="visibility: visible;" icon="ui-icon-arrow" rendered="#{actasSesionController.renderedFirma()}" disabled="#{actasSesionController.deshabilitarFirma()}" value="#{mensajes.Firmar}" update=":ExpActasSesionVerifTokenForm" oncomplete="PF('ExpActasSesionVerifTokenDialog').show()" />
+                        <p:commandButton value="#{mensajes.Close}" oncomplete="PF('ExpActasSesionViewDialog').hide()" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-12 ui-g-12"  style="margin-top: 50px; width: 100%; height: 100%; justify-content: center; position: absolute !important; vertical-align: bottom !important;">
+                        <pe:documentViewer id="visualizacion" style="width: 100%; height: 100%;" value="#{actasSesionController.content}" />
+                    </div>
+                </h:form>
+
+            </p:dialog>
+        </div>
+
+    </ui:composition>
+
+</html>

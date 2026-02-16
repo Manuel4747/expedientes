@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="AntecedentesCreateDlg" widgetVar="AntecedentesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateAntecedentesTitle}" closeOnEscape="true">
+
+            <h:form id="AntecedentesCreateForm">
+
+                <h:panelGroup id="display" rendered="#{antecedentesController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreateAntecedentesLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{antecedentesController.selected.descripcion}" title="#{mensajes.CreateAntecedentesTitle_descripcion}" required="true" requiredMessage="#{mensajes.CreateAntecedentesRequiredMessage_descripcion}" size="50" maxlength="60"/>
+                            <p:tooltip for="descripcion" value="#{antecedentesController.getComponentMessages('descripcion', mensajes.CreateAntecedentesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{antecedentesController.saveNew}" value="#{mensajes.Save}" update="display,:AntecedentesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AntecedentesCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('AntecedentesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <p:outputLabel value="#{mensajes.CreateAntecedentesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{antecedentesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreateAntecedentesTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateAntecedentesRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{antecedentesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreateAntecedentesHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateAntecedentesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{antecedentesController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreateAntecedentesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{antecedentesController.getComponentMessages('empresa', mensajes.CreateAntecedentesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateAntecedentesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioAlta" value="#{antecedentesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.CreateAntecedentesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{antecedentesController.getComponentMessages('usuarioAlta', mensajes.CreateAntecedentesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreateAntecedentesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{antecedentesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.CreateAntecedentesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{antecedentesController.getComponentMessages('usuarioUltimoEstado', mensajes.CreateAntecedentesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+-->

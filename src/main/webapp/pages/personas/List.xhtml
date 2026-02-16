@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PersonasListForm">
+
+        <p:panel header="#{mensajes.ListPersonasTitle}">
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{personasAdminController.prepareCreate}" update=":PersonasAdminCreateForm" oncomplete="PF('PersonasAdminCreateDialog').show()"/>
+            <p:commandButton id="viewButton" rendered="false" icon="ui-icon-search" value="#{mensajes.View}" update=":PersonasViewForm" oncomplete="PF('PersonasViewDialog').show()" disabled="#{empty personasAdminController.selected}"/>
+            <p:commandButton id="editButton" rendered="true" icon="ui-icon-pencil" value="#{mensajes.Edit}" actionListener="#{personasAdminController.prepareEdit()}" update=":PersonasEditForm" oncomplete="PF('PersonasEditDialog').show()" disabled="#{empty personasAdminController.selected}"/>
+            <p:commandButton id="refreshButton" icon="ui-icon-refresh"  value="#{mensajes.Refrescar}" actionListener="#{personasAdminController.refrescar()}" update=":growl,datalist" />
+            <p:commandButton id="deleteButton" rendered="true" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{personasAdminController.delete}" oncomplete="PF('datalistWidgetVar').filter()" update=":growl,datalist" disabled="#{empty personasAdminController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:commandButton id="rolButton" icon="ui-icon-plus"   value="Roles" actionListener="#{personasAdminController.prepareEditRoles()}" update=":RolesPorPersonasEditForm" disabled="#{empty personasAdminController.selected}" oncomplete="PF('RolesPorPersonasEditDialog').show()"/>
+            <p:commandButton id="asociarButton" icon="ui-icon-plus"   value="Asociar Personas" actionListener="#{personasAdminController.prepareEditPersonaAsociar()}" update=":AsociarPersonasForm" disabled="#{empty personasAdminController.selected}" oncomplete="PF('AsociarPersonasDialog').show()"/>
+            <p:commandButton id="generarUsuarioButton" rendered="true" icon="ui-icon-print" disabled="#{personasAdminController.deshabilitarGenerarUsuario()}" ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="Generar Usuario" actionListener="#{personasAdminController.generarUsuario()}" style="margin-left: 10px"/>
+            <p:commandButton id="reenviarUsuarioButton" rendered="false" icon="ui-icon-print" disabled="#{personasAdminController.deshabilitarReenvioUsuario()}" ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="Reenviar Email" actionListener="#{personasAdminController.reenviarUsuario()}" style="margin-left: 10px"/>
+            <p:commandButton id="repAntecedentesButton" rendered="false" icon="ui-icon-print" disabled="#{personasAdminController.deshabilitarRepAntecedentes()}" ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="#{mensajes.ListPersonasButton_imprimirAntencedente}" actionListener="#{personasAdminController.imprimirRepAntecedentes(personasAdminController.selected)}" style="margin-left: 10px"/>
+            <p:commandButton id="repAntecedentesButton2" rendered="false" icon="ui-icon-print" disabled="#{personasAdminController.deshabilitarRepAntecedentes()}" ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="Borrador Antecedente" actionListener="#{personasAdminController.imprimirRepAntecedentesViejo(personasAdminController.selected)}" style="margin-left: 10px"/>
+            <p:dataTable id="datalist"
+                         widgetVar="datalistWidgetVar"
+                         value="#{personasAdminController.items}"
+                         lazy="false"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{personasAdminController.selected}">
+
+
+                <p:ajax event="rowSelect"   update="@form:rolButton,@form:asociarButton,@form:reenviarUsuarioButton,@form:generarUsuarioButton,@form:repAntecedentesButton,@form:repAntecedentesButton2,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{personasAdminController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:rolButton,@form:asociarButton,@form:reenviarUsuarioButton,@form:repAntecedentesButton,@form:repAntecedentesButton2,@form:createButton,@form:viewButton,@form:editButton,@form:deleteButton" listener="#{personasAdminController.resetParents}"/>
+
+
+                <p:column sortBy="#{item.ci}" filterBy="#{item.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.nombresApellidos}"/>
+                </p:column>
+
+
+                <p:column sortBy="#{item.despachoPersona.descripcion}" filterBy="#{item.despachoPersona.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_despachoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.despachoPersona.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.departamentoPersona.descripcion}" filterBy="#{item.departamentoPersona.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_departamentoPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.departamentoPersona.descripcion}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.localidadPersona.descripcion}" filterBy="#{item.localidadPersona.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_localidadPersona}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.localidadPersona.descripcion}"/>
+                </p:column>
+
+                <p:column rendered="#{not personasAdminController.deshabilitarHabilitarAntecedentes()}"  sortBy="#{item.estaHabilitarAntecedentes}" filterBy="#{item.estaHabilitarAntecedentes}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_habilitarAntecedentes}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estaHabilitarAntecedentes}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.estadoPersona.descripcion}" filterBy="#{item.estadoPersona.descripcion}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPersonasTitle_estado}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estadoPersona.descripcion}"/>
+                </p:column>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.tipoPersona.descripcion}" filterBy="#{item.tipoPersona.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_tipoPersona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.tipoPersona.descripcion}"/>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.fechaHoraAlta}" filterBy="#{item.fechaHoraAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_fechaHoraAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                </ui:remove>
+
+
+                <ui:remove>
+                    <p:column sortBy="#{item.usuarioAlta}" filterBy="#{item.usuarioAlta}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta}"/>
+                    </p:column>
+                </ui:remove>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.usuarioUltimoEstado}" filterBy="#{item.usuarioUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.cargoPersona.descripcion}" filterBy="#{item.cargoPersona.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_cargoPersona}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.cargoPersona.descripcion}"/>
+                    </p:column>
+                </ui:remove>
+                <ui:remove>
+                    <p:column sortBy="#{item.empresa.id}" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListPersonasTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+
+<!--
+
+            
+            <p:contextMenu id="PersonasDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('PersonasListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('PersonasListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('PersonasListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('PersonasListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.PersonasMenuItem_cargoPersona}" icon="ui-icon-search"  actionListener="#{personasAdminController.prepareCargoPersona}" update=":CargosPersonaViewForm" oncomplete="PF('CargosPersonaViewDialog').show()" disabled="#{empty personasAdminController.selected.cargoPersona}"/>  
+                <p:menuitem value="#{mensajes.PersonasMenuItem_empresa}" icon="ui-icon-search"  actionListener="#{personasAdminController.prepareEmpresa}" update=":EmpresasViewForm" oncomplete="PF('EmpresasViewDialog').show()" disabled="#{empty personasAdminController.selected.empresa}"/>  
+            </p:contextMenu>
+-->

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosJudicialesHistorialDlg" positionType="absolute" widgetVar="DocumentosJudicialesHistorialDialog" style="width: 500px; height: 500px" modal="true" resizable="false"  appendTo="@(body)" header="Historial" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesHistorialForm">
+
+                <p:diagram value="#{documentosJudicialesPorSecretariaController.model}" id="diagrama" style="#{documentosJudicialesPorSecretariaController.styleHistorial}" styleClass="ui-widget-content" var="el">
+                        <f:facet name="element">
+                            <h:outputText value="#{el.descripcion}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.detalle}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(0)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(1)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(2)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(3)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(4)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(5)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(6)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(7)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(8)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(9)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(10)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(11)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(12)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(13)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(14)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(15)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(16)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(17)}" style="display:block;margin-top:1em;" />
+                            <h:outputText value="#{el.firmantesItem(18)}" style="display:block;margin-top:1em;" />
+                        </f:facet>
+                    </p:diagram>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

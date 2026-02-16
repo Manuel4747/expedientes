@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpNotificacionesUjieresListForm">
+        <div class="ui-g">
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel header="#{notificacionesUjieresController.titulo}">
+                    <p:dataTable id="datalist"
+                                 value="#{notificacionesUjieresController.listaPendientes}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="10"
+                                 paginatorPosition="bottom  "
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{notificacionesUjieresController.selected}">
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.actuacion.descripcion}" filterBy="#{item.actuacion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.actuacion.tipoActuacion.descripcion}" filterBy="#{item.actuacion.tipoActuacion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Tipo actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.tipoActuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{notificacionesUjieresController.customFormatDate3(item.actuacion.fechaPresentacion)}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaPresentacion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.fechaPresentacion}">
+                                <f:convertDateTime pattern="#{notificacionesUjieresController.datePattern3()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column sortBy="#{item.responsable.nombresApellidos}" filterBy="#{item.responsable.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="Responsable"/>
+                            </f:facet>
+                            <h:outputText value="#{item.responsable.nombresApellidos}"/>
+                        </p:column> 
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{notificacionesUjieresController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

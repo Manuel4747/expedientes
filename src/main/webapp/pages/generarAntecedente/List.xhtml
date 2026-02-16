@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="GenerarAntecedenteListForm">
+        <div class="ui-g">
+
+            <p:panel header="Generar antecedente">
+
+                <p:fieldset style="width: 100%" legend="Generar antecedentes desde secretaria">
+                    <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                        <div class="ui-sm-12 ui-md-10 ui-lg-10 ui-g-10">
+                            <p:selectOneMenu label="Elija magistrado" filter="true" filterMatchMode="contains" id="roles" value="#{generarAntecedenteController.personaSelected}" converter="personasConverter">
+                                <p:ajax update="aceptarButton, datalist" listener="#{generarAntecedenteController.buscarAntecedentes()}" />
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{generarAntecedenteController.listaPersonas}"
+                                               var="personasItem"
+                                               itemValue="#{personasItem}"
+                                               itemLabel="#{personasItem.nombresApellidos}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </div>
+                        <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                            <p:commandButton id="aceptarButton" value="Alzar antecedente" disabled="#{empty generarAntecedenteController.personaSelected}" update=":growl, :GenerarAntecedenteAlzarArchivoDesdeSecretariaForm" actionListener="#{generarAntecedenteController.prepareAlzarArchivo(item)}" oncomplete="PF('GenerarAntecedenteAlzarArchivoDesdeSecretariaDialog').show()"/>
+                        </div>
+                    </div>
+                </p:fieldset>
+
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{generarAntecedenteController.listaAntecedentes}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{generarAntecedenteController.selected}">
+
+
+                        <p:column sortBy="#{item.persona.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.persona.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="Magistrado/defesor público/agente fiscal"/>
+                            </f:facet>
+                            <h:outputText value="#{item.persona.nombresApellidos}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.fechaHoraAlta}" filterMatchMode="contains" filterBy="#{item.fechaHoraAlta}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha hora"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column sortBy="#{item.personaGeneracion.nombresApellidos}" filterMatchMode="contains" filterBy="#{item.personaGeneracion.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="Persona que generó"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaGeneracion.nombresApellidos}"/>
+                        </p:column>
+
+                    <p:column >
+                        <f:facet name="header">
+                            <h:outputText value="Fecha hora visto"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraVisto}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+                        <p:column>
+                            <p:commandButton ajax="false"    onclick="this.form.target = '_blank'" value="Ver" action="#{antecedentesController.reimprimirRepAntecedentes(item)}"  disabled="#{empty item.pathArchivo}"/>
+                        </p:column>
+                        <p:column >
+                            <p:commandButton id="borrarDocButton" value="Borrar" rendered="#{not generarAntecedenteController.deshabilitarAdminAntecedentes()}" update=":GenerarAntecedenteListForm:datalist, :growl" actionListener="#{generarAntecedenteController.borrarAntecedente(item)}">
+                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </div>
+    </h:form>
+
+</ui:composition>

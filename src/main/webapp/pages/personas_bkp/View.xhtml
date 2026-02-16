@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PersonasViewDlg" widgetVar="PersonasViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewPersonasTitle}" closeOnEscape="true">
+
+            <h:form id="PersonasViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{personasController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_id}"/>
+                        <h:outputText value="#{personasController.selected.id}" title="#{mensajes.ViewPersonasTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_nombresApellidos}"/>
+                        <h:outputText value="#{personasController.selected.nombresApellidos}" title="#{mensajes.ViewPersonasTitle_nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_ci}"/>
+                        <h:outputText value="#{personasController.selected.ci}" title="#{mensajes.ViewPersonasTitle_ci}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_estado}"/>
+                        <h:outputText value="#{personasController.selected.estado}" title="#{mensajes.ViewPersonasTitle_estado}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{personasController.selected.fechaHoraAlta}" title="#{mensajes.ViewPersonasTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_usuarioAlta}"/>
+                        <h:outputText value="#{personasController.selected.usuarioAlta}" title="#{mensajes.ViewPersonasTitle_usuarioAlta}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{personasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewPersonasTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{personasController.selected.usuarioUltimoEstado}" title="#{mensajes.ViewPersonasTitle_usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_cargoPersona}"/>
+                        <h:outputText value="#{personasController.selected.cargoPersona.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewPersonasLabel_empresa}"/>
+                        <h:outputText value="#{personasController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('PersonasViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

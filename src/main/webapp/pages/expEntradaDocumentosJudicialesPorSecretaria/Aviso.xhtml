@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DocumentosJudicialesAvisoDlg" widgetVar="DocumentosJudicialesAvisoDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.Aviso}" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesAvisoForm">
+                <div align="center">
+
+                    <div class="ui-g">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:panelGrid columns="1" style="width: 100%" styleClass="ui-noborder">
+                                <div align="center">
+                                <p:outputLabel value="Existen resoluciones asociadas a esta persona que pertenencen a este expediente." />
+                                <p:outputLabel value="Si continua se borrara esta persona de dichas resoluciones" />
+                                <p:outputLabel value="Desea continuar?" />
+                                </div>
+                            </p:panelGrid>
+                        </div>
+                    </div>
+                    <div class="ui-sm-6 ui-md-6 ui-g-6">
+                        <p:commandButton value="Si" ajax="true" oncomplete="PF('DocumentosJudicialesAvisoDialog').hide()" update="DocumentosJudicialesEditForm:datalistPersonas,:growl" action="#{documentosJudicialesPorSecretariaController.borrarPersona(documentosJudicialesPorSecretariaController.personaSelected)}" disabled="false"/>
+                    </div>
+                    <div class="ui-sm-6 ui-md-6 ui-g-6">
+                        <p:commandButton value="No" oncomplete="PF('DocumentosJudicialesAvisoDialog').hide()" process="@this" immediate="true" resetValues="true"/>
+                    </div>
+                </div>
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+
+<!--
+
+
+
+                        <p:outputLabel value="#{mensajes.EditFlujosGestionLabel_documentoJudicial}" for="documentoJudicial" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="documentoJudicial" value="#{flujosGestionController.selected.documentoJudicial}" required="true" requiredMessage="#{mensajes.EditFlujosGestionRequiredMessage_documentoJudicial}" converter="flujosGestionJudicialesConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{flujosGestionJudicialesController.items}"
+                                               var="documentoJudicialItem"
+                                               itemValue="#{documentoJudicialItem}"
+                                               itemLabel="#{documentoJudicialItem.descripcionMesaEntrada.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="documentoJudicial" value="#{flujosGestionController.getComponentMessages('documentoJudicial', mensajes.EditFlujosGestionHelpText_documentoJudicial)}"/>
+                        </h:panelGroup>
+
+                        <h:outputLabel value="#{mensajes.EditFlujosGestionLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{flujosGestionController.selected.id}" />
+                            <p:tooltip for="id" value="#{flujosGestionController.getComponentMessages('id', mensajes.EditFlujosGestionHelpText_id)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditFlujosGestionLabel_ruta}" for="ruta" />
+                        <h:panelGroup>
+                            <p:inputText id="ruta" value="#{flujosGestionController.selected.ruta}" title="#{mensajes.EditFlujosGestionTitle_ruta}" size="100" maxlength="100"/>
+                            <p:tooltip for="ruta" value="#{flujosGestionController.getComponentMessages('ruta', mensajes.EditFlujosGestionHelpText_ruta)}"/>
+                        </h:panelGroup>
+-->

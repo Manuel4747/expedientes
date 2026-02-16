@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="ExpOrdenesDiaListForm">
+
+            <p:panel header="Ordenes del día">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton" icon="ui-icon-plus" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"  value="#{mensajes.Create}" actionListener="#{ordenesDiaController.prepareCreate()}" update=":ExpOrdenesDiaCreateForm" oncomplete="PF('ExpOrdenesDiaCreateDialog').show()"/>
+                    <p:commandButton id="editButton" icon="ui-icon-plus" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"   value="#{mensajes.Edit}" update=":ExpOrdenesDiaCreateForm" oncomplete="PF('ExpOrdenesDiaCreateDialog').show()"  disabled="#{empty ordenesDiaController.selected}"/>
+                    <p:commandButton id="createDetalleButton" icon="ui-icon-plus" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"   value="Nuevo detalle" actionListener="#{ordenesDiaController.prepareCreateDetalle()}" update=":ExpDetallesOrdenDiaCreateForm" oncomplete="PF('ExpDetallesOrdenDiaCreateDialog').show()" disabled="#{empty ordenesDiaController.selected}"/>
+                    <p:commandButton id="editDetalleButton" icon="ui-icon-plus" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"   value="Editar detalle" actionListener="#{ordenesDiaController.prepareEditDetalle()}" update=":ExpDetallesOrdenDiaEditForm" oncomplete="PF('ExpDetallesOrdenDiaEditDialog').show()" disabled="#{empty ordenesDiaController.detalleOrdenDiaSelected}"/>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaDesde" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{ordenesDiaController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaHasta" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{ordenesDiaController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-lg-2 ui-g-2">
+                    <p:commandButton style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalles, :growl" action="#{ordenesDiaController.buscarPorFecha()}"></p:commandButton>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+
+                    <p:dataTable id="datalist"
+                                 value="#{ordenesDiaController.listaOrdenesDia}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{ordenesDiaController.selected}">
+                        <p:ajax event="rowSelect" listener="#{ordenesDiaController.buscarDetalles()}" update=":ExpOrdenesDiaListForm:createDetalleButton, :ExpOrdenesDiaListForm:editButton, :ExpOrdenesDiaListForm:editDetalleButton, :ExpOrdenesDiaListForm:datalistDetalles"/>
+                        <p:ajax event="rowUnselect" listener="#{ordenesDiaController.buscarDetalles()}" update=":ExpOrdenesDiaListForm:createDetalleButton, :ExpOrdenesDiaListForm:editButton, :ExpOrdenesDiaListForm:editDetalleButton, :ExpOrdenesDiaListForm:datalistDetalles"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Sesion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo sesión"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoSesion.descripcion}"/>
+                        </p:column>
+
+                        <p:column rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}">
+                            <f:facet name="header">
+                                <h:outputText value="Visible" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="visible" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}" value="#{item.visible}" >
+                                <p:ajax event="change" listener="#{ordenesDiaController.actualizarOrdenDia(item)}" update="visible, :ExpOrdenesDiaListForm:datalist"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+
+                        <p:column  rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}">
+                            <f:facet name="header">
+                                <h:outputText value="Borrar" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"/>
+                            </f:facet>
+                            <p:commandButton id="borrarDocButton" value="Borrar" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}" update=":ExpOrdenesDiaListForm:datalist, :ExpOrdenesDiaListForm:datalistDetalles, :growl" actionListener="#{ordenesDiaController.borrarOrden(item)}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+
+                    <p:dataTable id="datalistDetalles"
+                                 value="#{ordenesDiaController.listaDetallesOrdenDia}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{ordenesDiaController.detalleOrdenDiaSelected}">
+                        <p:ajax event="rowSelect" listener="#{ordenesDiaController.buscarDetalles()}" update=":ExpOrdenesDiaListForm:createDetalleButton, :ExpOrdenesDiaListForm:editButton, :ExpOrdenesDiaListForm:editDetalleButton, :ExpOrdenesDiaListForm:datalistDetalles"/>
+                        <p:ajax event="rowUnselect" listener="#{ordenesDiaController.buscarDetalles()}" update=":ExpOrdenesDiaListForm:createDetalleButton, :ExpOrdenesDiaListForm:editButton, :ExpOrdenesDiaListForm:editDetalleButton, :ExpOrdenesDiaListForm:datalistDetalles"/>
+
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Nro orden"/>
+                            </f:facet>
+                            <h:outputText value="#{item.orden}"/>
+                        </p:column>
+                        
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column  rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}">
+                            <f:facet name="header">
+                                <h:outputText value="Borrar" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}"/>
+                            </f:facet>
+                            <p:commandButton id="borrarDetalleButton" rendered="#{not ordenesDiaController.deshabilitarAdminOrdenDia()}" value="Borrar" update=":ExpOrdenesDiaListForm:datalistDetalles, :growl" actionListener="#{ordenesDiaController.borrarDetalle(item)}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{ordenesDiaController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

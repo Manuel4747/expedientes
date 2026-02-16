@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="ExpAuditoriasListForm">
+
+            <p:panel header="Auditoría">
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaDesde" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{auditoriasController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaHasta" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{auditoriasController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-lg-2 ui-g-2">
+                    <p:commandButton style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalles, :growl" action="#{auditoriasController.buscarPorFecha()}"></p:commandButton>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+
+                    <p:dataTable id="datalist"
+                                 value="#{auditoriasController.listaAuditorias}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{auditoriasController.selected}">
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha hora accion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.auditTimestamp}">
+                                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Acción"/>
+                            </f:facet>
+                            <h:outputText value="#{item.accion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Persona"/>
+                            </f:facet>
+                            <h:outputText value="#{item.persona.nombresApellidos}"/>
+                        </p:column>
+                        <ui:remove>
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Causa"/>
+                                </f:facet>
+                                <h:outputText value="#{item.causa}"/>
+                            </p:column>
+                        </ui:remove>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Observación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.observacion}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

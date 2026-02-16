@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <h:form id="menuForm">
+            <p:panelGrid columns="4" style="border-width: 0px">
+                <p:menubar>
+                    <p:menuitem value="#{mensajes.Home}" action="#{usuariosController.obtenerHome()}"  oncomplete="endHandler();" icon="ui-icon-home"/>
+                    <p:submenu label="#{mensajes.Permisos}" rendered="#{filtroURL.verifPermiso('menuPermisos')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/permisosPorRoles/index.xhtml')}" value="#{mensajes.PermisosPorRolesHeading}..." outcome="/pages/permisosPorRoles/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/roles/index.xhtml')}" value="#{mensajes.RolesHeading}..." outcome="/pages/roles/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/rolesPorUsuarios/index.xhtml')}" value="#{mensajes.RolesPorUsuariosHeading}..." outcome="/pages/rolesPorUsuarios/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/usuarios/index.xhtml')}" value="#{mensajes.UsuariosHeading}..." outcome="/pages/usuarios/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/usuariosContrasena/index.xhtml')}" value="Cambio Contrasena" outcome="/pages/usuariosContrasena/index" />
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.Referencias}" rendered="#{filtroURL.verifPermiso('menuReferencias')}">
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.RhMarcaciones}" rendered="#{filtroURL.verifPermiso('menuRRHH')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/rhMarcaciones/index.xhtml')}" value="#{mensajes.RhMarcacionesHeading}..." outcome="/pages/rhMarcaciones/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/rhCargos/index.xhtml')}" value="#{mensajes.RhCargosHeading}..." outcome="/pages/rhCargos/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/rhCategorias/index.xhtml')}" value="#{mensajes.RhCategoriasHeading}..." outcome="/pages/rhCategorias/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/departamentos/index.xhtml')}" value="#{mensajes.DepartamentosHeading}..." outcome="/pages/departamentos/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/funcionarios/index.xhtml')}" value="Funcionarios..." outcome="/pages/funcionarios/index" />
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.Suministro}" rendered="#{filtroURL.verifPermiso('menuSuministro')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/entradasArticulo/index.xhtml')}" value="#{mensajes.EntradasArticuloHeading}..." outcome="/pages/entradasArticulo/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/salidasArticulo/index.xhtml')}" value="#{mensajes.SalidasArticuloHeading}..." outcome="/pages/salidasArticulo/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/inventarios/index.xhtml')}" value="#{mensajes.InventariosHeading}..." outcome="/pages/inventarios/index" />
+                        <p:separator />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/pedidosArticulo/index.xhtml')}" value="#{mensajes.PedidosArticuloHeading}..." outcome="/pages/pedidosArticulo/index" />
+                        <p:separator />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/proveedores/index.xhtml')}" value="#{mensajes.ProveedoresHeading}..." outcome="/pages/proveedores/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/articulos/index.xhtml')}" value="#{mensajes.ArticulosHeading}..." outcome="/pages/articulos/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/rubros/index.xhtml')}" value="#{mensajes.RubrosHeading}..." outcome="/pages/rubros/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/unidades/index.xhtml')}" value="#{mensajes.UnidadesHeading}..." outcome="/pages/unidades/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/articulosStockCritico/index.xhtml')}" value="Articulos en Stock Critico..." outcome="/pages/articulosStockCritico/index" />
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.Patrimonio}" rendered="#{filtroURL.verifPermiso('menuPatrimonio')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/bienes/index.xhtml')}" value="#{mensajes.BienesHeading}..." outcome="/pages/bienes/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/movimientosReparacionesBienes/index.xhtml')}" value="#{mensajes.MovimientosReparacionBienesHeading}..." outcome="/pages/movimientosReparacionBienes/index" />
+                        <p:separator />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/proveedores/index.xhtml')}" value="#{mensajes.ProveedoresHeading}..." outcome="/pages/proveedores/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/cuentas/index.xhtml')}" value="#{mensajes.CuentasHeading}..." outcome="/pages/cuentas/index" />
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.MesaDeEntrada}" rendered="#{filtroURL.verifPermiso('menuMesaEntrada')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/entradaMesaEntradaDocumentosJudiciales/index.xhtml')}" value="Entrada de Documentos Judiciales..." outcome="/pages/entradaMesaEntradaDocumentosJudiciales/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/entradaMesaEntradaAdministrativa/index.xhtml')}" value="Entrada de Documentos Administrativos..." outcome="/pages/entradaMesaEntradaAdministrativa/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/verDocumentosAdministrativosMesa/index.xhtml')}" value="Documentos Administrativos por Mesa..." outcome="/pages/verDocumentosAdministrativosMesa/index" />
+                        <p:separator />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/chartDocumentosMesaPorDia/index.xhtml')}" value="Grafico Mesa Entrada..." outcome="/pages/chartDocumentosMesaPorDia/index" />
+                    </p:submenu>
+                    <p:submenu label="#{mensajes.Juridico}" rendered="#{filtroURL.verifPermiso('menuJuridico')}">
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/resoluciones/index.xhtml')}" value="#{mensajes.ResolucionesHeading}..." outcome="/pages/resoluciones/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/entradaDirectaDocumentosJudiciales/index.xhtml')}" value="#{mensajes.DocumentosJudicialesHeading}..." outcome="/pages/entradaDirectaDocumentosJudiciales/index" />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/verDocumentosJudicialesMesa/index.xhtml')}" value="Documentos Judiciales por Mesa..." outcome="/pages/verDocumentosJudicialesMesa/index" />
+                        <p:separator />
+                        <p:menuitem rendered="#{filtroURL.verifPermiso('/pages/chartDocumentosSecretariaPorDia/index.xhtml')}" value="Grafico Secretaria..." outcome="/pages/chartDocumentosSecretariaPorDia/index" />
+                    </p:submenu>
+                    <p:menuitem value="#{mensajes.Logout}" action="#{usuariosController.cerrarSession()}"/>
+                </p:menubar>
+                <p:panel id="datos_usuario" closable="false" >
+                    <p:outputLabel style="font-size: 20px; font-weight: bold" value="#{usuariosController.nombreUsu}"/>  
+                </p:panel>
+                <p:panel visible="#{articulosStockCriticoController.hayArticulosStockCritico}" id="nuevos" closable="false" >
+                    <p:commandButton id="verArticulosStockCritico" style="color: red; font-size: 20px; font-weight: bold" rendered="true" ajax="false" value="Existen Articulos en Stock Critico" action="#{articulosStockCriticoController.navigateArticulosStockCritico()}" />
+                </p:panel>
+                <p:panel visible="#{pedidosArticuloController.hayPedidosArticulo}" id="nuevosPedidos" closable="false" >
+                    <p:commandButton id="verPedidosArticulo" style="color: red; font-size: 20px; font-weight: bold" rendered="true" ajax="false" value="Existen Nuevos Pedidos de Articulos" action="#{pedidosArticuloController.navigatePedidosArticulo()}" />
+                </p:panel>
+                <p:panel visible="#{verDocumentosJudicialesMesaController.hayDocumentosAtencion}" id="nuevosDocumentosAtencion" closable="false" rendered="false">
+                    <p:commandButton id="verDocumentosMesa" style="color: red; font-size: 20px; font-weight: bold" disabled="true" rendered="true" ajax="false" value="Existen Documentos a Recibir" />
+                </p:panel>
+            </p:panelGrid>
+        </h:form>
+    </ui:composition>
+
+</html>

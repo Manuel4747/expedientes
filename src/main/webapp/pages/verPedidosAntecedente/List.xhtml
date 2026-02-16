@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="AntecedentesListForm">
+
+        <p:panel header="#{mensajes.ListAntecedentesTitle}">
+
+            <p:dataTable id="datalist"
+                         value="#{antecedentesController.listaPedidos}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50">
+
+
+                <p:column sortBy="#{item.id}" filterBy="#{item.id}">
+                    <f:facet name="header">
+                        <h:outputText value="Id"/>
+                    </f:facet>
+                    <h:outputText value="#{item.id}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.persona.ci}" filterBy="#{item.persona.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListPedidosAntecedenteTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.nombresApellidos}"/>
+                </p:column>
+
+                <p:column >
+                    <f:facet name="header">
+                        <h:outputText value="Fecha Hora Respuesta"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraRespuesta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Observacion"/>
+                    </f:facet>
+                    <h:outputText value="#{item.observacion}"/>
+                </p:column>
+
+                <p:column>
+                    <f:facet name="header">
+                        <h:outputText value="Respuesta"/>
+                    </f:facet>
+                    <h:outputText value="#{item.estadoString}"/>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton ajax="false" onclick="this.form.target = '_blank'" value="Ver" action="#{antecedentesController.reimprimirRepAntecedentes(item.antecedente)}"  disabled="#{empty item.antecedente}"/>
+                </p:column>
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

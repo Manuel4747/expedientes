@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="ResolucionesEditDlg" widgetVar="ResolucionesEditDialog" positionType="absolute" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditResolucionesTitle}" closeOnEscape="true">
+
+            <h:form id="ResolucionesEditForm" enctype="multipart/form-data">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{resolucionesController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_nroResolucion}" for="nroResolucion" />
+                        <h:panelGroup>
+                            <p:inputText id="nroResolucion" value="#{resolucionesController.nroResolucion}" title="#{mensajes.EditResolucionesTitle_nroResolucion}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_nroResolucion}" size="20" maxlength="20"/>
+                            <p:tooltip for="nroResolucion" value="#{resolucionesController.getComponentMessages('nroResolucion', mensajes.EditResolucionesHelpText_nroResolucion)}"/>
+                        </h:panelGroup>
+
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_tipoResolucion}" for="tipoResolucion" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" disabled="true" id="tipoResolucion" value="#{resolucionesController.tipoResolucion}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_tipoResolucion}" converter="tiposResolucionConverter">
+                                <p:ajax event="change" update="datalistPersonas, datalistPersonas:resuelve, subtipoResolucion" listener="#{resolucionesController.actualizarResuelve()}"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposResolucionController.items}"
+                                               var="tipoResolucionItem"
+                                               itemValue="#{tipoResolucionItem}"
+                                               itemLabel="#{tipoResolucionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoResolucion" value="#{tipoResolucionController.getComponentMessages('tipoResolucion', mensajes.EditResolucionesHelpText_tipoResolucion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_subtipoResolucion}" for="subtipoResolucion" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" disabled="#{resolucionesController.deshabilitarSubtipoResolucion()}" id="subtipoResolucion" value="#{resolucionesController.subtipoResolucion}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_subtipoResolucion}" converter="subtiposResolucionConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{resolucionesController.listaSubtiposResolucion}"
+                                               var="subtipoResolucionItem"
+                                               itemValue="#{subtipoResolucionItem}"
+                                               itemLabel="#{subtipoResolucionItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="subtipoResolucion" value="#{esolucionesController.getComponentMessages('subtipoResolucion', mensajes.EditResolucionesHelpText_subtipoResolucion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fecha}" for="fecha" />
+                        <h:panelGroup>
+                            <p:calendar id="fecha" pattern="dd/MM/yyyy" timeZone="America/Asuncion" value="#{resolucionesController.fecha}" title="#{mensajes.EditResolucionesTitle_fecha}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fecha}" showOn="button"/>
+                            <p:tooltip for="fecha" value="#{resolucionesController.getComponentMessages('fecha', mensajes.EditResolucionesHelpText_fecha)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fechaSesion}" rendered="#{not resolucionesController.deshabilitarFechaSesion()}" for="fechaSesion" />
+                        <h:panelGroup rendered="#{not resolucionesController.deshabilitarFechaSesion()}">
+                            <p:calendar id="fechaSesion" pattern="dd/MM/yyyy" timeZone="America/Asuncion" value="#{resolucionesController.fechaSesion}" title="#{mensajes.EditResolucionesTitle_fechaSesion}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fechaSesion}" showOn="button"/>
+                            <p:tooltip for="fechaSesion" value="#{resolucionesController.getComponentMessages('fechaSesion', mensajes.EditResolucionesHelpText_fechaSesion)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_caratula}" for="caratula" />
+                        <h:panelGroup>
+                            <p:inputTextarea rows="6" cols="100" id="caratula" value="#{resolucionesController.caratula}" title="#{mensajes.EditResolucionesTitle_caratula}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_caratula}"/>
+                            <p:tooltip for="caratula" value="#{resolucionesController.getComponentMessages('caratula', mensajes.EditResolucionesHelpText_caratula)}"/>
+                        </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditResolucionesLabel_documentoJudicial}" for="documentoJudicial" />
+                            <h:panelGroup>
+                                <p:panelGrid columns="1" styleClass="ui-noborder">
+                                    <p:panelGrid columns="2" styleClass="ui-noborder">
+                                        <p:selectOneMenu style="width: 300px" disabled="#{resolucionesController.deshabilitarDocumentoJudicial()}" filter="true" filterMatchMode="contains" id="documentoJudicial" value="#{resolucionesController.documentoJudicial}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_documentoJudicial}" converter="documentosJudicialesConverter">
+                                            <p:ajax event="change" update="caratulaString, :ResolucionesEditForm:datalistPersonas, :ResolucionesEditForm:tipoExpediente, :ResolucionesEditForm:estadoProceso" listener="#{resolucionesController.actualizarDatosDocumentoJudicialEnEdit()}"/>
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <f:selectItems value="#{resolucionesController.listaDocumentosJudiciales}"
+                                                           var="documentoJudicialItem"
+                                                           itemValue="#{documentoJudicialItem}"
+                                                           itemLabel="#{documentoJudicialItem.causa} - #{documentoJudicialItem.caratula}"
+                                                           />
+
+                                        </p:selectOneMenu>
+                                        <p:commandButton icon="ui-icon-plus" disabled="#{resolucionesController.deshabilitarDocumentoJudicial()}" actionListener="#{documentosJudicialesController.abrirCreate('P','display, :ResolucionesEditForm:documentoJudicial, :ResolucionesEditForm:caratulaString, :ResolucionesEditForm:datalistPersonas, :ResolucionesEditForm:tipoExpediente, :ResolucionesEditForm:estadoProceso, :growl',resolucionesController.caratula, 'documentoJudicialSelected')}" update=":DocumentosCreateForm" />
+                                    </p:panelGrid>
+
+                                    <p:inputTextarea  id="caratulaString" readonly="true" cols="50" rows="4" value="#{resolucionesController.documentoJudicial.caratulaString}" title="#{mensajes.EditResolucionesTitle_nroResolucion}" />
+                                </p:panelGrid>
+                                <p:tooltip for="documentoJudicial" value="#{resolucionesController.getComponentMessages('documentoJudicial', mensajes.EditResolucionesHelpText_documentoJudicial)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditResolucionesLabel_persona}" for="datalistPersonas" />
+                            <h:panelGroup>
+                                <h:panelGrid columns="1" styleClass="ui-noborder" width="800px">
+                                    <p:dataTable id="datalistPersonas"
+                                                 value="#{resolucionesController.listaPersonas}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 tableStyle="width:auto"
+                                                 paginator="false">
+
+                                        <p:ajax event="rowSelect"   update="" />
+                                        <p:ajax event="rowUnselect" update="" />
+
+                                        <p:column>
+                                            <h:outputText value="#{item.persona.ci}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <h:outputText value="#{item.persona.nombresApellidos}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:selectOneMenu style="width: 300px" filter="true" filterMatchMode="contains" id="resuelve" value="#{item.resuelve}" required="false" converter="resuelveConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{resolucionesController.listaResuelve}"
+                                                               var="resuelveItem"
+                                                               itemValue="#{resuelveItem}"
+                                                               itemLabel="#{resuelveItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:panelGrid>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditResolucionesLabel_tipoExpediente}" for="tipoExpediente" />
+                            <h:panelGroup>
+                                <p:selectOneMenu filter="true" filterMatchMode="contains" id="tipoExpediente" disabled="true" value="#{resolucionesController.tipoExpediente}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_tipoExpediente}" converter="tiposExpedienteConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{resolucionesController.listaTiposExpediente}"
+                                                   var="tipoExpedienteItem"
+                                                   itemValue="#{tipoExpedienteItem}"
+                                                   itemLabel="#{tipoExpedienteItem.descripcion}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="tipoExpediente" value="#{documentosJudicialesController.getComponentMessages('tipoExpediente', mensajes.CreateDocumentosJudicialesHelpText_tipoExpediente)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel rendered="true" value="#{mensajes.EditResolucionesLabel_estadoProceso}" for="estadoProceso" />
+                            <h:panelGroup>
+                                <p:selectOneMenu rendered="true" filter="true" filterMatchMode="contains" id="estadoProceso" disabled="true" value="#{resolucionesController.estadoProceso}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_estadoProceso}" converter="estadosProcesoConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{estadosProcesoController.items}"
+                                                   var="estadoProcesoItem"
+                                                   itemValue="#{estadoProcesoItem}"
+                                                   itemLabel="#{estadoProcesoItem.descripcion}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="estadoProceso" value="#{resolucionesController.getComponentMessages('estadoProceso', mensajes.EditResolucionesHelpText_estadoProceso)}"/>
+                            </h:panelGroup>
+                            <p:outputLabel value="Observacion" for="observacion" rendered="#{not resolucionesController.deshabilitarVerObs()}" />
+                            <h:panelGroup rendered="#{not resolucionesController.deshabilitarVerObs()}">
+                                <h:panelGroup>
+                                    <p:inputTextarea id="observacion" autoResize="false" rows="6" cols="100" value="#{resolucionesController.ultimaObservacion}" required="false" title="Observacion"/>
+                                    <p:tooltip for="observacion" value="#{documentosJudicialesController.getComponentMessages('observacion', 'Ingrese Observacion')}"/>
+                                </h:panelGroup>
+                            </h:panelGroup>
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_firmado}" rendered="#{not resolucionesController.deshabilitarFirmado()}" for="firmado" />                        
+                        <h:panelGroup rendered="#{not resolucionesController.deshabilitarFirmado()}">
+                            <h:selectBooleanCheckbox id="firmado" value="#{resolucionesController.firmado}" />
+                            <p:tooltip for="firmado" value="#{resolucionesController.getComponentMessages('firmado', mensajes.EditResolucionesHelpText_firmado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_mostrarWeb}" for="mostrarWeb" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="mostrarWeb" disabled="#{resolucionesController.deshabilitarMostrarWeb()}" value="#{resolucionesController.mostrarWeb}" required="false" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_mostrarWeb}" >
+                                <f:selectItem itemLabel="SI" itemValue="SI"/>
+                                <f:selectItem itemLabel="NO" itemValue="NO"/>
+                            </p:selectOneMenu>
+                            <p:tooltip for="mostrarWeb" value="#{resolucionesController.getComponentMessages('mostrarWeb', mensajes.EditResolucionesHelpText_mostrarWeb)}"/>
+                        </h:panelGroup>
+
+                        <h:outputText value="Adjuntar Documento" rendered="#{not resolucionesController.deshabilitarMostrarWeb()}" />
+                        <p:panelGrid columns="2">
+                            <p:fileUpload value="#{resolucionesController.file}" rendered="#{not resolucionesController.deshabilitarMostrarWeb()}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                        </p:panelGrid>
+                    </p:panelGrid>
+                    <p:commandButton id="botonGuardar" rendered="#{not documentosJudicialesController.deshabilitarGuardarSinAjax()}" value="#{mensajes.Save}" icon="ui-icon-arrow-u" ajax="false" onclick="botonGuardar.disable(); monitorExporting(startHandler(0), endHandler)" update="display,:ResolucionesListForm:datalist,:growl" action="#{resolucionesController.save()}" disabled="false"/>
+                    <p:commandButton id="botonGuardar2" onclick="botonGuardar2.disable()" rendered="#{not documentosJudicialesController.deshabilitarGuardarConAjax()}" value="#{mensajes.Save}" icon="ui-icon-arrow-u" ajax="true"  oncomplete="handleSubmit(xhr,status,args,PF('ResolucionesEditDialog'));" update="display,:ResolucionesListForm:datalist,:growl" actionListener="#{resolucionesController.save()}" />
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ResolucionesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+
+                        <h:outputLabel value="#{mensajes.EditResolucionesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{resolucionesController.selected.id}" />
+                            <p:tooltip for="id" value="#{resolucionesController.getComponentMessages('id', mensajes.EditResolucionesHelpText_id)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"value="#{resolucionesController.selected.fechaHoraAlta}" title="#{mensajes.EditResolucionesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{resolucionesController.getComponentMessages('fechaHoraAlta', mensajes.EditResolucionesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fechaHoraUltimoCambio}" for="fechaHoraUltimoCambio" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoCambio" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"value="#{resolucionesController.selected.fechaHoraUltimoCambio}" title="#{mensajes.EditResolucionesTitle_fechaHoraUltimoCambio}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fechaHoraUltimoCambio}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoCambio" value="#{resolucionesController.getComponentMessages('fechaHoraUltimoCambio', mensajes.EditResolucionesHelpText_fechaHoraUltimoCambio)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_documento}" for="documento" />
+                        <h:panelGroup>
+                            <p:inputText id="documento" value="#{resolucionesController.selected.documento}" title="#{mensajes.EditResolucionesTitle_documento}" size="45" maxlength="45"/>
+                            <p:tooltip for="documento" value="#{resolucionesController.getComponentMessages('documento', mensajes.EditResolucionesHelpText_documento)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{resolucionesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{resolucionesController.getComponentMessages('usuarioAlta', mensajes.EditResolucionesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{resolucionesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{resolucionesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditResolucionesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{resolucionesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{resolucionesController.getComponentMessages('empresa', mensajes.EditResolucionesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+-->

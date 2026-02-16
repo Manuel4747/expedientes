@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosJudicialesViewEstadoProcesalDlg" widgetVar="DocumentosJudicialesViewEstadoProcesalDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesViewEstadoProcesalForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{documentosJudicialesPorSecretariaController.selected != null}">
+                        <h:outputText value="Fecha ultima actuación"/>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.selected.fechaHoraEstadoProcesal}" title="Fecha Ultima Actuación">
+                            <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion" />
+                        </h:outputText>
+                        <h:outputText value="Actuación"/>
+                        <p:inputTextarea rows="4" cols="30" id="actuacion" readonly="true" value="#{documentosJudicialesPorSecretariaController.selected.estadoProcesal}" title="Actuación" />
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DocumentosJudicialesViewEstadoProcesalDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_id}"/>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.selected.id}" title="#{mensajes.ViewDocumentosJudicialesTitle_id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_departamento}"/>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.selected.departamento.nombre}"/>
+-->
+
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_empresa}"/>
+                        <h:outputText value="#{documentosJudicialesPorSecretariaController.selected.empresa.id}"/>
+-->

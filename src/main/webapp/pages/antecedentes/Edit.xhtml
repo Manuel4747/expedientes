@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="AntecedentesEditDlg" widgetVar="AntecedentesEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditAntecedentesTitle}" closeOnEscape="true">
+
+            <h:form id="AntecedentesEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{antecedentesController.selected != null}">
+
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_descripcion}" for="descripcion" />
+                        <h:panelGroup>
+                            <p:inputText id="descripcion" value="#{antecedentesController.selected.descripcion}" title="#{mensajes.EditAntecedentesTitle_descripcion}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_descripcion}" size="50" maxlength="60"/>
+                            <p:tooltip for="descripcion" value="#{antecedentesController.getComponentMessages('descripcion', mensajes.EditAntecedentesHelpText_descripcion)}"/>
+                        </h:panelGroup>
+                        <!--
+                        <h:outputLabel value="#{mensajes.EditAntecedentesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{antecedentesController.selected.id}" />
+                            <p:tooltip for="id" value="#{antecedentesController.getComponentMessages('id', mensajes.EditAntecedentesHelpText_id)}"/>
+                        </h:panelGroup>
+           
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{antecedentesController.selected.fechaHoraAlta}" title="#{mensajes.EditAntecedentesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{antecedentesController.getComponentMessages('fechaHoraAlta', mensajes.EditAntecedentesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoEstado" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" value="#{antecedentesController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditAntecedentesTitle_fechaHoraUltimoEstado}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_fechaHoraUltimoEstado}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoEstado" value="#{antecedentesController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditAntecedentesHelpText_fechaHoraUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="empresa" value="#{antecedentesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{antecedentesController.getComponentMessages('empresa', mensajes.EditAntecedentesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioAlta" value="#{antecedentesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{antecedentesController.getComponentMessages('usuarioAlta', mensajes.EditAntecedentesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditAntecedentesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains"  id="usuarioUltimoEstado" value="#{antecedentesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditAntecedentesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{antecedentesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditAntecedentesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+                        -->
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{antecedentesController.save}" value="#{mensajes.Save}" update="display,:AntecedentesListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('AntecedentesEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('AntecedentesEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="AntecedentesListForm">
+
+        <p:panel header="Instaladores">
+            <p:button  value="Driver firma" href="#{documentosJudicialesController.obtenerInstalador1()}" />
+            <p:commandButton ajax="false" value="Registro firma" action="#{documentosJudicialesController.obtenerInstalador2()}" />
+            <p:commandButton ajax="false" value="Registro p/ carpeta de digitalización" action="#{documentosJudicialesController.obtenerInstalador3()}" />
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

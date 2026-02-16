@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="FirmantesVerDlg" positionType="absolute" widgetVar="FirmantesVerDialog" modal="true" resizable="false" appendTo="@(body)" header="Estado Firma" closeOnEscape="true">
+
+                <h:form id="FirmantesVerForm" enctype="multipart/form-data">
+
+                    <h:panelGroup id="display">
+
+                        <div class="ui-sm-12 ui-md-3 ui-g-3">
+
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <p:fieldset style="width: 100%">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:dataTable id="datalistPersonasFirmantes"
+                                                 value="#{documentosJudicialesController.listaEstadosFirmas}"
+                                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                 rowKey="#{item.id}"
+                                                 var="item"
+                                                 tableStyle="width:auto"
+                                                 paginator="false">
+
+
+                                        <p:ajax event="rowSelect"   update="" />
+                                        <p:ajax event="rowUnselect" update="" />
+
+                                        <p:column filterMatchMode="contains" filterBy="#{item.personaFirmante.ci}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Cedula"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.personaFirmante.ci}"/>
+                                        </p:column>
+
+                                        <p:column filterMatchMode="contains" filterBy="#{item.personaFirmante.nombresApellidos}">
+                                            <f:facet name="header">
+                                                <h:outputText value="Nombre"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.personaFirmante.nombresApellidos}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Revisado"/>
+                                            </f:facet>
+                                            <h:selectBooleanCheckbox id="visible" disabled="#{documentosJudicialesController.deshabilitarRevisado(item)}" value="#{item.revisadoNuevo}" >
+                                                <p:ajax event="change" listener="#{documentosJudicialesController.prepareVerifRevisado(item)}" update=":ExpAcusacionesVerifRevisadoForm, :growl" oncomplete="PF('ExpAcusacionesVerifRevisadoDialog').show()"/>
+                                            </h:selectBooleanCheckbox>
+                                        </p:column>
+
+                                        <p:column >
+                                            <f:facet name="header">
+                                                <h:outputText value="Fecha Hora Revisión"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesController.datePattern3()}" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Revisión Por"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.personaRevisado}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Firmado"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.firmadoString}"/>
+                                        </p:column>
+
+                                        <p:column>
+                                            <f:facet name="header">
+                                                <h:outputText value="Fecha Hora Firma"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.fechaHoraFirma}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesController.datePattern3()}" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </p:column>
+
+                                    </p:dataTable>
+                                </div>
+
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <p:commandButton value="Salir" oncomplete="PF('FirmantesVerDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                                </div>
+                            </p:fieldset>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

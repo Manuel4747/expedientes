@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/manhattan">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>#{mensajes.AppName}</title>
+    </h:head>
+
+    <h:body styleClass="login-body">
+        <p:growl id="growl" life="7000" showDetail="true"></p:growl>
+        <h:form>
+            <p:remoteCommand name="onload" action="#{personasController.onload()}" autoRun="true" />
+            <div class="login-panel ui-fluid">
+                <div class="ui-g">  
+                    <div class="ui-g-6 left-side">
+                        <p:graphicImage library="manhattan-layout" styleClass="login-image" value="#{personasController.imagenInicio}"/>
+                    </div>
+                    <div class="ui-g-6 ui-sm-12 right-side">
+                        <div class="ui-g-12 container">
+                            <h2><h:outputText value="#{mensajes.WelcomeMessage}" /></h2>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:outputLabel for="username" value="Usuario" />
+                            <div class="input-wrapper">
+                                <p:inputText id="username" value="#{personasController.usuario}" placeholder="Username" />
+                                <i class="fa fa-user" />
+                            </div>
+                        </div>
+                        <div class="ui-g-12">
+                            <p:outputLabel for="password" value="Contraseña" />
+                            <div class="input-wrapper">
+                                <p:password id="password" placeholder="Password" value="#{personasController.contrasena}" feedback="false" />
+                                <i class="fa fa-lock" />
+                            </div>
+                        </div>
+                        <div class="ui-g-12 button-container">
+                            <p:commandButton value="Ingreso al Sistema" actionListener="#{personasController.loginControl()}" update=":DocumentosListForm, growl" />
+                        </div>
+                        <div aling="center">
+                            <div class="ui-g-12 button-container" align="center">
+                                <p:commandLink rendered="true" value="Solicite su usuario" ajax="false" action="/pages/pedidosPersonaExpediente/altaPersona.xhtml"></p:commandLink>
+                            </div>
+                        </div>
+                        <div aling="center">
+                            <div class="ui-g-12 button-container" align="center">
+                                <p:commandLink rendered="true" value="Olvide mi contraseña" ajax="false" action="/pages/pedidosCambioContrasena/pedidosCambioContrasena.xhtml"></p:commandLink>
+                            </div>
+                        </div>
+                    </div>
+
+                    <ui:remove>
+                        <div class="ui-g-12">
+                            <p align="justify">
+                                Se encuentran generados los antecedentes de todos los magistrados, agentes fiscales y defensores públicos cuyos cargos se encuentran vacantes por fenecimiento de mandato y fueron objeto de convocatoria por parte del Consejo de la Magistratura, a través de los Edictos Nro 1 al 6/2021
+
+
+                                Se aclara que los datos referentes a todos los magistrados, agentes fiscales y defensores públicos, en su totalidad estarán disponibles en los próximos días. Seguimos trabajando para una mejor gestión.
+                            </p>
+                        </div>
+                    </ui:remove>
+                </div>
+            </div>
+        </h:form>
+        <h:outputStylesheet name="css/layout-#{parametrosSistemaController.theme}.css" library="manhattan-layout" />
+    </h:body>
+
+    <p:dialog positionType="absolute" id="DocumentosCreateDlg" widgetVar="DocumentosCreateDialog" modal="true" resizable="false" appendTo="@(body)" closeOnEscape="true">
+
+        <h:form id="DocumentosListForm">
+
+            <p:outputLabel value="#{mensajes.ElegirRol_rol}" for="rol" />
+            <h:panelGroup>
+                <p:selectOneMenu id="rol" value="#{personasController.rolElegido}" required="false" requiredMessage="#{mensajes.ElegirRolRequiredMessage_rol}" converter="antecedentesRolesConverter">
+                    <p:ajax event="change" listener="#{personasController.redirigir()}" />
+                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                    <f:selectItems value="#{personasController.listaRolesElegir}"
+                                   var="rolItem"
+                                   itemValue="#{rolItem}"
+                                   itemLabel="#{rolItem.descripcion}"
+                                   />
+
+                </p:selectOneMenu>
+            </h:panelGroup>
+        </h:form>
+    </p:dialog>
+</html>

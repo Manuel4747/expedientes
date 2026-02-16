@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpFiscalesJuradoListForm">
+
+        <p:panel header="#{mensajes.ListExpFiscalesJuradoTitle}">
+            <p:commandButton id="createButton" icon="ui-icon-plus"   value="#{mensajes.Create}" actionListener="#{expFiscalesJuradoController.prepareCreate}" update=":ExpFiscalesJuradoCreateForm" oncomplete="PF('ExpFiscalesJuradoCreateDialog').show()"/>
+            <p:commandButton id="deleteButton" rendered="true" icon="ui-icon-trash"  value="#{mensajes.Delete}" actionListener="#{expFiscalesJuradoController.delete}" update=":growl,datalist" disabled="#{empty expFiscalesJuradoController.selected}">
+                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmDeleteMessage}" icon="ui-icon-alert"/>
+            </p:commandButton>
+            <p:dataTable id="datalist"
+                         value="#{expFiscalesJuradoController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{expFiscalesJuradoController.selected}">
+                
+
+                <p:ajax event="rowSelect"   update="@form:createButton,@form:deleteButton" listener="#{expFiscalesJuradoController.resetParents}"/>
+                <p:ajax event="rowUnselect" update="@form:createButton,@form:deleteButton" listener="#{expFiscalesJuradoController.resetParents}"/>
+
+                <p:column sortBy="#{item.persona.ci}" filterBy="#{item.persona.ci}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpFiscalesJuradoTitle_ci}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.ci}"/>
+                </p:column>
+
+                <p:column sortBy="#{item.persona.nombresApellidos}" filterBy="#{item.persona.nombresApellidos}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListExpFiscalesJuradoTitle_nombresApellidos}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.persona.nombresApellidos}"/>
+                </p:column>
+
+            </p:dataTable>
+
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>
+
+<!--
+
+            
+            <p:contextMenu id="PersonasDataTableContextMenu" for="datalist">  
+                <p:menuitem value="#{mensajes.Create}" onclick="document.getElementById('ExpFiscalesJuradoListForm:createButton').click();" icon="ui-icon-plus"/>
+                <p:menuitem value="#{mensajes.View}" onclick="document.getElementById('ExpFiscalesJuradoListForm:viewButton').click();" icon="ui-icon-search"/>
+                <p:menuitem value="#{mensajes.Edit}" onclick="document.getElementById('ExpFiscalesJuradoListForm:editButton').click();" icon="ui-icon-pencil"/>
+                <p:menuitem value="#{mensajes.Delete}" onclick="document.getElementById('ExpFiscalesJuradoListForm:deleteButton').click();" icon="ui-icon-trash"/>
+                <p:separator/>
+                <p:menuitem value="#{mensajes.PersonasMenuItem_cargoPersona}" icon="ui-icon-search"  actionListener="#{expFiscalesJuradoController.prepareCargoPersona}" update=":CargosPersonaViewForm" oncomplete="PF('CargosPersonaViewDialog').show()" disabled="#{empty expFiscalesJuradoController.selected.cargoPersona}"/>  
+                <p:menuitem value="#{mensajes.PersonasMenuItem_empresa}" icon="ui-icon-search"  actionListener="#{expFiscalesJuradoController.prepareEmpresa}" update=":EmpresasViewForm" oncomplete="PF('EmpresasViewDialog').show()" disabled="#{empty expFiscalesJuradoController.selected.empresa}"/>  
+            </p:contextMenu>
+-->

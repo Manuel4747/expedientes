@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE glassfish-web-app PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Servlet 3.0//EN" "http://glassfish.org/dtds/glassfish-web-app_3_0-1.dtd">
+<glassfish-web-app error-url="">
+  <class-loader delegate="true"/>
+  <jsp-config>
+    <property name="keepgenerated" value="true">
+      <description>Keep a copy of the generated servlet class' java code.</description>
+    </property>
+  </jsp-config>
+  <parameter-encoding default-charset="UTF-8"/>
+  <property name="alternatedocroot_1" value="from=*.pdf dir=/Users/ticjem/Documents/sistemas/expedientes/expedientes"/>
+  <property name="alternatedocroot_2" value="from=*.pdf dir=/Users/ticjem/Documents/sistemas/expedientes/pedidospersona"/>
+  <!--
+ <property name="alternatedocroot_1" value="from=*.pdf dir=/home/expediente/expedientes"/>
+ <property name="alternatedocroot_2" value="from=*.pdf dir=/home/expediente/pedidospersona"/>
+ -->
+  <!--
+ <property name="alternatedocroot_1" value="from=*.pdf dir=/home/eduardo/expedientes"/>
+ <property name="alternatedocroot_2" value="from=*.pdf dir=/home/eduardo/pedidospersona"/>
+    -->
+  <!--
+ <property name="alternatedocroot_1" value="from=*.pdf dir=c:\expedientes"/>
+ <property name="alternatedocroot_2" value="from=*.pdf dir=c:\pedidospersona"/>
+
+  -->
+</glassfish-web-app>

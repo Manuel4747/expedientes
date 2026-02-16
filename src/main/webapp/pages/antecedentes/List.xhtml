@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="AntecedentesListForm">
+
+        <p:panel header="#{mensajes.ListAntecedentesTitle}">
+
+            <p:dataTable id="datalist"
+                         value="#{antecedentesController.items}"
+                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                         rowKey="#{item.id}"
+                         var="item"
+                         paginator="true"
+                         paginatorPosition="bottom"
+                         rows="10"
+                         rowsPerPageTemplate="10,20,30,40,50"
+                         selectionMode="single"
+                         selection="#{antecedentesController.selected}">
+
+                <p:column sortBy="#{item.fechaHoraAlta}" filterMatchMode="contains" filterBy="#{item.fechaHoraAlta}">
+                    <f:facet name="header">
+                        <h:outputText value="#{mensajes.ListAntecedentesTitle_fechaHoraAlta}"/>
+                    </f:facet>
+                    <h:outputText value="#{item.fechaHoraAlta}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column>
+                    <p:commandButton ajax="false"    onclick="this.form.target = '_blank'" value="Imprimir" action="#{antecedentesController.reimprimirRepAntecedentes(item)}"  disabled="#{empty item.pathArchivo}"/>
+                </p:column>
+
+                <ui:remove>
+                    <p:column sortBy="#{item.id}" filterMatchMode="contains" filterBy="#{item.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_id}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.descripcion}" filterMatchMode="contains" filterBy="#{item.descripcion}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_descripcion}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.descripcion}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.fechaHoraUltimoEstado}" filterMatchMode="contains" filterBy="#{item.fechaHoraUltimoEstado}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_fechaHoraUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.empresa.id}" filterMatchMode="contains" filterBy="#{item.empresa.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_empresa}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.empresa.id}"/>
+                    </p:column>
+
+
+                    <p:column sortBy="#{item.usuarioAlta.id}" filterMatchMode="contains" filterBy="#{item.usuarioAlta.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_usuarioAlta}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioAlta.id}"/>
+                    </p:column>
+
+                    <p:column sortBy="#{item.usuarioUltimoEstado.id}" filterMatchMode="contains" filterBy="#{item.usuarioUltimoEstado.id}">
+                        <f:facet name="header">
+                            <h:outputText value="#{mensajes.ListAntecedentesTitle_usuarioUltimoEstado}"/>
+                        </f:facet>
+                        <h:outputText value="#{item.usuarioUltimoEstado.id}"/>
+                    </p:column>
+                </ui:remove>
+
+            </p:dataTable>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pm="http://primefaces.org/manhattan">
+
+    <ui:composition>
+        <div class="ui-g">
+
+            <p:dialog id="ExpIntervinientesCorteViewDlg" positionType="absolute" position="0,0" style="width: 100px" widgetVar="ExpIntervinientesCorteViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="Intervinientes" closeOnEscape="false">
+
+                <h:form id="ExpIntervinientesCorteViewForm">
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte != null}">
+                        <p:tabView id="UsuariosTabView" orientation="top" effect="fade" effectDuration="slow">
+                            <p:tab id="UsuariosTab1" title="Interviniente">
+                                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo interviniente"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.tipoIntervinienteCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo persona"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.tipoPersonasCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Tipo documento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.tipoDocumentoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Nro documento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.nroDocumento}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Nombres Apellidos"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.nombresApellidos}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Fecha nacimiento"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.fechaNacimiento}">
+                                                <f:convertDateTime pattern="#{documentosJudicialesPorSecretariaController.datePattern()}" timeZone="America/Asuncion" />
+                                            </h:outputText>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Sexo"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.sexoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Ocupación"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.ocupacionCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-5 ui-g-5">
+                                        <p:outputLabel value="Estado"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-lg-7 ui-g-7">
+                                        <h:panelGroup style="width: 100%">
+                                            <h:outputText style="height: 30px; width: 100%" value="#{documentosJudicialesPorSecretariaController.selectedIntervinienteCorte.estadoCorte.descripcion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </div>
+                            </p:tab>
+                        </p:tabView>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton value="#{mensajes.Close}" onclick="PF('ExpIntervinientesCorteViewDialog').hide()"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+
+        </div>
+
+    </ui:composition>
+
+</html>

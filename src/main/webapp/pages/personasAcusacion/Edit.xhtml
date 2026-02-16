@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PersonasEditDlg" widgetVar="PersonasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="Personas Acusación" closeOnEscape="true">
+
+            <h:form id="PersonasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{personasAcusacionController.selected != null}">
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputNumber id="ci" value="#{personasAcusacionController.selected.ci}" decimalSeparator="," decimalPlaces="0" thousandSeparator="" maxValue="99999999" title="#{mensajes.EditPersonasTitle_ci}" required="false" requiredMessage="#{mensajes.EditPersonasRequiredMessage_ci}" size="20" maxlength="20"/>
+                            <p:tooltip for="ci" value="#{personasAcusacionController.getComponentMessages('ci', mensajes.EditPersonasHelpText_ci)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" onblur="value = value.toUpperCase()" style="text-transform:uppercase;" value="#{personasAcusacionController.selected.nombresApellidos}" title="#{mensajes.EditPersonasTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                            <p:tooltip for="nombresApellidos" value="#{personasAcusacionController.getComponentMessages('nombresApellidos', mensajes.EditPersonasHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="Estado" for="estadoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="estadoPersona" filter="true" filterMatchMode="contains" value="#{personasAcusacionController.selected.estado}">
+                                <f:selectItem itemValue="AC" itemLabel="Activo" />
+                                <f:selectItem itemValue="IN" itemLabel="Inactivo" />
+                            </p:selectOneMenu>
+                        </h:panelGroup>
+
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personasAcusacionController.saveEdit()}" value="#{mensajes.Save}" update="display,:PersonasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PersonasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PersonasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidosAntecedenteCreateDlg" widgetVar="PedidosAntecedenteCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreatePedidosAntecedenteTitle}" closeOnEscape="true">
+
+            <h:form id="PedidosAntecedenteCreateForm">
+
+                <h:panelGroup id="display" rendered="#{pedidosAntecedenteController.selected != null}">
+                    <p:panelGrid columns="2" columnClasses="column">
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputText id="ci" value="#{pedidosAntecedenteController.selected.ci}" title="#{mensajes.CreatePedidosAntecedenteTitle_ci}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_ci}" size="20" maxlength="20"/>
+                            <p:tooltip for="ci" value="#{pedidosAntecedenteController.getComponentMessages('ci', mensajes.CreatePedidosAntecedenteHelpText_ci)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" value="#{pedidosAntecedenteController.selected.nombresApellidos}" title="#{mensajes.CreatePedidosAntecedenteTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                            <p:tooltip for="nombresApellidos" value="#{pedidosAntecedenteController.getComponentMessages('nombresApellidos', mensajes.CreatePedidosAntecedenteHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_tipoPersona}" for="tipoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="tipoPersona" value="#{pedidosAntecedenteController.selected.tipoPersona}"  converter="tiposPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposPersonaController.items}"
+                                               var="tipoPersonaItem"
+                                               itemValue="#{tipoPersonaItem}"
+                                               itemLabel="#{tipoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoPersona" value="#{pedidosAntecedenteController.getComponentMessages('tipoPersona', mensajes.CreatePedidosAntecedenteHelpText_tipoPersona)}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_cargoPersona}" for="cargoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="cargoPersona" filter="true" filterMatchMode="contains" value="#{pedidosAntecedenteController.selected.cargoPersona}"  converter="cargosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{cargosPersonaController.items}"
+                                               var="cargoPersonaItem"
+                                               itemValue="#{cargoPersonaItem}"
+                                               itemLabel="#{cargoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="cargoPersona" value="#{pedidosAntecedenteController.getComponentMessages('cargoPersona', mensajes.CreatePedidosAntecedenteHelpText_cargoPersona)}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_despachoPersona}" for="despachoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="despachoPersona" filter="true" filterMatchMode="contains" value="#{pedidosAntecedenteController.selected.despachoPersona}"  converter="despachosPersonaConverter">
+                                <p:ajax event="change" update="departamentoPersona, localidadPersona" listener="#{pedidosAntecedenteController.actualizarDptoYLocalidad()}"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{despachosPersonaController.items}"
+                                               var="despachoPersonaItem"
+                                               itemValue="#{despachoPersonaItem}"
+                                               itemLabel="#{despachoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="despachoPersona" value="#{pedidosAntecedenteController.getComponentMessages('despachoPersona', mensajes.CreatePedidosAntecedenteHelpText_despachoPersona)}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_departamentoPersona}" for="departamentoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="departamentoPersona" filter="true" filterMatchMode="contains" value="#{pedidosAntecedenteController.selected.departamentoPersona}"  converter="departamentosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosPersonaController.items}"
+                                               var="departamentoPersonaItem"
+                                               itemValue="#{departamentoPersonaItem}"
+                                               itemLabel="#{departamentoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamentoPersona" value="#{pedidosAntecedenteController.getComponentMessages('departamentoPersona', mensajes.CreatePedidosAntecedenteHelpText_departamentoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_localidadPersona}" for="localidadPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="localidadPersona" filter="true" filterMatchMode="contains" value="#{pedidosAntecedenteController.selected.localidadPersona}"  converter="localidadesPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{localidadesPersonaController.items}"
+                                               var="localidadPersonaItem"
+                                               itemValue="#{localidadPersonaItem}"
+                                               itemLabel="#{localidadPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="localidadPersona" value="#{pedidosAntecedenteController.getComponentMessages('localidadPersona', mensajes.CreatePedidosAntecedenteHelpText_localidadPersona)}"/>
+                        </h:panelGroup>
+
+                        <ui:remove>
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_estado}" for="estado" />
+                            <h:panelGroup>
+                                <p:inputText id="estado" value="#{pedidosAntecedenteController.selected.estado}" title="#{mensajes.CreatePedidosAntecedenteTitle_estado}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_estado}" size="2" maxlength="2"/>
+                                <p:tooltip for="estado" value="#{pedidosAntecedenteController.getComponentMessages('estado', mensajes.CreatePedidosAntecedenteHelpText_estado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosAntecedenteController.selected.fechaHoraAlta}" title="#{mensajes.CreatePedidosAntecedenteTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                                <p:tooltip for="fechaHoraAlta" value="#{pedidosAntecedenteController.getComponentMessages('fechaHoraAlta', mensajes.CreatePedidosAntecedenteHelpText_fechaHoraAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_usuarioAlta}" for="usuarioAlta" />
+                            <h:panelGroup>
+                                <p:inputText id="usuarioAlta" value="#{pedidosAntecedenteController.selected.usuarioAlta}" title="#{mensajes.CreatePedidosAntecedenteTitle_usuarioAlta}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_usuarioAlta}"/>
+                                <p:tooltip for="usuarioAlta" value="#{pedidosAntecedenteController.getComponentMessages('usuarioAlta', mensajes.CreatePedidosAntecedenteHelpText_usuarioAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosAntecedenteController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreatePedidosAntecedenteTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="fechaHoraUltimoEstado" value="#{pedidosAntecedenteController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreatePedidosAntecedenteHelpText_fechaHoraUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="usuarioUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosAntecedenteController.selected.usuarioUltimoEstado}" title="#{mensajes.CreatePedidosAntecedenteTitle_usuarioUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="usuarioUltimoEstado" value="#{pedidosAntecedenteController.getComponentMessages('usuarioUltimoEstado', mensajes.CreatePedidosAntecedenteHelpText_usuarioUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.CreatePedidosAntecedenteLabel_empresa}" for="empresa" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="empresa" value="#{pedidosAntecedenteController.selected.empresa}" required="true" requiredMessage="#{mensajes.CreatePedidosAntecedenteRequiredMessage_empresa}" converter="empresasConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{empresasController.items}"
+                                                   var="empresaItem"
+                                                   itemValue="#{empresaItem}"
+                                                   itemLabel="#{empresaItem.id.toString()}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="empresa" value="#{pedidosAntecedenteController.getComponentMessages('empresa', mensajes.CreatePedidosAntecedenteHelpText_empresa)}"/>
+                            </h:panelGroup>
+                        </ui:remove>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{pedidosAntecedenteController.saveNew()}" value="#{mensajes.Save}" update="display,:PedidosAntecedenteListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PedidosAntecedenteCreateDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PedidosAntecedenteCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

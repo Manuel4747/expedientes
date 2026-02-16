@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog positionType="absolute" id="PedidosAntecedenteAlzarArchivoDlg" widgetVar="PedidosAntecedenteAlzarArchivoDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateDocumentosTitle}" closeOnEscape="true">
+
+
+                <h:form id="PedidosAntecedenteAlzarArchivoForm" enctype="multipart/form-data">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12" >
+                        <h:panelGroup id="display2" rendered="#{pedidosAntecedenteController.selectedPedido != null}">
+                            <p:panelGrid columns="2" columnClasses="column">
+                                <h:outputText value="Adjuntar Documento"/>
+                                <p:panelGrid columns="2" >
+                                    <p:fileUpload value="#{pedidosAntecedenteController.file}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" accept=".pdf,.PDF" allowTypes="/(\.|\/)(pdf|PDF)$/" disabled="false" />
+                                </p:panelGrid>
+                            </p:panelGrid>
+                            <p:commandButton id="botonAlzar" widgetVar="botonGuardarWV" ajax="false" rendered="true" value="Alzar" icon="ui-icon-arrow-u" update=":PedidosAntecedenteListForm:datalistPend, :growl" actionListener="#{pedidosAntecedenteController.marcarParaConfirmado(pedidosAntecedenteController.selectedPedido)}"/>
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PedidosAntecedenteAlzarArchivoDialog').hide()" process="@this" immediate="true" resetValues="true"/>
+                        </h:panelGroup>
+                    </div>
+                </h:form>
+
+            </p:dialog>
+        </div>
+
+    </ui:composition>
+
+</html>

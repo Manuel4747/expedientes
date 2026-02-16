@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="DocumentosJudicialesElegirDlg" widgetVar="DocumentosJudicialesElegirDialog" positionType="absolute" position="0,0" modal="true" resizable="false"  appendTo="@(body)" header="Elegir expediente corte" closeOnEscape="true">
+
+            <div class="ui-g">
+                <h:form id="DocumentosJudicialesElegirForm">
+
+                    <h:panelGroup id="display">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:dataTable id="datalistAsociados"
+                                         value="#{documentosJudicialesPorSecretariaController.listaDocumentosJudicialesCorte}"
+                                         lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                         rowKey="#{item.codCasoJudicial}"
+                                         var="item"
+                                         selectionMode="single"
+                                         scrollable="true" scrollHeight="300"
+                                         selection="#{documentosJudicialesPorSecretariaController.selectedDocumentoJudicialCorte}">
+
+                                <p:ajax event="rowSelect" listener="#{documentosJudicialesPorSecretariaController.prepareVerExpedienteCorte(documentosJudicialesPorSecretariaController.selected, documentosJudicialesPorSecretariaController.selectedDocumentoJudicialCorte, false)}" update=":ExpActuacionesViewForm:datalistActuaciones, growl" oncomplete="PF('DocumentosJudicialesElegirDialog').hide()"/>
+
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Nro causa"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nroExpedienteNumero}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Año"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nroExpedienteAnio}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Carátula"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.caratula}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Nombre juez"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.nombreJuez}"/>
+                                </p:column>
+
+                                <p:column>
+                                    <f:facet name="header">
+                                        <h:outputText value="Despacho"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.descripcionDespachoJudicial}" escape="false"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton value="#{mensajes.Close}" update=":growl" onclick="PF('DocumentosJudicialesElegirDialog').hide()"/>
+                        </div>
+                    </h:panelGroup>
+                </h:form>
+            </div>
+        </p:dialog>
+    </ui:composition>
+
+</html>

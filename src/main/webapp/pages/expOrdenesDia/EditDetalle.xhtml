@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="ExpDetallesOrdenDiaEditDlg" widgetVar="ExpDetallesOrdenDiaEditDialog" modal="true" resizable="false" appendTo="@(body)" header="Detalle Orden del Día" closeOnEscape="true">
+
+                <h:form id="ExpDetallesOrdenDiaEditForm">
+
+                    <h:panelGroup id="display" rendered="#{ordenesDiaController.detalleOrdenDiaSelected != null}">
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="Nro de orden" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputText value="#{ordenesDiaController.detalleOrdenDiaSelected.orden}" title="Nro de orden" required="false" requiredMessage="Debe ingresar nro de orden" maxlength="5"/>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="Expediente" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                    <h:panelGroup  style="width: 100%">
+                                        <p:selectOneMenu  style="height: 50px; width: 100%" filter="true" filterMatchMode="contains" value="#{ordenesDiaController.detalleOrdenDiaSelected.documentoJudicial}" required="false" requiredMessage="Debe ingresar expediente" converter="documentosJudicialesConverter">
+                                            <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                            <p:ajax event="change" update="caratula, motivoProceso" />
+                                            <f:selectItems value="#{ordenesDiaController.listaExpedientes}"
+                                                           var="expedienteItem"
+                                                           itemValue="#{expedienteItem}"
+                                                           itemLabel="#{expedienteItem.causa}"
+                                                           />
+                                        </p:selectOneMenu>
+                                    </h:panelGroup>
+                                </p:panelGrid>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="Carátula" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputTextarea id="caratula" readonly="true" style="width: 100%" rows="4" value="#{ordenesDiaController.detalleOrdenDiaSelected.documentoJudicial.caratulaString}" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                <p:inputTextarea id="motivoProceso" readonly="true" style="width: 100%" rows="4" value="#{ordenesDiaController.detalleOrdenDiaSelected.documentoJudicial.motivoProceso}" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton actionListener="#{ordenesDiaController.saveEditDetalle()}" value="#{mensajes.Save}" update="display,:ExpOrdenesDiaListForm:datalist,:ExpOrdenesDiaListForm:datalistDetalles,:growl" oncomplete="handleSubmit(xhr,status,args,PF('ExpDetallesOrdenDiaEditDialog'));">
+                                <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmCreateMessage}" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ExpDetallesOrdenDiaEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

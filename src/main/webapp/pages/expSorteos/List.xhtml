@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:pe="http://primefaces.org/ui/extensions">
+
+    <h:form id="ExpSorteoForm">
+
+        <p:panel header="Sorteo">
+            <div class="ui-g">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="botonGuardar" actionListener="#{sorteosController.prepareSorteo()}" ajax="true" value="Nuevo Sorteo" update="datalist,datalistActual,:growl, imagenSorteo" />
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalist"
+                                 value="#{sorteosController.listaSorteo}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item">
+
+                        <p:column>
+                            <h:outputText value="#{item.nombresApellidos}"/>
+                        </p:column>
+                        <p:column rendered="#{sorteosController.modoDebug()}">
+                            <h:outputText value="#{item.cantSorteos}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:dataTable id="datalistActual"
+                                 rendered="#{sorteosController.modoDebug()}"
+                                 value="#{sorteosController.listaSorteoActual}"
+                                 lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                 rowKey="#{item.id}"
+                                 var="item">
+
+                        <p:column>
+                            <h:outputText value="#{item.nombresApellidos}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-g-4">
+                    <p:commandLink actionListener="#{sorteosController.sortear()}" update="ExpSorteosViewForm, datalistActual,datalist, :growl, imagenSorteo">
+                        <h:graphicImage id="imagenSorteo" name="#{sorteosController.imagenSorteo}" styleClass="modalResponsivo" />
+                    </p:commandLink>
+                </div>
+                <p:remoteCommand name="rcShowMorePropsInfo" update="imagenSorteo" actionListener="#{sorteosController.resetearSorteo()}" />
+            </div>
+            <script type="text/javascript">
+                function startTimer() {
+                    setTimeout("timeout()", 5000);
+                }
+
+                function timeout() {
+                    rcShowMorePropsInfo();
+                    PF('ExpSorteosViewDialog').show();
+                    //jQuery("botonSortearWV").click();
+                    //document.getElementById('botonSortearWV').click();
+                }
+            </script>
+        </p:panel>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

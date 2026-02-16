@@ -1,0 +1,277 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.15.0.final using JasperReports Library version 6.15.0-dd49bfb94918336b8321d5507193f0169ead4e95  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="990" pageHeight="914" columnWidth="950" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09b0a97c-e717-407e-a0d7-efb5f8aa07aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="hora" class="java.lang.String"/>
+	<parameter name="usuario" class="java.lang.String"/>
+	<parameter name="resoluciones" class="java.lang.String"/>
+	<parameter name="oficios" class="java.lang.String"/>
+	<parameter name="providencias" class="java.lang.String"/>
+	<parameter name="miembros" class="java.lang.String"/>
+	<field name="nombre" class="java.lang.String"/>
+	<field name="causa" class="java.lang.String"/>
+	<field name="nro" class="java.lang.String"/>
+	<field name="tipo" class="java.lang.String"/>
+	<field name="preopinante" class="java.lang.String"/>
+	<variable name="preopinante1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_preopinante" calculation="Count">
+		<variableExpression><![CDATA[$F{preopinante}]]></variableExpression>
+	</variable>
+	<variable name="nombre1" class="java.lang.Integer" resetType="Group" resetGroup="grupo_nombre" calculation="Count">
+		<variableExpression><![CDATA[$F{nombre}]]></variableExpression>
+	</variable>
+	<variable name="causa1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{causa}]]></variableExpression>
+	</variable>
+	<group name="grupo_nombre">
+		<groupExpression><![CDATA[$F{nombre}]]></groupExpression>
+		<groupHeader>
+			<band height="30">
+				<staticText>
+					<reportElement x="60" y="1" width="110" height="20" uuid="28cc452a-3a3b-494b-ab89-5fe183ef2662"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[Firmante:]]></text>
+				</staticText>
+				<textField isBlankWhenNull="true">
+					<reportElement x="173" y="1" width="647" height="20" uuid="fa473cc7-d9ae-46df-a006-4aa1ac2b32d2"/>
+					<textElement textAlignment="Left" verticalAlignment="Top">
+						<font size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{nombre}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="31">
+				<staticText>
+					<reportElement mode="Transparent" x="670" y="0" width="184" height="26" backcolor="#FFFFFF" uuid="231b0e44-f60d-44ec-80d8-1b14499542f7"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Cant. firmante:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="856" y="-2" width="54" height="28" uuid="69d4025f-4e59-4d8f-b518-9a945706e8cd"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{nombre1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<group name="grupo_preopinante">
+		<groupExpression><![CDATA[$F{preopinante}]]></groupExpression>
+		<groupHeader>
+			<band height="24">
+				<staticText>
+					<reportElement x="80" y="1" width="156" height="20" uuid="2445c2aa-e7f5-40cd-bbeb-917c27e4ed61"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true" isItalic="false"/>
+					</textElement>
+					<text><![CDATA[En caracter de:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="239" y="0" width="581" height="21" uuid="4af66ab8-a9cd-446f-ae39-0b435913fe1f"/>
+					<textElement verticalAlignment="Top">
+						<font size="16"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{preopinante}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+		<groupFooter>
+			<band height="30">
+				<staticText>
+					<reportElement mode="Transparent" x="576" y="0" width="237" height="26" backcolor="#FFFFFF" uuid="56143a60-dd83-4a2b-a702-6ec18e7d333e"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true" isItalic="true"/>
+					</textElement>
+					<text><![CDATA[Cant. en caracter de:]]></text>
+				</staticText>
+				<textField>
+					<reportElement x="815" y="0" width="54" height="26" uuid="faa6ed5d-b2b6-41ec-a390-c3ec398d78f7"/>
+					<textElement textAlignment="Right">
+						<font size="16" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$V{preopinante1}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupFooter>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="136" splitType="Stretch">
+			<image>
+				<reportElement x="111" y="0" width="267" height="56" uuid="eeb2daeb-60c8-4836-a09b-b1278f4f259b"/>
+				<imageExpression><![CDATA["imagen_logo_chico.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Transparent" x="714" y="14" width="40" height="20" backcolor="#FFFFFF" uuid="e708e306-ec31-466a-8d26-6db6ad440c76"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement mode="Transparent" x="714" y="36" width="40" height="20" backcolor="#FFFFFF" uuid="65602405-6ab7-44e5-be1b-87fc4a2bb81e"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Hora:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="754" y="14" width="100" height="20" uuid="59a4cf77-ee80-4388-a142-07a6aefbbfcb"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="754" y="36" width="100" height="20" uuid="87dfea4d-1aa3-419e-a97f-bb16de91c069"/>
+				<textFieldExpression><![CDATA[$P{hora}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="714" y="60" width="56" height="20" backcolor="#FFFFFF" uuid="7dca6fed-6a69-48a6-9aa3-3024565e5151"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Usuario:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="770" y="60" width="180" height="20" uuid="781ab38b-8b37-43e0-b52d-d60bccf8cb61"/>
+				<textFieldExpression><![CDATA[$P{usuario}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="63" width="80" height="15" uuid="2486f80b-eb3e-4a9f-be2d-9c0a9cfcc32f"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Resoluciones:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="150" y="63" width="80" height="15" uuid="7d25392f-a063-4253-a424-6ca5514165a3"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Providencias:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="300" y="63" width="50" height="15" uuid="5f380631-564f-4ce9-9c10-8dc5afbd9368"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Oficios:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="82" y="63" width="43" height="15" uuid="c62978c0-7fae-45df-9f0f-b6a220036d3c"/>
+				<textFieldExpression><![CDATA[$P{resoluciones}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="349" y="63" width="48" height="15" uuid="97c36907-bc89-4c5c-9766-019c3ac5bd2a"/>
+				<textFieldExpression><![CDATA[$P{oficios}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="234" y="63" width="38" height="15" uuid="7fbb6e87-5f57-4069-aff8-9fa119152225"/>
+				<textFieldExpression><![CDATA[$P{providencias}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="0" width="320" height="60" uuid="f24007e2-ff1f-48a6-8131-0245278ed749"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Detalle de Firma de Actuaciones]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="85" width="150" height="15" uuid="6dd10de1-9812-42eb-8ee7-cfe07a60448e"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Firmantes seleccionados:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="150" y="85" width="800" height="45" uuid="cd7e45be-621b-4c69-9604-c80e155b5de4"/>
+				<textFieldExpression><![CDATA[$P{miembros}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="39">
+			<rectangle>
+				<reportElement mode="Transparent" x="2" y="4" width="948" height="29" uuid="1223f60b-c048-4e94-a251-d0a0b44adcf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="576" y="14" width="109" height="20" uuid="75317be7-7eb1-4b2d-af41-71f198faa8c1"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Causa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="760" y="13" width="109" height="20" uuid="2c008cdd-a26f-40f5-89df-44a9a6a44432"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Nro]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="453" y="14" width="88" height="20" uuid="f197aec2-4251-4262-a06a-d6a3c3527a51"/>
+				<textElement textAlignment="Center">
+					<font isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Tipo]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="34">
+			<line>
+				<reportElement x="17" y="24" width="933" height="2" uuid="ec6a11f2-bc34-4982-8c5d-c2dccbdb370b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="568" y="3" width="100" height="17" uuid="e45013c4-e101-40f2-b7a0-a0dc5d65cbe9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="6a88cb9f-4b0f-4a02-bbcd-933e033efabe"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{causa}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement x="737" y="4" width="100" height="16" uuid="5f401f79-64cd-4f6f-9b39-58e07b1eec08">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="57b5e9a2-a0c6-45a2-a667-f0c3daac49d0"/>
+				</reportElement>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{nro}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="451" y="4" width="109" height="16" uuid="8ef78738-0b17-4661-be01-e2a1149215f0">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="bd9ad798-a294-4776-b277-ec1fb90f47d1"/>
+				</reportElement>
+				<textFieldExpression><![CDATA[$F{tipo}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<summary>
+		<band height="45">
+			<staticText>
+				<reportElement mode="Transparent" x="770" y="0" width="117" height="26" backcolor="#FFFFFF" uuid="d2c2e167-ebe7-45ee-9109-3dfb1019adc8"/>
+				<textElement textAlignment="Right">
+					<font size="18" isBold="true" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Total:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="890" y="-2" width="50" height="28" uuid="7af07154-3bfb-489d-a1d4-ad8f67b5a820"/>
+				<textElement textAlignment="Right">
+					<font size="18" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{causa1}]]></textFieldExpression>
+			</textField>
+		</band>
+	</summary>
+</jasperReport>

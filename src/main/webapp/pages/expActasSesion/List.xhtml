@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="ExpActasSesionListForm">
+
+            <p:panel header="#{actasSesionController.titulo}">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton" rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}"  value="#{mensajes.Create}" actionListener="#{actasSesionController.prepareCreate()}" update=":ExpActasSesionCreateForm" oncomplete="PF('ExpActasSesionCreateDialog').show()"/>
+                    <p:commandButton id="editButton" rendered="#{not actasSesionController.deshabilitarAdminActaSesion() and actasSesionController.renderedDatatable()}"   value="#{mensajes.Edit}" actionListener="#{actasSesionController.prepareEdit()}" update=":ExpActasSesionEditForm" oncomplete="PF('ExpActasSesionEditDialog').show()"  disabled="#{actasSesionController.deshabilitarEditActaSesion()}"/>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%" rendered="#{actasSesionController.renderedDatatable()}">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Desde" for="fechaDesde" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaDesde" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{actasSesionController.fechaDesde}" title="Fecha Desde"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-5 ui-g-5">
+                    <p:fieldset style="width: 100%" rendered="#{actasSesionController.renderedDatatable()}">
+                        <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                            <div align="left">
+                                <p:outputLabel value="Hasta" for="fechaHasta" style="padding-right: 5px" />
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                            <div align="left">
+                                <p:calendar size="7" id="fechaHasta" required="false" pattern="dd/MM/yyyy" navigator="true" value="#{actasSesionController.fechaHasta}" title="Fecha Hasta"  showOn="button"/>
+                            </div>
+                        </div>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-4 ui-lg-2 ui-g-2">
+                    <p:commandButton style="padding-right: 10px; width: 100%" rendered="#{actasSesionController.renderedDatatable()}" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalles, :growl" action="#{actasSesionController.buscarPorFecha()}"></p:commandButton>
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+
+                    <p:dataTable id="datalist"
+                                 value="#{actasSesionController.listaActasSesion}"
+                                 lazy="false"
+                                 rendered="#{actasSesionController.renderedDatatable()}"
+                                 rowKey="#{item.id}"
+                                 emptyMessage="#{mensajes.NoRegistros}"
+                                 var="item"
+                                 selectionMode="single"
+                                 scrollable="true" scrollHeight="300"
+                                 selection="#{actasSesionController.selected}">
+                        <p:ajax event="rowSelect" listener="#{actasSesionController.buscarDetalles()}" update=":ExpActasSesionListForm:editButton, :ExpActasSesionListForm:datalistDetalles, :ExpActasSesionListForm:datalistDetallesFirmantes"/>
+                        <p:ajax event="rowUnselect" listener="#{actasSesionController.buscarDetalles()}" update=":ExpActasSesionListForm:editButton, :ExpActasSesionListForm:datalistDetalles, :ExpActasSesionListForm:datalistDetallesFirmantes"/>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha Sesion"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaSesion}">
+                                <f:convertDateTime pattern="dd/MM/yyyy" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo sesión"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoSesion.descripcion}"/>
+                        </p:column>
+
+                        <p:column rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}">
+                            <f:facet name="header">
+                                <h:outputText value="Visible" rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="visible" disabled="true" rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}" value="#{item.visible}" >
+                                <p:ajax event="change" listener="#{actasSesionController.actualizarActaSesion(item)}" update="visible, :ExpActasSesionListForm:datalist"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Estado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.estado.descripcion}"/>
+                        </p:column>
+
+                        <p:column rendered="#{actasSesionController.renderedRevisarActaSesion()}">
+                            <f:facet name="header">
+                                <h:outputText value="Revisado" rendered="#{actasSesionController.renderedRevisarActaSesion()}"/>
+                            </f:facet>
+                            <h:selectBooleanCheckbox id="revisado" disabled="#{actasSesionController.deshabilitarRevisarActaSesion(item)}" rendered="#{actasSesionController.renderedRevisarActaSesion()}" value="#{item.revisado}" >
+                                <p:ajax event="change" listener="#{actasSesionController.actualizarRevisarActaSesion(item)}" update="revisado, :ExpActasSesionListForm:datalist"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Persona Revisado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaRevisado.nombresApellidos}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha hora revisado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                <f:convertDateTime pattern="dd/MM/yyyy hh:mm:ss" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandButton id="verDocButton" value="Ver" update="ExpActasSesionViewForm, :growl" rendered="#{not actasSesionController.deshabilitarBotonVerEnVentana(item)}" actionListener="#{actasSesionController.prepareDialogoVerDoc(item)}" oncomplete="PF('ExpActasSesionViewDialog').show(); PF('ExpActasSesionViewDialog').toggleMaximize();"  disabled="#{empty item.archivo}"/>
+                            <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" rendered="#{actasSesionController.deshabilitarBotonVerEnVentana(item)}" value="Ver" action="#{actasSesionController.verDoc(item)}"/>
+                        </p:column>
+
+
+                        <p:column rendered="#{actasSesionController.renderedRegenerarQR()}">
+                            <f:facet name="header">
+                                <h:outputText value="Impresión QR"/>
+                            </f:facet>
+                            <p:commandButton id="versionImpresionButton" update=":growl" ajax="false" onclick="this.form.target = '_blank'" disabled="#{actasSesionController.deshabilitarRegenerarQR(item)}" rendered="#{actasSesionController.renderedRegenerarQR()}" value="Impresión QR" action="#{actasSesionController.versionImpresion(item)}"/>
+                        </p:column>
+
+                        <p:column  rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}">
+                            <f:facet name="header">
+                                <h:outputText value="Borrar" rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}"/>
+                            </f:facet>
+                            <p:commandButton id="borrarDocButton" value="Borrar" rendered="#{not actasSesionController.deshabilitarAdminActaSesion()}" update=":ExpActasSesionListForm:datalist, :ExpActasSesionListForm:datalistDetalles, :growl" actionListener="#{actasSesionController.borrarActaSesion(item)}"/>
+                        </p:column>
+                    </p:dataTable>
+                    <h:inputHidden id="hiddenSizeId" value="#{actasSesionController.itemsSize}" />
+                    <h:inputHidden id="hiddenIxId" value="#{actasSesionController.newItemIx}" />
+                </div>
+                <div class="ui-sm-12 ui-md-6 ui-lg-6 ui-g-6">
+
+                    <p:fieldset legend="Firmantes" style="width: 100%" rendered="#{actasSesionController.renderedDatatable()}">
+                        <p:dataTable id="datalistDetallesFirmantes"
+                                     value="#{actasSesionController.listaDetallesFirmantes}"
+                                     lazy="false"
+                                     rowKey="#{item.id}"
+                                     emptyMessage="#{mensajes.NoRegistros}"
+                                     var="item"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     selectionMode="single"
+                                     selection="#{actasSesionController.detallesFirmantesSelected}">
+                            <p:column sortBy="#{item.personaFirmante.ci}" filterBy="#{item.personaFirmante.ci}">
+                                <f:facet name="header">
+                                    <h:outputText value="Cédula"/>
+                                </f:facet>
+                                <h:outputText value="#{item.personaFirmante.ci}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{item.personaFirmante.nombresApellidos}" filterBy="#{item.personaFirmante.nombresApellidos}">
+                                <f:facet name="header">
+                                    <h:outputText value="Nombres apellidos"/>
+                                </f:facet>
+                                <h:outputText value="#{item.personaFirmante.nombresApellidos}"/>
+                            </p:column>
+
+                            <p:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Firmado"/>
+                                </f:facet>
+                                <h:outputText value="#{item.firmadoString}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </div>
+                <div class="ui-sm-12 ui-md-6 ui-lg-6 ui-g-6">
+
+                    <p:fieldset legend="Expedientes Asociados" rendered="#{actasSesionController.renderedDatatable()}" style="width: 100%">
+                        <p:dataTable id="datalistDetalles"
+                                     value="#{actasSesionController.listaDetallesActaSesion}"
+                                     lazy="false"
+                                     rowKey="#{item.id}"
+                                     emptyMessage="#{mensajes.NoRegistros}"
+                                     var="item"
+                                     paginator="true"
+                                     paginatorPosition="bottom"
+                                     rows="10"
+                                     rowsPerPageTemplate="10,20,30,40,50"
+                                     selectionMode="single"
+                                     selection="#{actasSesionController.detalleActaSesionSelected}">
+
+                            <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.documentoJudicial.causa}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                            </p:column>
+
+                            <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                            </p:column>
+
+                            <p:column rendered="false">
+                                <f:facet name="header">
+                                    <h:outputText value="Ver"/>
+                                </f:facet>
+                                <p:commandLink action="#{actasSesionController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                    Ver
+                                </p:commandLink>
+                            </p:column>
+                        </p:dataTable>
+                    </p:fieldset>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

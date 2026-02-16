@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:pe="http://primefaces.org/ui/extensions"
+                xmlns:p="http://primefaces.org/ui">
+
+    <div class="ui-g">
+        <h:form id="QRListForm">
+
+            <p:panel header="QR">
+                <div class="ui-sm-12 ui-md-12 ui-g-12">
+                    <p:commandButton id="createButton" icon="ui-icon-plus" value="#{mensajes.Create}" actionListener="#{qrController.prepareCreate}" update=":QRCreateForm" oncomplete="PF('QRCreateDialog').show()"/>
+                </div>
+            </p:panel>
+            <ui:include src="/pages/confirmation.xhtml"/>
+        </h:form>
+    </div>
+
+</ui:composition>

@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpNotificacionesListForm">
+
+        <div class="ui-g">
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:fieldset style="width: 100%" legend="Incluir">
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox value="#{expPersonasFirmantesPorActuacionesController.filtrarResoluciones}" itemLabel="Resoluciones" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox value="#{expPersonasFirmantesPorActuacionesController.filtrarOficios}" itemLabel="Oficios" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox value="#{expPersonasFirmantesPorActuacionesController.filtrarProvidencias}" itemLabel="Providencias" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox value="#{expPersonasFirmantesPorActuacionesController.filtrarOtros}" itemLabel="Otros" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:commandButton style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, :growl" action="#{expPersonasFirmantesPorActuacionesController.buscar()}"></p:commandButton>
+                    </div>
+                </p:fieldset>
+            </div>
+            <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                <p:commandButton style="padding-right: 10px; width: 100%" onclick="window.open('sdf://#{expPersonasFirmantesPorActuacionesController.sessionIdFirma}','_self')" actionListener="#{expPersonasFirmantesPorActuacionesController.firmarMultiple()}" value="Firmar múltiple" update=":growl"/>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel header="FIRMAS PENDIENTES">
+                    <p:dataTable id="datalist"
+                                 value="#{expPersonasFirmantesPorActuacionesController.items}"
+                                 rowStyleClass="#{item.firmarMultiple?'green':'white'}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+                        <!--
+                                 To enable Lazy Loading, please copy/replace the following lines above,
+                                 and be sure to replace the word HASH with the # symbol:
+                        
+                                 value="HASH{expNotificacionesController.lazyItems}"
+                                 lazy="true"
+                                 rowKey="HASH{item.id}"  <<< Remove this line
+                        -->
+                        
+
+                        <p:column sortBy="#{item.personaFirmante.nombresApellidos}" filterBy="#{item.personaFirmante.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="Firmante"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaFirmante.nombresApellidos}"/>
+                        </p:column> 
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha carga"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.fechaHoraAlta}">
+                                <f:convertDateTime pattern="#{expPersonasFirmantesPorActuacionesController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Revisado"/>
+                            </f:facet>                                    
+                            <h:selectBooleanCheckbox disabled="true" value="#{item.revisado}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Revisado por"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.personaRevisado}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha revisión"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                <f:convertDateTime pattern="#{expPersonasFirmantesPorActuacionesController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.tipoActuacion.descripcion}"/>
+                        </p:column>
+                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.descripcion}"/>
+                        </p:column>
+
+                        <ui:remove>
+                            <p:column >
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListExpPersonasFirmantesPorActuacionesTitle_fechaHoraAlta}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechaHoraAlta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                                </h:outputText>
+                            </p:column>
+                        </ui:remove>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Firmar"/>
+                            </f:facet>                                    
+                            <h:selectBooleanCheckbox value="#{item.firmarMultiple}" >
+                                <p:ajax event="change" listener="#{expPersonasFirmantesPorActuacionesController.actualizarFirmarMultiple(item)}" update="datalist,:growl" />
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" value="Ver" action="#{documentosJudicialesController.verDoc(item.actuacion)}" disabled="#{empty item.actuacion.archivo}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel header="DOCUMENTOS FIRMADOS">
+                    <p:dataTable id="datalistFirmados"
+                                 value="#{expPersonasFirmantesPorActuacionesController.listaFirmados}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 var="item"
+                                 paginator="true"
+                                 paginatorPosition="bottom"
+                                 rows="10"
+                                 rowsPerPageTemplate="10,20,30,40,50">
+                        <!--
+                                 To enable Lazy Loading, please copy/replace the following lines above,
+                                 and be sure to replace the word HASH with the # symbol:
+                        
+                                 value="HASH{expNotificacionesController.lazyItems}"
+                                 lazy="true"
+                                 rowKey="HASH{item.id}"  <<< Remove this line
+                        -->
+
+                        <p:column sortBy="#{item.personaFirmante.nombresApellidos}" filterBy="#{item.personaFirmante.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="Firmante"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaFirmante.nombresApellidos}"/>
+                        </p:column>  
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha firma"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.fechaHoraFirma}">
+                                <f:convertDateTime pattern="#{expPersonasFirmantesPorActuacionesController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Revisado"/>
+                            </f:facet>                                    
+                            <h:selectBooleanCheckbox disabled="true" value="#{item.revisado}" />
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Revisado por"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.personaRevisado}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Fecha revisión"/>
+                            </f:facet>                                    
+                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                <f:convertDateTime pattern="#{expPersonasFirmantesPorActuacionesController.datePattern3()}" timeZone="America/Asuncion" />
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpNotificacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Tipo Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.tipoActuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.actuacion.descripcion}"/>
+                        </p:column>
+
+                        <ui:remove>
+                            <p:column >
+                                <f:facet name="header">
+                                    <h:outputText value="#{mensajes.ListExpPersonasFirmantesPorActuacionesTitle_fechaHoraAlta}"/>
+                                </f:facet>
+                                <h:outputText value="#{item.fechaHoraAlta}">
+                                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"/>
+                                </h:outputText>
+                            </p:column>
+                        </ui:remove>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandButton id="viewDocButton" ajax="false" onclick="this.form.target = '_blank'" value="Ver" action="#{documentosJudicialesController.verDoc(item.actuacion)}" disabled="#{empty item.actuacion.archivo}"/>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

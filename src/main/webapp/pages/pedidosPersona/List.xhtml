@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="PedidosPersonaCreateForm">
+
+        <div align="left">
+            <div class="ui-g">
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-8 ui-g-8">
+                    <div align="center">
+                        <p:graphicImage library="manhattan-layout" style="width: 300px" value="/resources/images/imagen_logo.jpg"/>
+
+                    </div>
+                        <div class="ui-md-2 ui-lg-2 ui-g-2">
+                        </div>
+                        <div class="ui-sm-12 ui-md-8 ui-lg-8 ui-g-8">
+                            <p:fieldset style="margin-top: 10px;" >
+                                <div align="justify">
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="Se encuentran generados los antecedentes de todos los magistrados, agentes " />
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="fiscales y defensores públicos cuyos cargos se encuentran vacantes por " />
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="fenecimiento de mandato y fueron objeto de convocatoria por parte del " />
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="Consejo de la Magistratura, a través de los Edictos Nro 1 al 6/2021 " />
+                                    <br/>
+                                    <br/>
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="Se aclara que los datos referentes a todos los magistrados, agentes fiscales y defensores públicos, en " />
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="su totalidad estarán disponibles en los próximos días.  Seguimos trabajando " />
+                                    <p:outputLabel style="font-size: 20px; width: 100%;"  value="para una mejor gestión" />
+                                </div>
+                            </p:fieldset>
+                        </div>
+                        <div class="ui-md-2 ui-lg-2 ui-g-2">
+                        </div>
+                    <h:panelGroup id="display" >
+                        <p:fieldset legend="CREACION DE USUARIO" style="margin-top: 10px;" >
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_ci}" for="ci" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputNumber id="ci" style="width: 100%" decimalSeparator="," decimalPlaces="0" thousandSeparator="" maxValue="99999999" value="#{pedidosPersonaController.selected.ci}" title="#{mensajes.CreatePedidosPersonaTitle_ci}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_ci}" size="50">
+                                        <p:ajax event="change" update="botonGuardar, nombresApellidos, despachoPersona, departamentoPersona, localidadPersona, descripcionDespachoPersona, descripcionDepartamentoPersona, descripcionLocalidadPersona" listener="#{pedidosPersonaController.actualizarDatos()}" />
+                                    </p:inputNumber>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_nombresApellidos}" for="nombresApellidos" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="nombresApellidos" disabled="#{pedidosPersonaController.deshabilitarNombresApellidos()}" style="width: 100%" value="#{pedidosPersonaController.selected.nombresApellidos}" title="#{mensajes.CreatePedidosPersonaTitle_nombresApellidos}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_email}" for="email" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="email" style="width: 100%" value="#{pedidosPersonaController.selected.email}" title="#{mensajes.CreatePedidosPersonaTitle_email}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_email}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_telefono1}" for="telefono1" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="telefono1" style="width: 100%" value="#{pedidosPersonaController.selected.telefono1}" title="#{mensajes.CreatePedidosPersonaTitle_telefono1}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_telefono1}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_usuario}" for="usuario" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="usuario" style="width: 100%" value="#{pedidosPersonaController.selected.usuario}" title="#{mensajes.CreatePedidosPersonaTitle_usuario}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_usuario}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_contrasena1}" for="contrasena1" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="contrasena1" type="password" style="width: 100%" value="#{pedidosPersonaController.contrasena1}" title="#{mensajes.CreatePedidosPersonaTitle_contrasena1}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_contrasena1}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_contrasena2}" for="contrasena2" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <h:panelGroup style="width: 100%">
+                                    <p:inputText id="contrasena2" type="password" style="width: 100%" value="#{pedidosPersonaController.contrasena2}" title="#{mensajes.CreatePedidosPersonaTitle_contrasena2}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_contrasena2}" size="50" maxlength="100"/>
+                                </h:panelGroup>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_despachoPersona}" for="despachoPersona" />
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <div class="ui-sm-2 ui-md-2 ui-lg-2 ui-g-2">
+                                    <p:selectOneRadio id="despachoPersonaRadio" style="width: 100%" layout="pageDirection" value="#{pedidosPersonaController.despachoPersonaRadio}">
+                                        <p:ajax event="change" update="despachoPersona, descripcionDespachoPersona" />
+                                        <f:selectItem itemLabel="Elegir" itemValue="1"/>
+                                        <f:selectItem itemLabel="O Escribir" itemValue="2"/>
+                                    </p:selectOneRadio>
+
+                                </div>
+                                <div class="ui-sm-10 ui-md-10 ui-lg-10 ui-g-10">
+                                    <h:panelGroup style="width: 100%">
+                                        <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                            <p:selectOneMenu id="despachoPersona" editable="#{not pedidosPersonaController.deshabilitarEdicionDespachoPersona}" disabled="#{pedidosPersonaController.deshabilitarDespachoPersona()}" style="width: 100%" value="#{pedidosPersonaController.selected.despachoPersona}"  converter="despachosPersonaConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{despachosPersonaController.items}"
+                                                               var="despachoPersonaItem"
+                                                               itemValue="#{despachoPersonaItem}"
+                                                               itemLabel="#{despachoPersonaItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                        <p:inputText id="descripcionDespachoPersona" disabled="#{pedidosPersonaController.deshabilitarDescripcionDespachoPersona()}" style="width: 100%" value="#{pedidosPersonaController.selected.descripcionDespachoPersona}" title="#{mensajes.CreatePedidosPersonaTitle_descripcionDespachoPersona}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_descripcionDespachoPersona}" size="50" maxlength="100"/>
+                                    </h:panelGroup> 
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_departamentoPersona}" for="departamentoPersona" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <div class="ui-sm-2 ui-md-2 ui-lg-2 ui-g-2">
+                                    <p:selectOneRadio id="departamentoPersonaRadio" style="visibility: hidden; width: 100%" layout="pageDirection" value="#{pedidosPersonaController.departamentoPersonaRadio}">
+                                        <p:ajax event="change" update="departamentoPersona, descripcionDepartamentoPersona" />
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                    </p:selectOneRadio>
+                                </div>
+                                <div class="ui-sm-10 ui-md-10 ui-lg-10 ui-g-10">
+                                    <h:panelGroup style="width: 100%">
+                                        <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                            <p:selectOneMenu id="departamentoPersona" disabled="#{pedidosPersonaController.deshabilitarDepartamentoPersona()}"  style="width: 100%" filter="true" filterMatchMode="contains" value="#{pedidosPersonaController.selected.departamentoPersona}"  converter="departamentosPersonaConverter">
+                                                <p:ajax event="change" update="localidadPersona" listener="#{pedidosPersonaController.actualizarListaLocalidad()}" />
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{departamentosPersonaController.items}"
+                                                               var="departamentoPersonaItem"
+                                                               itemValue="#{departamentoPersonaItem}"
+                                                               itemLabel="#{departamentoPersonaItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                        <p:inputText id="descripcionDepartamentoPersona" rendered="false" disabled="#{pedidosPersonaController.deshabilitarDescripcionDepartamentoPersona()}" style="width: 100%" value="#{pedidosPersonaController.selected.descripcionDepartamentoPersona}" title="#{mensajes.CreatePedidosPersonaTitle_descripcionDepartamentoPersona}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_descripcionDepartamentoPersona}" size="50" maxlength="100"/>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-3 ui-g-3">
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_localidadPersona}" for="localidadPersona" />
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-9 ui-g-9">
+                                <div class="ui-sm-2 ui-md-2 ui-lg-2 ui-g-2">
+                                    <p:selectOneRadio id="localidadPersonaRadio" style="visibility: hidden; width: 100%" layout="pageDirection" value="#{pedidosPersonaController.localidadPersonaRadio}">
+                                        <p:ajax event="change" update="localidadPersona, descripcionLocalidadPersona" />
+                                        <f:selectItem itemValue="1"/>
+                                        <f:selectItem itemValue="2"/>
+                                    </p:selectOneRadio>
+                                </div>
+                                <div class="ui-sm-10 ui-md-10 ui-lg-10 ui-g-10">
+                                    <h:panelGroup style="width: 100%">
+                                        <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                            <p:selectOneMenu id="localidadPersona" disabled="#{pedidosPersonaController.deshabilitarLocalidadPersona()}"  style="width: 100%" filter="true" filterMatchMode="contains" value="#{pedidosPersonaController.selected.localidadPersona}" converter="localidadesPersonaConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{pedidosPersonaController.listaLocalidades}"
+                                                               var="localidadPersonaItem"
+                                                               itemValue="#{localidadPersonaItem}"
+                                                               itemLabel="#{localidadPersonaItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                        <p:inputText id="descripcionLocalidadPersona" rendered="false" disabled="#{pedidosPersonaController.deshabilitarDescripcionLocalidadPersona()}" style="width: 100%" value="#{pedidosPersonaController.selected.descripcionDepartamentoPersona}" title="#{mensajes.CreatePedidosPersonaTitle_descripcionLocalidadPersona}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_descripcionLocalidadPersona}" size="50" maxlength="100"/>
+                                    </h:panelGroup>
+                                </div>
+                            </div>
+
+                            <ui:remove>
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_estado}" for="estado" />
+                                <h:panelGroup>
+                                    <p:inputText id="estado" value="#{pedidosPersonaController.selected.estado}" title="#{mensajes.CreatePedidosPersonaTitle_estado}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_estado}" size="2" maxlength="2"/>
+                                    <p:tooltip for="estado" value="#{pedidosPersonaController.getComponentMessages('estado', mensajes.CreatePedidosPersonaHelpText_estado)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                                <h:panelGroup>
+                                    <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosPersonaController.selected.fechaHoraAlta}" title="#{mensajes.CreatePedidosPersonaTitle_fechaHoraAlta}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                                    <p:tooltip for="fechaHoraAlta" value="#{pedidosPersonaController.getComponentMessages('fechaHoraAlta', mensajes.CreatePedidosPersonaHelpText_fechaHoraAlta)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_usuarioAlta}" for="usuarioAlta" />
+                                <h:panelGroup>
+                                    <p:inputText id="usuarioAlta" value="#{pedidosPersonaController.selected.usuarioAlta}" title="#{mensajes.CreatePedidosPersonaTitle_usuarioAlta}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_usuarioAlta}"/>
+                                    <p:tooltip for="usuarioAlta" value="#{pedidosPersonaController.getComponentMessages('usuarioAlta', mensajes.CreatePedidosPersonaHelpText_usuarioAlta)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                                <h:panelGroup>
+                                    <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosPersonaController.selected.fechaHoraUltimoEstado}" title="#{mensajes.CreatePedidosPersonaTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                                    <p:tooltip for="fechaHoraUltimoEstado" value="#{pedidosPersonaController.getComponentMessages('fechaHoraUltimoEstado', mensajes.CreatePedidosPersonaHelpText_fechaHoraUltimoEstado)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                                <h:panelGroup>
+                                    <p:calendar id="usuarioUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{pedidosPersonaController.selected.usuarioUltimoEstado}" title="#{mensajes.CreatePedidosPersonaTitle_usuarioUltimoEstado}"  showOn="button"/>
+                                    <p:tooltip for="usuarioUltimoEstado" value="#{pedidosPersonaController.getComponentMessages('usuarioUltimoEstado', mensajes.CreatePedidosPersonaHelpText_usuarioUltimoEstado)}"/>
+                                </h:panelGroup>
+
+                                <p:outputLabel value="#{mensajes.CreatePedidosPersonaLabel_empresa}" for="empresa" />
+                                <h:panelGroup>
+                                    <p:selectOneMenu id="empresa" value="#{pedidosPersonaController.selected.empresa}" required="false" requiredMessage="#{mensajes.CreatePedidosPersonaRequiredMessage_empresa}" converter="empresasConverter">
+                                        <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                        <f:selectItems value="#{empresasController.items}"
+                                                       var="empresaItem"
+                                                       itemValue="#{empresaItem}"
+                                                       itemLabel="#{empresaItem.id.toString()}"
+                                                       />
+
+                                    </p:selectOneMenu>
+                                    <p:tooltip for="empresa" value="#{pedidosPersonaController.getComponentMessages('empresa', mensajes.CreatePedidosPersonaHelpText_empresa)}"/>
+                                </h:panelGroup>
+                            </ui:remove>
+                        </p:fieldset>
+                    </h:panelGroup>
+                </div>
+                <div class="ui-lg-2 ui-g-2">
+                </div>
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                    <div align="center">
+                        <p:commandButton id="botonGuardar" actionListener="#{pedidosPersonaController.saveNew()}" disabled="#{pedidosPersonaController.deshabilitarBoton}" value="#{pedidosPersonaController.leyenda}" update=":growl">
+                            <p:confirm header="#{mensajes.ConfirmationHeader}" message="Desea enviar pedido?" icon="ui-icon-alert"/>
+                        </p:commandButton>
+
+                        <p:commandButton actionListener="#{pedidosPersonaController.volver()}"  value="Volver" update=":growl"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidosAntecedenteViewDlg" widgetVar="PedidosAntecedenteViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewPedidosAntecedenteTitle}" closeOnEscape="true">
+
+            <h:form id="PedidosAntecedenteViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{pedidosAntecedenteController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_id}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.id}" title="#{mensajes.ViewPedidosAntecedenteTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_nombresApellidos}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.nombresApellidos}" title="#{mensajes.ViewPedidosAntecedenteTitle_nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_ci}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.ci}" title="#{mensajes.ViewPedidosAntecedenteTitle_ci}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_estado}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.estado}" title="#{mensajes.ViewPedidosAntecedenteTitle_estado}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.fechaHoraAlta}" title="#{mensajes.ViewPedidosAntecedenteTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_usuarioAlta}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.usuarioAlta}" title="#{mensajes.ViewPedidosAntecedenteTitle_usuarioAlta}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewPedidosAntecedenteTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.usuarioUltimoEstado}" title="#{mensajes.ViewPedidosAntecedenteTitle_usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_cargoPersona}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.cargoPersona.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosAntecedenteLabel_empresa}"/>
+                        <h:outputText value="#{pedidosAntecedenteController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('PedidosAntecedenteViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

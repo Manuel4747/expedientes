@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="ExpExpActuacionesListForm">
+        <div class="ui-g">
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:fieldset style="width: 100%" rendered="#{expActuacionesController.renderedFiltros()}" legend="Incluir">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                        <p:panelGrid columns="2" styleClass="ui-noborder">
+                            <p:selectOneMenu rendered="#{expActuacionesController.renderedFiltroPersonas() and expActuacionesController.renderedFiltros()}" filter="true" id="personas" filterMatchMode="contains" value="#{expActuacionesController.personaSelected}" converter="personasConverter">
+                                <f:selectItem itemLabel="Todos"/>
+                                <f:selectItems value="#{expActuacionesController.listaPersonas}"
+                                               var="personaItem"
+                                               itemValue="#{personaItem}"
+                                               itemLabel="#{personaItem.ci} - #{personaItem.nombresApellidos}"
+                                               />
+
+                            </p:selectOneMenu>
+                        </p:panelGrid>
+                    </div>
+
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox rendered="#{expActuacionesController.renderedFiltrosResoluciones() and expActuacionesController.renderedFiltros()}" value="#{expActuacionesController.filtrarResoluciones}" itemLabel="Resoluciones" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox rendered="#{expActuacionesController.renderedFiltros()}" value="#{expActuacionesController.filtrarOficios}" itemLabel="Oficios" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:selectBooleanCheckbox rendered="#{expActuacionesController.renderedFiltros()}" value="#{expActuacionesController.filtrarProvidencias}" itemLabel="Providencias" />
+                    </div>
+                    <div class="ui-sm-12 ui-md-2 ui-lg-2 ui-g-2">
+                        <p:commandButton rendered="#{expActuacionesController.renderedFiltros()}" style="padding-right: 10px; width: 100%" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistAlt, :growl" action="#{expActuacionesController.buscar()}"></p:commandButton>
+                    </div>
+                </p:fieldset>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:commandButton id="verifButton" style="height: 50px" value="Verificiar Oficios" rendered="#{expActuacionesController.renderedVerifOficios()}" onclick="monitorExporting(startHandler(0), endHandler)" actionListener="#{expActuacionesController.actualizarOficiosElectronicos()}" update="datalist, :growl" />
+            </div>
+
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel header="#{expActuacionesController.titulo}">
+                    <p:dataTable id="datalist"
+                                 value="#{expActuacionesController.listaPendientes}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 rowStyleClass="#{expActuacionesController.rowClass(item)}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="10"
+                                 paginatorPosition="bottom  "
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{expActuacionesController.selected}">
+                        <ui:remove>
+                            <p:column rendered="#{not expActuacionesController.deshabilitarDatosRevision()}">
+                                <f:facet name="header">
+                                    <h:outputText value="Revisado"/>
+                                </f:facet>
+                                <h:graphicImage name="#{expActuacionesController.revisado(item)}" styleClass="modalResponsivo2" />
+                            </p:column>
+                            <p:column priority="1">
+                                <f:facet name="header">
+                                    <h:outputText value="Plazo transcurrido"/>
+                                </f:facet>
+                                <h:outputText value="#{expActuacionesController.cantDiasEnjuiciamiento(item)}"/>
+                            </p:column>
+                        </ui:remove>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.descripcion}" filterBy="#{item.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Descripción"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.tipoActuacion.descripcion}" filterBy="#{item.tipoActuacion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Tipo actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoActuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column rendered="#{not expActuacionesController.deshabilitarDatosRevision()}" sortBy="#{item.personaRevisado}" filterBy="#{item.personaRevisado}">
+                            <f:facet name="header">
+                                <h:outputText value="Revisado por"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaRevisado}"/>
+                        </p:column>
+
+                        <p:column rendered="#{not expActuacionesController.deshabilitarDatosRevision()}" sortBy="#{expActuacionesController.customFormatDate3(item.fechaHoraRevisado)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha hora revisado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern3()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{expActuacionesController.customFormatDate(item.resolucion.fecha)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha resolución"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resolucion.fecha}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.preopinante.nombresApellidos:''}" filterBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.preopinante.nombresApellidos:''}">
+                            <f:facet name="header">
+                                <h:outputText value="Preopinante"/>
+                            </f:facet>
+                            <h:outputText value="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.preopinante.nombresApellidos:''}"/>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.secretario.nombresApellidos:''}" filterBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.secretario.nombresApellidos:''}">
+                            <f:facet name="header">
+                                <h:outputText value="Secretario"/>
+                            </f:facet>
+                            <h:outputText value="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18 or item.tipoActuacion.id==4 or item.tipoActuacion.id==5)?item.secretario.nombresApellidos:''}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{expActuacionesController.customFormatDate3(item.fechaPresentacion)}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaPresentacion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaPresentacion}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern3()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{item.personaAlta.nombresApellidos}" filterBy="#{item.personaAlta.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpActuacionesTitle_remitente}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaAlta.nombresApellidos}"/>
+                        </p:column>  
+
+                        <p:column rendered="#{expActuacionesController.renderedBandejaPendientes()}">
+                            <f:facet name="header">
+                                <h:outputText value="Pendiente"/>
+                            </f:facet>                                    
+                            <h:selectBooleanCheckbox value="#{item.pendiente}" >
+                                <p:ajax event="change" listener="#{expActuacionesController.actualizarPendiente(item)}" update="datalist"/>
+                            </h:selectBooleanCheckbox>
+                        </p:column>
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{expActuacionesController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                <p:panel rendered="#{expActuacionesController.renderedPendientesAlt()}" header="#{expActuacionesController.tituloAlt}">
+                    <p:dataTable id="datalistAlt"
+                                 value="#{expActuacionesController.listaPendientesAlt}"
+                                 lazy="false"
+                                 rowKey="#{item.id}"
+                                 rowStyleClass="#{expActuacionesController.rowClass(item)}"
+                                 var="item"
+                                 paginator="true"
+                                 rows="10"
+                                 rendered="#{expActuacionesController.renderedPendientesAlt()}"
+                                 paginatorPosition="bottom  "
+                                 rowsPerPageTemplate="10,20,30,40,50"
+                                 selectionMode="single"
+                                 selection="#{expActuacionesController.selectedAlt}">
+                        <ui:remove>
+                            <p:column rendered="#{not expActuacionesController.deshabilitarDatosRevision()}">
+                                <f:facet name="header">
+                                    <h:outputText value="Revisado"/>
+                                </f:facet>
+                                <h:graphicImage name="#{expActuacionesController.revisado(item)}" styleClass="modalResponsivo2" />
+                            </p:column>
+                            <p:column priority="1">
+                                <f:facet name="header">
+                                    <h:outputText value="Plazo transcurrido"/>
+                                </f:facet>
+                                <h:outputText value="#{expActuacionesController.cantDiasEnjuiciamiento(item)}"/>
+                            </p:column>
+                        </ui:remove>
+
+                        <p:column sortBy="#{item.documentoJudicial.causa}" filterBy="#{item.documentoJudicial.causa}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_causa}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.causa}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.caratula}" filterBy="#{item.documentoJudicial.caratula}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_caratula}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.caratula}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.documentoJudicial.motivoProcesoString}" filterBy="#{item.documentoJudicial.motivoProcesoString}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpExpActuacionesTitle_motivoProceso}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.documentoJudicial.motivoProcesoString}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.descripcion}" filterBy="#{item.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Descripción"/>
+                            </f:facet>
+                            <h:outputText value="#{item.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.tipoActuacion.descripcion}" filterBy="#{item.tipoActuacion.descripcion}">
+                            <f:facet name="header">
+                                <h:outputText value="Tipo actuación"/>
+                            </f:facet>
+                            <h:outputText value="#{item.tipoActuacion.descripcion}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{item.personaRevisado}" filterBy="#{item.personaRevisado}">
+                            <f:facet name="header">
+                                <h:outputText value="Revisado por"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaRevisado}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{expActuacionesController.customFormatDate3(item.fechaHoraRevisado)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha hora revisado"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaHoraRevisado}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern3()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{expActuacionesController.customFormatDate(item.resolucion.fecha)}">
+                            <f:facet name="header">
+                                <h:outputText value="Fecha resolución"/>
+                            </f:facet>
+                            <h:outputText value="#{item.resolucion.fecha}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18)?item.preopinante.nombresApellidos:''}" filterBy="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18)?item.preopinante.nombresApellidos:''}">
+                            <f:facet name="header">
+                                <h:outputText value="Preopinante"/>
+                            </f:facet>
+                            <h:outputText value="#{(item.tipoActuacion.id==13 or item.tipoActuacion.id==18)?item.preopinante.nombresApellidos:''}"/>
+                        </p:column>
+
+                        <p:column sortBy="#{expActuacionesController.customFormatDate3(item.fechaPresentacion)}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpActuacionesTitle_fechaPresentacion}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.fechaPresentacion}">
+                                <f:convertDateTime pattern="#{expActuacionesController.datePattern3()}" timeZone="America/Asuncion"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column rendered="#{expActuacionesController.deshabilitarDatosSecretaria()}" sortBy="#{item.personaAlta.nombresApellidos}" filterBy="#{item.personaAlta.nombresApellidos}">
+                            <f:facet name="header">
+                                <h:outputText value="#{mensajes.ListExpActuacionesTitle_remitente}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.personaAlta.nombresApellidos}"/>
+                        </p:column>  
+
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="Ver"/>
+                            </f:facet>
+                            <p:commandLink action="#{expActuacionesController.navigateActuacion(item)}" ajax="false" update=":growl" >
+                                Ver
+                            </p:commandLink>
+                        </p:column>
+
+                    </p:dataTable>
+
+                </p:panel>
+            </div>
+        </div>
+        <ui:include src="/pages/confirmation.xhtml"/>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:form id="FormularioListForm">
+        <div align="center">
+            <div class="ui-g">
+                <div class="ui-g-3">
+                </div>
+                <div class="ui-sm-12 ui-md-6 ui-g-6" align="center">
+                    <div align="center">
+                        <p:graphicImage library="manhattan-layout" style="width: 300px" value="/resources/images/imagen_logo.jpg"/>
+                    </div>
+                    <div align="center">
+                        <p:panelGrid columns="1" styleClass="ui-noborder" style="align-content: center">
+                            <div align="center">
+                                <p:panelGrid columns="1" styleClass="ui-noborder">
+                                    <p:outputLabel style="font-size: 20px; width: 100%; align-self: center"  value="El plazo para validar su usuario a caducado." />
+                                    <p:outputLabel style="font-size: 20px; width: 100%; align-self: center"  value="Si todavia desea hacerlo, por favor, vuelva a solicitarlo" />
+                                </p:panelGrid>
+                            </div>
+                        </p:panelGrid>
+                    </div>
+
+                </div>
+                <div class="ui-g-3">
+                </div>
+            </div>
+        </div>
+    </h:form>
+
+</ui:composition>

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="PedidosPersonaViewDlg" widgetVar="PedidosPersonaViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewPedidosPersonaTitle}" closeOnEscape="true">
+
+            <h:form id="PedidosPersonaViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{pedidosPersonaController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_id}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.id}" title="#{mensajes.ViewPedidosPersonaTitle_id}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_nombresApellidos}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.nombresApellidos}" title="#{mensajes.ViewPedidosPersonaTitle_nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_ci}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.ci}" title="#{mensajes.ViewPedidosPersonaTitle_ci}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_estado}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.estado}" title="#{mensajes.ViewPedidosPersonaTitle_estado}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.fechaHoraAlta}" title="#{mensajes.ViewPedidosPersonaTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_usuarioAlta}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.usuarioAlta}" title="#{mensajes.ViewPedidosPersonaTitle_usuarioAlta}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewPedidosPersonaTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.usuarioUltimoEstado}" title="#{mensajes.ViewPedidosPersonaTitle_usuarioUltimoEstado}">
+                            <f:convertDateTime pattern="MM/dd/yyyy HH:mm:ss" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_cargoPersona}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.cargoPersona.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewPedidosPersonaLabel_empresa}"/>
+                        <h:outputText value="#{pedidosPersonaController.selected.empresa.id}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('PedidosPersonaViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <p:dialog id="PersonasEditDlg" widgetVar="PersonasEditDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.EditPersonasTitle}" closeOnEscape="true">
+
+            <h:form id="PersonasEditForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid  columns="2" columnClasses="column" rendered="#{personasController.selected != null}">
+
+
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_ci}" for="ci" />
+                        <h:panelGroup>
+                            <p:inputText id="ci" value="#{personasController.selected.ci}" title="#{mensajes.EditPersonasTitle_ci}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_ci}" size="20" maxlength="20"/>
+                            <p:tooltip for="ci" value="#{personasController.getComponentMessages('ci', mensajes.EditPersonasHelpText_ci)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_nombresApellidos}" for="nombresApellidos" />
+                        <h:panelGroup>
+                            <p:inputText id="nombresApellidos" value="#{personasController.selected.nombresApellidos}" title="#{mensajes.EditPersonasTitle_nombresApellidos}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_nombresApellidos}" size="50" maxlength="100"/>
+                            <p:tooltip for="nombresApellidos" value="#{personasController.getComponentMessages('nombresApellidos', mensajes.EditPersonasHelpText_nombresApellidos)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_tipoPersona}" for="tipoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="tipoPersona" value="#{personasController.selected.tipoPersona}"  converter="tiposPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{tiposPersonaController.items}"
+                                               var="tipoPersonaItem"
+                                               itemValue="#{tipoPersonaItem}"
+                                               itemLabel="#{tipoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="tipoPersona" value="#{personasController.getComponentMessages('tipoPersona', mensajes.EditPersonasHelpText_tipoPersona)}"/>
+                        </h:panelGroup> 
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_cargoPersona}" for="cargoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="cargoPersona" filter="true" filterMatchMode="contains" value="#{personasController.selected.cargoPersona}"  converter="cargosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{cargosPersonaController.items}"
+                                               var="cargoPersonaItem"
+                                               itemValue="#{cargoPersonaItem}"
+                                               itemLabel="#{cargoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="cargoPersona" value="#{personasController.getComponentMessages('cargoPersona', mensajes.EditPersonasHelpText_cargoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_despachoPersona}" for="despachoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="despachoPersona" filter="true" filterMatchMode="contains" value="#{personasController.selected.despachoPersona}"  converter="despachosPersonaConverter">
+                                <p:ajax event="change" update="departamentoPersona, localidadPersona" listener="#{personasController.actualizarDptoYLocalidad()}"/>
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{despachosPersonaController.items}"
+                                               var="despachoPersonaItem"
+                                               itemValue="#{despachoPersonaItem}"
+                                               itemLabel="#{despachoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="despachoPersona" value="#{personasController.getComponentMessages('despachoPersona', mensajes.EditPersonasHelpText_despachoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_departamentoPersona}" for="departamentoPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="departamentoPersona" filter="true" filterMatchMode="contains" value="#{personasController.departamentoPersona}"  converter="departamentosPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{departamentosPersonaController.items}"
+                                               var="departamentoPersonaItem"
+                                               itemValue="#{departamentoPersonaItem}"
+                                               itemLabel="#{departamentoPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="departamentoPersona" value="#{personasController.getComponentMessages('departamentoPersona', mensajes.EditPersonasHelpText_departamentoPersona)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditPersonasLabel_localidadPersona}" for="localidadPersona" />
+                        <h:panelGroup>
+                            <p:selectOneMenu id="localidadPersona" filter="true" filterMatchMode="contains" value="#{personasController.localidadPersona}"  converter="localidadesPersonaConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{localidadesPersonaController.items}"
+                                               var="localidadPersonaItem"
+                                               itemValue="#{localidadPersonaItem}"
+                                               itemLabel="#{localidadPersonaItem.descripcion}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="localidadPersona" value="#{personasController.getComponentMessages('localidadPersona', mensajes.EditPersonasHelpText_localidadPersona)}"/>
+                        </h:panelGroup>
+
+                        <ui:remove>
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_estado}" for="estado" />
+                            <h:panelGroup>
+                                <p:inputText id="estado" value="#{personasController.selected.estado}" title="#{mensajes.EditPersonasTitle_estado}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_estado}" size="2" maxlength="2"/>
+                                <p:tooltip for="estado" value="#{personasController.getComponentMessages('estado', mensajes.EditPersonasHelpText_estado)}"/>
+                            </h:panelGroup>
+
+                            <h:outputLabel value="#{mensajes.EditPersonasLabel_id}" for="id" />
+                            <h:panelGroup>
+                                <h:outputText id="id" value="#{personasController.selected.id}" />
+                                <p:tooltip for="id" value="#{personasController.getComponentMessages('id', mensajes.EditPersonasHelpText_id)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraAlta" pattern="MM/dd/yyyy HH:mm:ss" value="#{personasController.selected.fechaHoraAlta}" title="#{mensajes.EditPersonasTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                                <p:tooltip for="fechaHoraAlta" value="#{personasController.getComponentMessages('fechaHoraAlta', mensajes.EditPersonasHelpText_fechaHoraAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_usuarioAlta}" for="usuarioAlta" />
+                            <h:panelGroup>
+                                <p:inputText id="usuarioAlta" value="#{personasController.selected.usuarioAlta}" title="#{mensajes.EditPersonasTitle_usuarioAlta}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_usuarioAlta}"/>
+                                <p:tooltip for="usuarioAlta" value="#{personasController.getComponentMessages('usuarioAlta', mensajes.EditPersonasHelpText_usuarioAlta)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_fechaHoraUltimoEstado}" for="fechaHoraUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="fechaHoraUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{personasController.selected.fechaHoraUltimoEstado}" title="#{mensajes.EditPersonasTitle_fechaHoraUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="fechaHoraUltimoEstado" value="#{personasController.getComponentMessages('fechaHoraUltimoEstado', mensajes.EditPersonasHelpText_fechaHoraUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                            <h:panelGroup>
+                                <p:calendar id="usuarioUltimoEstado" pattern="MM/dd/yyyy HH:mm:ss" value="#{personasController.selected.usuarioUltimoEstado}" title="#{mensajes.EditPersonasTitle_usuarioUltimoEstado}"  showOn="button"/>
+                                <p:tooltip for="usuarioUltimoEstado" value="#{personasController.getComponentMessages('usuarioUltimoEstado', mensajes.EditPersonasHelpText_usuarioUltimoEstado)}"/>
+                            </h:panelGroup>
+
+                            <p:outputLabel value="#{mensajes.EditPersonasLabel_empresa}" for="empresa" />
+                            <h:panelGroup>
+                                <p:selectOneMenu id="empresa" value="#{personasController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditPersonasRequiredMessage_empresa}" converter="empresasConverter">
+                                    <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                    <f:selectItems value="#{empresasController.items}"
+                                                   var="empresaItem"
+                                                   itemValue="#{empresaItem}"
+                                                   itemLabel="#{empresaItem.id.toString()}"
+                                                   />
+
+                                </p:selectOneMenu>
+                                <p:tooltip for="empresa" value="#{personasController.getComponentMessages('empresa', mensajes.EditPersonasHelpText_empresa)}"/>
+                            </h:panelGroup>
+                        </ui:remove>
+                    </p:panelGrid>
+                    <p:commandButton actionListener="#{personasController.save()}" value="#{mensajes.Save}" update="display,:PersonasListForm:datalist,:growl" oncomplete="handleSubmit(xhr,status,args,PF('PersonasEditDialog'));">
+                        <p:confirm header="#{mensajes.ConfirmationHeader}" message="#{mensajes.ConfirmEditMessage}" icon="ui-icon-alert"/>
+                    </p:commandButton>
+                    <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PersonasEditDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

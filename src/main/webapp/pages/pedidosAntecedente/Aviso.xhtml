@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <p:dialog id="PedidosAntecedenteAvisoDlg" positionType="absolute" widgetVar="PedidosAntecedenteAvisoDialog" modal="true" resizable="false"  appendTo="@(body)" header="Aviso" closeOnEscape="true">
+
+                <h:form id="PedidosAntecedenteAvisoForm">
+                    <div class="ui-md-4 ui-g-4">
+
+                    </div>
+                    <div class="ui-sm-12 ui-md-4 ui-g-4">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:panelGrid columns="1" styleClass="ui-noborder" rendered="#{not personasController.deshabilitarAntecedentes()}">
+                                <p align="justify">Para la modificación de los datos insertos en los campos de <strong>nombres y apellidos</strong>, y <strong>número de cédula</strong> de identidad, el usuario deberá acercarse a la oficina de atención a la ciudadanía de la institución a fin de registrar los nuevos datos de manera personal, suscribiendo un formulario de actualización de datos para usuarios.
+                                    <br/>
+                                    <br/>
+                                </p>
+                            </p:panelGrid>
+                        </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <div align="center">
+                                <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('PedidosAntecedenteAvisoDialog').hide(); endHandler();" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="ui-md-4 ui-g-4">
+
+                    </div>
+                </h:form>
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

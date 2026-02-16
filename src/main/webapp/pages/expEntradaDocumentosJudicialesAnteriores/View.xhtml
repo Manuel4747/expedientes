@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="DocumentosJudicialesViewDlg" widgetVar="DocumentosJudicialesViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewDocumentosJudicialesTitle}" closeOnEscape="true">
+
+            <h:form id="DocumentosJudicialesViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{documentosJudicialesAnterioresController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_entradaDocumento}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.entradaDocumento}" title="#{mensajes.ViewDocumentosJudicialesTitle_entradaDocumento}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_descripcionMesaEntrada}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.descripcionMesaEntrada}" title="#{mensajes.ViewDocumentosJudicialesTitle_descripcionMesaEntrada}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_juez}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.juez.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_nroExpediente}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.nroExpediente}" title="#{mensajes.ViewDocumentosJudicialesTitle_nroExpediente}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_caratula}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.caratula}" title="#{mensajes.ViewDocumentosJudicialesTitle_caratula}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_folios}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.folios}" title="#{mensajes.ViewDocumentosJudicialesTitle_folios}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_motivoProceso}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.motivoProceso}" title="#{mensajes.ViewDocumentosJudicialesTitle_motivoProceso}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_nroCausa}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.causa}" title="#{mensajes.ViewDocumentosJudicialesTitle_nroCausa}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_documento}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.tieneDocumento}" title="#{mensajes.ViewDocumentosJudicialesTitle_documento}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_estado}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.estado.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.fechaHoraAlta}" title="#{mensajes.ViewDocumentosJudicialesTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewDocumentosJudicialesTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_usuarioAlta}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.usuarioAlta.nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.usuarioUltimoEstado.nombresApellidos}"/>
+                    </p:panelGrid>
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('DocumentosJudicialesViewDialog').hide()"/>
+                </h:panelGroup>
+
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_id}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.id}" title="#{mensajes.ViewDocumentosJudicialesTitle_id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_departamento}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.departamento.nombre}"/>
+-->
+
+<!--
+                        <h:outputText value="#{mensajes.ViewDocumentosJudicialesLabel_empresa}"/>
+                        <h:outputText value="#{documentosJudicialesAnterioresController.selected.empresa.id}"/>
+-->

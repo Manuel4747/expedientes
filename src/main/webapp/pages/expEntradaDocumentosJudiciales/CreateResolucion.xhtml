@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="ResolucionesCreateDlg" positionType="absolute" widgetVar="ResolucionesCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="#{mensajes.CreateResolucionesTitle}" closeOnEscape="true">
+
+                <h:form id="ResolucionesCreateForm" enctype="multipart/form-data" >
+
+                    <h:panelGroup id="display" rendered="#{documentosJudicialesController.resolucion != null}">
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:fieldset legend="#{mensajes.CreateResolucionesLabel_documentoJudicial}" style="width: 100%">
+                                <p:panelGrid columns="1" style="width: 100%;" styleClass="ui-noborder">
+                                    <p:inputTextarea style="width: 100%" disabled="true" cols="50" rows="2" value="#{documentosJudicialesController.resolucion.caratula}" title="#{mensajes.CreateExpActuacionesTitle_caratula}" requiredMessage="#{mensajes.CreateExpActuacionesRequiredMessage_caratula}"/>
+                                </p:panelGrid>
+                            </p:fieldset>
+                        </div>
+
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateResolucionesLabel_nroResolucion}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <p:inputText value="#{documentosJudicialesController.resolucion.nroResolucion}" style="width: 100px" title="#{mensajes.CreateResolucionesTitle_nroResolucion}" required="false" requiredMessage="#{mensajes.CreateResolucionesRequiredMessage_nroResolucion}" maxlength="20"/>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateResolucionesLabel_tipoResolucion}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" value="#{documentosJudicialesController.resolucion.tipoResolucion}" required="false" requiredMessage="#{mensajes.CreateResolucionesRequiredMessage_tipoResolucion}" converter="tiposResolucionConverter">
+                                                <p:ajax event="change" update="datalistPersonas, datalistPersonas:resuelve, subtipoResolucion" listener="#{documentosJudicialesController.actualizarResuelve()}"/>
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{tiposResolucionController.items}"
+                                                               var="tipoResolucionItem"
+                                                               itemValue="#{tipoResolucionItem}"
+                                                               itemLabel="#{tipoResolucionItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateResolucionesLabel_subtipoResolucion}" for="subtipoResolucion" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                            <p:selectOneMenu filter="true" filterMatchMode="contains" disabled="#{documentosJudicialesController.deshabilitarSubtipoResolucion()}" id="subtipoResolucion" value="#{documentosJudicialesController.resolucion.subtipoResolucion}" required="false" requiredMessage="#{mensajes.CreateResolucionesRequiredMessage_subtipoResolucion}" converter="subtiposResolucionConverter">
+                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                <f:selectItems value="#{documentosJudicialesController.listaSubtiposResolucion}"
+                                                               var="subtipoResolucionItem"
+                                                               itemValue="#{subtipoResolucionItem}"
+                                                               itemLabel="#{subtipoResolucionItem.descripcion}"
+                                                               />
+
+                                            </p:selectOneMenu>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateResolucionesLabel_fecha}"/>
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:calendar pattern="dd/MM/yyyy" style="width: 100%" yearRange="c-100:c+0" navigator="true" value="#{documentosJudicialesController.resolucion.fecha}" title="#{mensajes.CreateResolucionesTitle_fecha}" required="false" requiredMessage="#{mensajes.CreateResolucionesRequiredMessage_fecha}" showOn="button"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+                        <div class="ui-sm-12 ui-md-6 ui-g-6">
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <h:outputText style="font-size: 20px" value="#{mensajes.CreateExpActuacionesLabel_archivo}" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="2" style="width: 100%">
+                                            <p:fileUpload value="#{documentosJudicialesController.file}" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un pdf" allowTypes="/(\.|\/)(pdf)$/" disabled="false" />
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-10 ui-md-3 ui-g-3">
+                                        <h:outputText style="font-size: 20px" value="#{mensajes.CreateExpActuacionesLabel_fojas}" />
+                                    </div>
+                                    <div class="ui-sm-10 ui-md-9 ui-g-9">
+                                        <p:panelGrid columns="1" style="width: 100%">
+                                            <p:inputNumber id="fojas" value="#{documentosJudicialesController.resolucion.fojas}" title="#{mensajes.CreateExpActuacionesJudicialesTitle_fojas}" required="false" requiredMessage="#{mensajes.CreateExpActuacionesRequiredMessage_fojas}" size="10" decimalPlaces="0" thousandSeparator="" decimalSeparator="," maxValue="9999"/>
+                                        </p:panelGrid>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{not documentosJudicialesController.deshabilitarEstadoProcesal()}">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <h:outputText style="font-size: 20px" rendered="#{not documentosJudicialesController.deshabilitarEstadoProcesal()}" value="#{mensajes.CreateExpActuacionesLabel_estadoProcesal}"/>
+                                    </div>
+                                    <div class="ui-sm-10 ui-md-9 ui-g-9">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" id="estadoProcesal" cols="50" rows="4" value="#{documentosJudicialesController.estadoProcesal}" title="#{mensajes.CreateExpActuacionesTitle_estadoProcesal}" requiredMessage="#{mensajes.CreateExpActuacionesRequiredMessage_estadoProcesal}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                            
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%" rendered="#{not documentosJudicialesController.deshabilitarObservacion()}">
+                                    <div class="ui-sm-12 ui-md-3 ui-g-3">
+                                        <h:outputText style="font-size: 20px" rendered="#{not documentosJudicialesController.deshabilitarObservacion()}" value="#{mensajes.CreateExpActuacionesLabel_observacion}"/>
+                                    </div>
+                                    <div class="ui-sm-10 ui-md-9 ui-g-9">
+                                        <h:panelGroup style="width: 100%">
+                                            <p:inputTextarea style="width: 100%" id="observacion" cols="50" rows="4" value="#{documentosJudicialesController.observacion}" title="#{mensajes.CreateExpActuacionesTitle_observacion}" requiredMessage="#{mensajes.CreateExpActuacionesRequiredMessage_observacion}"/>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:fieldset style="width: 100%">
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <p:outputLabel style="font-size: 20px" value="#{mensajes.CreateResolucionesLabel_persona}" for="datalistPersonas" />
+                                    </div>
+                                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                        <h:panelGroup>
+                                            <h:panelGrid columns="1" styleClass="ui-noborder" style="width: 100%">
+                                                <p:dataTable id="datalistPersonas"
+                                                             value="#{documentosJudicialesController.listaPersonasResuelve}"
+                                                             lazy="false" emptyMessage="#{mensajes.NoRegistros}"
+                                                             rowKey="#{item.id}"
+                                                             var="item"
+                                                             tableStyle="width:auto"
+                                                             paginator="false">
+
+                                                    <p:ajax event="rowSelect"   update="" />
+                                                    <p:ajax event="rowUnselect" update="" />
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.persona.ci}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{item.persona.nombresApellidos}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:panelGroup styleClass="ui-noborder" style="width: 100%">
+                                                            <p:selectOneMenu style="width:100%" filter="true" filterMatchMode="contains" id="resuelve" value="#{item.resuelve}" required="false" converter="resuelveConverter">
+                                                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                                                <f:selectItems value="#{documentosJudicialesController.listaResuelve}"
+                                                                               var="resuelveItem"
+                                                                               itemValue="#{resuelveItem}"
+                                                                               itemLabel="#{resuelveItem.descripcion}"
+                                                                               />
+
+                                                            </p:selectOneMenu>
+                                                        </h:panelGroup>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:panelGrid>
+                                        </h:panelGroup>
+                                    </div>
+                                </p:fieldset>
+                            </div>
+                        </div>
+
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" action="#{documentosJudicialesController.saveNewResolucion()}" ajax="true" value="#{mensajes.Save}" update="display,:DocumentosJudicialesListForm:datalist,:growl, :ExpActuacionesViewForm:datalistActuaciones" oncomplete="handleSubmit(xhr,status,args,PF('ResolucionesCreateDialog'));" >
+                                <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('ResolucionesCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                        </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+    </ui:composition>
+
+</html>

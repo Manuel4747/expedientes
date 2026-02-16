@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <p:dialog id="UsuariosViewDlg" widgetVar="UsuariosViewDialog" modal="true" resizable="false"  appendTo="@(body)" header="#{mensajes.ViewUsuariosTitle}" closeOnEscape="true">
+
+            <h:form id="UsuariosViewForm">
+
+                <h:panelGroup id="display">
+                    <p:panelGrid columns="2" columnClasses="column" rendered="#{usuariosController.selected != null}">
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_usuario}"/>
+                        <h:outputText value="#{usuariosController.selected.usuario}" title="#{mensajes.ViewUsuariosTitle_usuario}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_nombresApellidos}"/>
+                        <h:outputText value="#{usuariosController.selected.nombresApellidos}" title="#{mensajes.ViewUsuariosTitle_nombresApellidos}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_direccion}"/>
+                        <h:outputText value="#{usuariosController.selected.direccion}" title="#{mensajes.ViewUsuariosTitle_direccion}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_telefono}"/>
+                        <h:outputText value="#{usuariosController.selected.telefono}" title="#{mensajes.ViewUsuariosTitle_telefono}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_celular}"/>
+                        <h:outputText value="#{usuariosController.selected.celular}" title="#{mensajes.ViewUsuariosTitle_celular}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_ci}"/>
+                        <h:outputText value="#{usuariosController.selected.ci}" title="#{mensajes.ViewUsuariosTitle_ci}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_sexo}"/>
+                        <h:outputText value="#{usuariosController.selected.sexo.descripcion}" title="#{mensajes.ViewUsuariosTitle_sexo}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_pantallaPrincipal}"/>
+                        <h:outputText value="#{usuariosController.selected.pantallaPrincipal.descripcion}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_estado}"/>
+                        <h:outputText value="#{usuariosController.selected.estado.descripcion}"/>
+                        
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_usuarioAlta}"/>
+                        <h:outputText value="#{usuariosController.selected.usuarioAlta.usuario}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_fechaHoraAlta}"/>
+                        <h:outputText value="#{usuariosController.selected.fechaHoraAlta}" title="#{mensajes.ViewUsuariosTitle_fechaHoraAlta}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                        
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_usuarioUltimoEstado}"/>
+                        <h:outputText value="#{usuariosController.selected.usuarioUltimoEstado.usuario}"/>
+
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_fechaHoraUltimoEstado}"/>
+                        <h:outputText value="#{usuariosController.selected.fechaHoraUltimoEstado}" title="#{mensajes.ViewUsuariosTitle_fechaHoraUltimoEstado}">
+                            <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion" />
+                        </h:outputText>
+                    </p:panelGrid>
+
+                    <p:commandButton value="#{mensajes.Close}" onclick="PF('UsuariosViewDialog').hide()"/>
+                </h:panelGroup>
+<!--
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_empresa}"/>
+                        <h:outputText value="#{usuariosController.selected.empresa.id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_id}"/>
+                        <h:outputText value="#{usuariosController.selected.id}" title="#{mensajes.ViewUsuariosTitle_id}"/>
+-->
+<!--
+                        <h:outputText value="#{mensajes.ViewUsuariosLabel_contrasena}"/>
+                        <h:outputText value="#{usuariosController.selected.contrasena}" title="#{mensajes.ViewUsuariosTitle_contrasena}"/>
+-->
+            </h:form>
+
+        </p:dialog>
+
+    </ui:composition>
+
+</html>

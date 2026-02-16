@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+
+        <div class="ui-g">
+            <p:dialog id="QRCreateDlg" positionType="absolute" widgetVar="QRCreateDialog" modal="true" resizable="false" appendTo="@(body)" header="QR" closeOnEscape="true">
+
+                <h:form id="QRCreateForm" enctype="multipart/form-data">
+
+                    <h:panelGroup id="display" rendered="#{qrController.selected != null}">
+
+                        <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                            <div class="ui-sm-12 ui-md-12 ui-g-12">
+                                <p:outputLabel style="width: 100%" value="Hash"/>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                <p:inputText style="width: 100%" id="descripcion" value="#{qrController.hash}" title="Hash" required="true" requiredMessage="Debe ingresar descripción"/>
+                            </div>
+                        </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12" align="left">
+                                <h:outputText value="Alzar modelo en formato pdf"/>
+                            </div>
+
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                <p:panelGrid columns="2" style="width: 100%">
+                                    <p:fileUpload value="#{qrController.file}" accept=".pdf,.PDF" mode="simple" previewWidth="100"  auto="false"  cancelLabel="Cancelar" uploadLabel="Alzar" label="Buscar" invalidFileMessage="El archivo debe ser un documento pdf" allowTypes="/(\.|\/)(PDF|pdf)$/" disabled="false" />
+                                </p:panelGrid>
+                            </div>
+                            <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                                <p:commandButton id="botonGuardar" onclick="botonGuardar.disable()" action="#{qrController.guardar()}" ajax="true" value="#{mensajes.Save}" update="display,:growl" oncomplete="handleSubmit(xhr,status,args,PF('QRCreateDialog'));" >
+                                    <f:ajax execute="@all" render="@form" onevent="endHandler();" onerror="endHandler();"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="#{mensajes.Cancel}" oncomplete="PF('QRCreateDialog').hide()" update="display" process="@this" immediate="true" resetValues="true"/>
+                            </div>
+                    </h:panelGroup>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+
+    </ui:composition>
+
+</html>

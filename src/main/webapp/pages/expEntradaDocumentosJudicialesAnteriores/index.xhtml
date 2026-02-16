@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:f="http://java.sun.com/jsf/core"
+                xmlns:p="http://primefaces.org/ui"
+                template="/WEB-INF/template.xhtml">
+
+    <ui:define name="title">
+        <h:outputText value="#{mensajes.DocumentosTitle}"/>
+    </ui:define>
+
+    <ui:define name="body">
+
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/List.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateAcusacion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateAcusacionEnPapel.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateActuacion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/VerActuaciones.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateInvestigacionPreliminar.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreatePedidoDesafuero.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/OtroArchivo.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateResolucion.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreateFirmantes.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/CreatePartes.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/EditObs.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/EditEstadoProcesal.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/ListObs.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesAnteriores/ListEstadosProcesales.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesPorSecretaria/Historial.xhtml"/>
+        <ui:include src="/pages//expEntradaDocumentosJudicialesPorSecretaria/ViewTodoDoc.xhtml"/>
+        
+    </ui:define>
+
+</ui:composition>

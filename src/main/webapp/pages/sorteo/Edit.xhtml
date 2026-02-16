@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition>
+        <div class="ui-g">
+            <p:dialog id="ResolucionesEditDlg" widgetVar="ResolucionesEditDialog" positionType="absolute" modal="true" resizable="false"  appendTo="@(body)" header="Fiscal Sorteado" closeOnEscape="true">
+
+                <h:form id="ResolucionesEditForm">
+                    <div class="ui-sm-12 ui-md-12 ui-g-12">
+                        <h:panelGroup style="width: 100%">
+                            <p:inputTextarea id="sorteado" rows="3" cols="30" style="width: 100%; color: #e96443; font-size: 100px; font-style: italic" value="#{documentosJudicialesController.sorteado}" />
+                        </h:panelGroup>
+                    </div>
+
+                </h:form>
+
+            </p:dialog>
+        </div>
+
+    </ui:composition>
+
+</html>
+<!--
+
+                        <h:outputLabel value="#{mensajes.EditResolucionesLabel_id}" for="id" />
+                        <h:panelGroup>
+                            <h:outputText id="id" value="#{resolucionesController.selected.id}" />
+                            <p:tooltip for="id" value="#{resolucionesController.getComponentMessages('id', mensajes.EditResolucionesHelpText_id)}"/>
+                        </h:panelGroup>
+-->
+
+<!--
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fechaHoraAlta}" for="fechaHoraAlta" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraAlta" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"value="#{resolucionesController.selected.fechaHoraAlta}" title="#{mensajes.EditResolucionesTitle_fechaHoraAlta}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fechaHoraAlta}" showOn="button"/>
+                            <p:tooltip for="fechaHoraAlta" value="#{resolucionesController.getComponentMessages('fechaHoraAlta', mensajes.EditResolucionesHelpText_fechaHoraAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_fechaHoraUltimoCambio}" for="fechaHoraUltimoCambio" />
+                        <h:panelGroup>
+                            <p:calendar id="fechaHoraUltimoCambio" pattern="dd/MM/yyyy HH:mm:ss" timeZone="America/Asuncion"value="#{resolucionesController.selected.fechaHoraUltimoCambio}" title="#{mensajes.EditResolucionesTitle_fechaHoraUltimoCambio}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_fechaHoraUltimoCambio}" showOn="button"/>
+                            <p:tooltip for="fechaHoraUltimoCambio" value="#{resolucionesController.getComponentMessages('fechaHoraUltimoCambio', mensajes.EditResolucionesHelpText_fechaHoraUltimoCambio)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_documento}" for="documento" />
+                        <h:panelGroup>
+                            <p:inputText id="documento" value="#{resolucionesController.selected.documento}" title="#{mensajes.EditResolucionesTitle_documento}" size="45" maxlength="45"/>
+                            <p:tooltip for="documento" value="#{resolucionesController.getComponentMessages('documento', mensajes.EditResolucionesHelpText_documento)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_usuarioAlta}" for="usuarioAlta" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioAlta" value="#{resolucionesController.selected.usuarioAlta}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_usuarioAlta}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioAltaItem"
+                                               itemValue="#{usuarioAltaItem}"
+                                               itemLabel="#{usuarioAltaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioAlta" value="#{resolucionesController.getComponentMessages('usuarioAlta', mensajes.EditResolucionesHelpText_usuarioAlta)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_usuarioUltimoEstado}" for="usuarioUltimoEstado" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="usuarioUltimoEstado" value="#{resolucionesController.selected.usuarioUltimoEstado}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_usuarioUltimoEstado}" converter="usuariosConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{usuariosController.items}"
+                                               var="usuarioUltimoEstadoItem"
+                                               itemValue="#{usuarioUltimoEstadoItem}"
+                                               itemLabel="#{usuarioUltimoEstadoItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="usuarioUltimoEstado" value="#{resolucionesController.getComponentMessages('usuarioUltimoEstado', mensajes.EditResolucionesHelpText_usuarioUltimoEstado)}"/>
+                        </h:panelGroup>
+
+                        <p:outputLabel value="#{mensajes.EditResolucionesLabel_empresa}" for="empresa" />
+                        <h:panelGroup>
+                            <p:selectOneMenu filter="true" filterMatchMode="contains" id="empresa" value="#{resolucionesController.selected.empresa}" required="true" requiredMessage="#{mensajes.EditResolucionesRequiredMessage_empresa}" converter="empresasConverter">
+                                <f:selectItem itemLabel="#{mensajes.SelectOneMessage}"/>
+                                <f:selectItems value="#{empresasController.items}"
+                                               var="empresaItem"
+                                               itemValue="#{empresaItem}"
+                                               itemLabel="#{empresaItem.id.toString()}"
+                                               />
+
+                            </p:selectOneMenu>
+                            <p:tooltip for="empresa" value="#{resolucionesController.getComponentMessages('empresa', mensajes.EditResolucionesHelpText_empresa)}"/>
+                        </h:panelGroup>
+
+-->
