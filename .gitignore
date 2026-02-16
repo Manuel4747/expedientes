@@ -2,3 +2,5 @@ target/
 /target/
 *.DS_Store*
 nb-configuration.xml
+db/desarrollo.sql
+jurado@172.16.0.37
