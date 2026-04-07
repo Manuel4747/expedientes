@@ -16,6 +16,7 @@ import org.primefaces.model.chart.LineChartModel;
 import org.primefaces.model.charts.ChartData;
 import org.primefaces.model.charts.bar.BarChartDataSet;
 import org.primefaces.model.charts.donut.DonutChartModel;
+import py.gov.jem.expedientes.datasource.CantidadAntecedentesPorAnio;
 import py.gov.jem.expedientes.datasource.CantidadItem;
 import py.gov.jem.expedientes.datasource.ChartExpedientesPorDia;
 import py.gov.jem.expedientes.datasource.ChartUsuariosPorDia;
@@ -29,17 +30,18 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
     private BarChartModel modelUsuariosPorDiaBar;
     private BarChartModel modelExpedientesPorDiaBar;
+    private BarChartModel modelAntecedentesPorAnio;
     private Date fechaDesde;
     private Date fechaHasta;
     private String tipoGrafico;
-    private List<String> coloresFondo;    
-    private List<String> coloresBorde;    
-    private Integer usuariosCreados;   
-    private Integer magistradosTotal; 
-    private Integer expedientesTotal;     
-    private Integer usuariosCreadosRango;   
-    private Integer magistradosTotalRango; 
-    private Integer expedientesTotalRango;   
+    private List<String> coloresFondo;
+    private List<String> coloresBorde;
+    private Integer usuariosCreados;
+    private Integer magistradosTotal;
+    private Integer expedientesTotal;
+    private Integer usuariosCreadosRango;
+    private Integer magistradosTotalRango;
+    private Integer expedientesTotalRango;
     private String titulo;
 
     public Integer getUsuariosCreadosRango() {
@@ -65,7 +67,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
     public void setExpedientesTotalRango(Integer expedientesTotalRango) {
         this.expedientesTotalRango = expedientesTotalRango;
     }
-    
+
     public Integer getExpedientesTotal() {
         return expedientesTotal;
     }
@@ -97,6 +99,14 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
     public void setModelUsuariosPorDiaBar(BarChartModel modelUsuariosPorDiaBar) {
         this.modelUsuariosPorDiaBar = modelUsuariosPorDiaBar;
+    }
+
+    public BarChartModel getModelAntecedentesPorAnio() {
+        return modelAntecedentesPorAnio;
+    }
+
+    public void setModelAntecedentesPorAnio(BarChartModel modelAntecedentesPorAnio) {
+        this.modelAntecedentesPorAnio = modelAntecedentesPorAnio;
     }
 
     public Date getFechaDesde() {
@@ -153,9 +163,9 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
     @PostConstruct
     public void init() {
-        
+
         coloresFondo = new ArrayList<>();
-/*
+        /*
         COLORES_CHART.add("#31a00d");
         COLORES_CHART.add("#fffb2f");
         COLORES_CHART.add("#4a148c");
@@ -167,8 +177,8 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         COLORES_CHART.add("#3e2723");
         COLORES_CHART.add("#880e4f");
         COLORES_CHART.add("#b71c1c");
-        */
-                
+         */
+
         coloresFondo.add("rgba(255, 159, 64, 0.2)");
         coloresFondo.add("rgba(75, 192, 192, 0.2)");
         coloresFondo.add("rgba(255, 99, 132, 0.2)");
@@ -176,9 +186,9 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         coloresFondo.add("rgba(255, 205, 86, 0.2)");
         coloresFondo.add("rgba(153, 102, 255, 0.2)");
         coloresFondo.add("rgba(201, 203, 207, 0.2)");
-        
+
         coloresBorde = new ArrayList<>();
-        
+
         coloresBorde.add("rgb(255, 159, 64)");
         coloresBorde.add("rgb(75, 192, 192)");
         coloresBorde.add("rgb(255, 99, 132)");
@@ -186,17 +196,20 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         coloresBorde.add("rgb(255, 205, 86)");
         coloresBorde.add("rgb(153, 102, 255)");
         coloresBorde.add("rgb(201, 203, 207)");
-        
+
         tipoGrafico = "Barras";
         fechaDesde = ejbFacade.getSystemDateOnly(Constantes.FILTRO_CANT_DIAS_ATRAS);
         fechaHasta = ejbFacade.getSystemDateOnly();
         todos();
 
     }
+
     public void todos() {
         usuariosPorDia();
         expedientesPorDia();
+        antecedentesPorAnio();
     }
+
     public void expedientesPorDia() {
         expedientesPorDiaBarras();
     }
@@ -213,25 +226,24 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
             fechaCero = sdf.parse("1900-01-01");
         } catch (ParseException ex) {
         }
-        
-        
+
         javax.persistence.Query query = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from documentos_judiciales where expediente_viejo = false;"
-                , CantidadItem.class);
+                "select count(*) as cantidad from documentos_judiciales where expediente_viejo = false;",
+                 CantidadItem.class);
         CantidadItem cantidadItem = (CantidadItem) query.getSingleResult();
         expedientesTotal = cantidadItem.getCantidad();
-        
+
         javax.persistence.Query query2 = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from documentos_judiciales where expediente_viejo = false and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'"
-                , CantidadItem.class);
+                "select count(*) as cantidad from documentos_judiciales where expediente_viejo = false and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'",
+                 CantidadItem.class);
         CantidadItem cantidadItem2 = (CantidadItem) query2.getSingleResult();
         expedientesTotalRango = cantidadItem2.getCantidad();
-        
+
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(fechaHasta);
         cal2.add(Calendar.DATE, 1);
         Date fechaHastaNueva = cal2.getTime();
-        
+
         if (fechaDesde == null) {
             fechaDesde = ejbFacade.getSystemDateOnly(Constantes.FILTRO_CANT_DIAS_ATRAS);
         }
@@ -239,7 +251,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         if (fechaHasta == null) {
             fechaHasta = ejbFacade.getSystemDateOnly();
         }
-        
+
         titulo = "Expedientes ingresados entre " + sdf2.format(fechaDesde) + " y " + sdf2.format(fechaHasta);
 
         ChartExpedientesPorDia envio = null;
@@ -248,9 +260,8 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM");
 
-
         Calendar cal = Calendar.getInstance();
-        
+
         ChartExpedientesPorDia nodo = null;
 
         ChartExpedientesPorDia nodoCero = new ChartExpedientesPorDia();
@@ -259,7 +270,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         modelExpedientesPorDiaBar = new BarChartModel();
         ChartData data = new ChartData();
-         
+
         /*
         List<String> bgColor = new ArrayList<>();
         bgColor.add("rgba(255, 99, 132, 0.2)");
@@ -279,97 +290,89 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         borderColor.add("rgb(54, 162, 235)");
         borderColor.add("rgb(153, 102, 255)");
         borderColor.add("rgb(201, 203, 207)");
-        */
-         
-         
+         */
         List<String> labels = new ArrayList<>();
 
         List<ChartExpedientesPorDia> listaTemp;
-        
+
         BarChartDataSet barDataSet;
 
         lista = new ArrayList<>();
         List<Number> values = new ArrayList<>();
-        
+
         boolean completarLabels = true;
 
         int posColor = 0;
-        
+
         //while (it3.hasNext()) {
+        listaTemp = ejbFacade.getEntityManager().createNamedQuery("ChartExpedientesPorDia.findByRangoFechaAlta", ChartExpedientesPorDia.class).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();
+        lista.addAll(listaTemp);
 
-            listaTemp = ejbFacade.getEntityManager().createNamedQuery("ChartExpedientesPorDia.findByRangoFechaAlta", ChartExpedientesPorDia.class).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();
-            lista.addAll(listaTemp);
+        Iterator<ChartExpedientesPorDia> it2 = listaTemp.iterator();
 
-            Iterator<ChartExpedientesPorDia> it2 = listaTemp.iterator();
+        envio = new ChartExpedientesPorDia();
+        envio.setFechaAlta(fechaCero);
 
-            envio = new ChartExpedientesPorDia();
-            envio.setFechaAlta(fechaCero);
+        boolean iterar = true;
 
-            boolean iterar = true;
+        fechaActual.setTime(fechaDesde.getTime());
 
-            fechaActual.setTime(fechaDesde.getTime());
-            
-            barDataSet = new BarChartDataSet();
-            barDataSet.setBackgroundColor(coloresFondo.get(posColor));
-            
-            barDataSet.setBorderColor(coloresBorde.get(posColor));
-            barDataSet.setBorderWidth(1);
-            
-            posColor++;
-            if(posColor >= coloresFondo.size()){
-                posColor = 0;
+        barDataSet = new BarChartDataSet();
+        barDataSet.setBackgroundColor(coloresFondo.get(posColor));
+
+        barDataSet.setBorderColor(coloresBorde.get(posColor));
+        barDataSet.setBorderWidth(1);
+
+        posColor++;
+        if (posColor >= coloresFondo.size()) {
+            posColor = 0;
+        }
+
+        values = new ArrayList<>();
+        while (fechaActual.compareTo(fechaHasta) <= 0) {
+
+            if (iterar) {
+                if (it2.hasNext()) {
+                    envio = it2.next();
+                }
+                iterar = false;
             }
 
-            values = new ArrayList<>();
-            while (fechaActual.compareTo(fechaHasta) <= 0) {
-
-                if (iterar) {
-                    if (it2.hasNext()) {
-                        envio = it2.next();
-                    }
-                    iterar = false;
-                }
-
-                if (envio.getFechaAlta().compareTo(fechaActual) != 0) {
-                    nodoCero.setFechaAlta(fechaActual);
-                    nodo = nodoCero;
-                } else {
-                    nodo = envio;
-                    iterar = true;
-                }
-
-                // series1.set(format.format(nodo.getFechaPresentacion()), nodo.getCantidad());
-            
-                barDataSet.setLabel("Expedientes");
-                
-                values.add(nodo.getCantidad());
-                
-                if(completarLabels){
-                    labels.add(format.format(nodo.getFechaAlta()));
-                }
-                
-                if (cantMax < nodo.getCantidad()) {
-                    cantMax = nodo.getCantidad();
-                }
-
-                cal.setTime(fechaActual);
-                cal.add(Calendar.DATE, 1);
-                fechaActual = cal.getTime();
+            if (envio.getFechaAlta().compareTo(fechaActual) != 0) {
+                nodoCero.setFechaAlta(fechaActual);
+                nodo = nodoCero;
+            } else {
+                nodo = envio;
+                iterar = true;
             }
-            
-            
-            completarLabels = false;
-            
-            
-            barDataSet.setData(values);
-            data.addChartDataSet(barDataSet);
+
+            // series1.set(format.format(nodo.getFechaPresentacion()), nodo.getCantidad());
+            barDataSet.setLabel("Expedientes");
+
+            values.add(nodo.getCantidad());
+
+            if (completarLabels) {
+                labels.add(format.format(nodo.getFechaAlta()));
+            }
+
+            if (cantMax < nodo.getCantidad()) {
+                cantMax = nodo.getCantidad();
+            }
+
+            cal.setTime(fechaActual);
+            cal.add(Calendar.DATE, 1);
+            fechaActual = cal.getTime();
+        }
+
+        completarLabels = false;
+
+        barDataSet.setData(values);
+        data.addChartDataSet(barDataSet);
 
         //}
-        
-        
         data.setLabels(labels);
         modelExpedientesPorDiaBar.setData(data);
-/*
+        /*
        cantMax = ((Double) (cantMax * 1.5)).intValue();
 
        //cantMax = cantMax * 2;
@@ -406,7 +409,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         xAxis.setTickAngle(
                 30);
-*/
+         */
     }
 
     public void usuariosPorDia() {
@@ -425,37 +428,36 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
             fechaCero = sdf.parse("1900-01-01");
         } catch (ParseException ex) {
         }
-        
-        
+
         javax.persistence.Query query = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol not in (1)) and estado = 'AC' and usuario is not null"
-                , CantidadItem.class);
+                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol not in (1)) and estado = 'AC' and usuario is not null",
+                 CantidadItem.class);
         CantidadItem cantidadItem = (CantidadItem) query.getSingleResult();
         usuariosCreados = cantidadItem.getCantidad();
-        
+
         javax.persistence.Query query2 = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol in (2,13)) and estado = 'AC' and usuario is not null"
-                , CantidadItem.class);
+                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol in (2,13)) and estado = 'AC' and usuario is not null",
+                 CantidadItem.class);
         CantidadItem cantidadItem2 = (CantidadItem) query2.getSingleResult();
         magistradosTotal = cantidadItem2.getCantidad();
-        
+
         javax.persistence.Query query3 = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol not in (1)) and estado = 'AC' and usuario is not null and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'"
-                , CantidadItem.class);
+                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol not in (1)) and estado = 'AC' and usuario is not null and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'",
+                 CantidadItem.class);
         CantidadItem cantidadItem3 = (CantidadItem) query3.getSingleResult();
         usuariosCreadosRango = cantidadItem3.getCantidad();
-        
+
         javax.persistence.Query query4 = ejbFacade.getEntityManager().createNativeQuery(
-                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol in (2,13)) and estado = 'AC' and usuario is not null and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'"
-                , CantidadItem.class);
+                "select count(*) as cantidad from personas where id in (select distinct(p.persona) from antecedentes_roles_por_personas as p where p.rol in (2,13)) and estado = 'AC' and usuario is not null and fecha_hora_alta >= '" + sdf.format(fechaDesde) + "' and fecha_hora_alta <= '" + sdf.format(fechaHasta) + "'",
+                 CantidadItem.class);
         CantidadItem cantidadItem4 = (CantidadItem) query4.getSingleResult();
         magistradosTotalRango = cantidadItem4.getCantidad();
-        
+
         Calendar cal2 = Calendar.getInstance();
         cal2.setTime(fechaHasta);
         cal2.add(Calendar.DATE, 1);
         Date fechaHastaNueva = cal2.getTime();
-        
+
         if (fechaDesde == null) {
             fechaDesde = ejbFacade.getSystemDateOnly(Constantes.FILTRO_CANT_DIAS_ATRAS);
         }
@@ -463,7 +465,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         if (fechaHasta == null) {
             fechaHasta = ejbFacade.getSystemDateOnly();
         }
-        
+
         titulo = "Usuarios Generados entre " + sdf2.format(fechaDesde) + " y " + sdf2.format(fechaHasta);
 
         ChartUsuariosPorDia envio = null;
@@ -472,9 +474,8 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         SimpleDateFormat format = new SimpleDateFormat("dd/MM");
 
-
         Calendar cal = Calendar.getInstance();
-        
+
         ChartUsuariosPorDia nodo = null;
 
         ChartUsuariosPorDia nodoCero = new ChartUsuariosPorDia();
@@ -483,7 +484,7 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         modelUsuariosPorDiaBar = new BarChartModel();
         ChartData data = new ChartData();
-         
+
         /*
         List<String> bgColor = new ArrayList<>();
         bgColor.add("rgba(255, 99, 132, 0.2)");
@@ -503,97 +504,89 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         borderColor.add("rgb(54, 162, 235)");
         borderColor.add("rgb(153, 102, 255)");
         borderColor.add("rgb(201, 203, 207)");
-        */
-         
-         
+         */
         List<String> labels = new ArrayList<>();
 
         List<ChartUsuariosPorDia> listaTemp;
-        
+
         BarChartDataSet barDataSet;
 
         lista = new ArrayList<>();
         List<Number> values = new ArrayList<>();
-        
+
         boolean completarLabels = true;
 
         int posColor = 0;
-        
+
         //while (it3.hasNext()) {
+        listaTemp = ejbFacade.getEntityManager().createNamedQuery("ChartUsuariosPorDia.findByRangoFechaAlta", ChartUsuariosPorDia.class).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();
+        lista.addAll(listaTemp);
 
-            listaTemp = ejbFacade.getEntityManager().createNamedQuery("ChartUsuariosPorDia.findByRangoFechaAlta", ChartUsuariosPorDia.class).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();
-            lista.addAll(listaTemp);
+        Iterator<ChartUsuariosPorDia> it2 = listaTemp.iterator();
 
-            Iterator<ChartUsuariosPorDia> it2 = listaTemp.iterator();
+        envio = new ChartUsuariosPorDia();
+        envio.setFechaAlta(fechaCero);
 
-            envio = new ChartUsuariosPorDia();
-            envio.setFechaAlta(fechaCero);
+        boolean iterar = true;
 
-            boolean iterar = true;
+        fechaActual.setTime(fechaDesde.getTime());
 
-            fechaActual.setTime(fechaDesde.getTime());
-            
-            barDataSet = new BarChartDataSet();
-            barDataSet.setBackgroundColor(coloresFondo.get(posColor));
-            
-            barDataSet.setBorderColor(coloresBorde.get(posColor));
-            barDataSet.setBorderWidth(1);
-            
-            posColor++;
-            if(posColor >= coloresFondo.size()){
-                posColor = 0;
+        barDataSet = new BarChartDataSet();
+        barDataSet.setBackgroundColor(coloresFondo.get(posColor));
+
+        barDataSet.setBorderColor(coloresBorde.get(posColor));
+        barDataSet.setBorderWidth(1);
+
+        posColor++;
+        if (posColor >= coloresFondo.size()) {
+            posColor = 0;
+        }
+
+        values = new ArrayList<>();
+        while (fechaActual.compareTo(fechaHasta) <= 0) {
+
+            if (iterar) {
+                if (it2.hasNext()) {
+                    envio = it2.next();
+                }
+                iterar = false;
             }
 
-            values = new ArrayList<>();
-            while (fechaActual.compareTo(fechaHasta) <= 0) {
-
-                if (iterar) {
-                    if (it2.hasNext()) {
-                        envio = it2.next();
-                    }
-                    iterar = false;
-                }
-
-                if (envio.getFechaAlta().compareTo(fechaActual) != 0) {
-                    nodoCero.setFechaAlta(fechaActual);
-                    nodo = nodoCero;
-                } else {
-                    nodo = envio;
-                    iterar = true;
-                }
-
-                // series1.set(format.format(nodo.getFechaPresentacion()), nodo.getCantidad());
-            
-                barDataSet.setLabel("Usuarios");
-                
-                values.add(nodo.getCantidad());
-                
-                if(completarLabels){
-                    labels.add(format.format(nodo.getFechaAlta()));
-                }
-                
-                if (cantMax < nodo.getCantidad()) {
-                    cantMax = nodo.getCantidad();
-                }
-
-                cal.setTime(fechaActual);
-                cal.add(Calendar.DATE, 1);
-                fechaActual = cal.getTime();
+            if (envio.getFechaAlta().compareTo(fechaActual) != 0) {
+                nodoCero.setFechaAlta(fechaActual);
+                nodo = nodoCero;
+            } else {
+                nodo = envio;
+                iterar = true;
             }
-            
-            
-            completarLabels = false;
-            
-            
-            barDataSet.setData(values);
-            data.addChartDataSet(barDataSet);
+
+            // series1.set(format.format(nodo.getFechaPresentacion()), nodo.getCantidad());
+            barDataSet.setLabel("Usuarios");
+
+            values.add(nodo.getCantidad());
+
+            if (completarLabels) {
+                labels.add(format.format(nodo.getFechaAlta()));
+            }
+
+            if (cantMax < nodo.getCantidad()) {
+                cantMax = nodo.getCantidad();
+            }
+
+            cal.setTime(fechaActual);
+            cal.add(Calendar.DATE, 1);
+            fechaActual = cal.getTime();
+        }
+
+        completarLabels = false;
+
+        barDataSet.setData(values);
+        data.addChartDataSet(barDataSet);
 
         //}
-        
-        
         data.setLabels(labels);
         modelUsuariosPorDiaBar.setData(data);
-/*
+        /*
        cantMax = ((Double) (cantMax * 1.5)).intValue();
 
        //cantMax = cantMax * 2;
@@ -630,9 +623,58 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
 
         xAxis.setTickAngle(
                 30);
-*/
+         */
     }
-/*
+    
+    public void antecedentesPorAnio() {
+        antecedentesPorAnioBarras();
+    }
+    
+    public void antecedentesPorAnioBarras() {
+        List<CantidadAntecedentesPorAnio> antecedentes = ejbFacade.getEntityManager().createNativeQuery("select YEAR(fecha_hora_respuesta) as anio, count(*) cantidad\n"
+                + "from exp_pedidos_antecedente\n"
+                + "where estado <> 'AC'\n"
+                + "group by YEAR(fecha_hora_respuesta);", CantidadAntecedentesPorAnio.class)
+                .getResultList();
+        
+        modelAntecedentesPorAnio = new BarChartModel();
+        ChartData data = new ChartData();
+        
+        BarChartDataSet barDataSet;
+        
+        List<String> labels = new ArrayList<>();
+        
+        int posColor = 0;
+        
+        posColor++;
+        if (posColor >= coloresFondo.size()) {
+            posColor = 0;
+        }
+
+        barDataSet = new BarChartDataSet();
+        barDataSet.setBackgroundColor(coloresFondo.get(posColor));
+
+        barDataSet.setBorderColor(coloresBorde.get(posColor));
+        barDataSet.setBorderWidth(1);
+        
+        Iterator<CantidadAntecedentesPorAnio> iter = antecedentes.iterator();
+        
+        ArrayList<Number> values = new ArrayList<>();
+        while(iter.hasNext()) {
+            CantidadAntecedentesPorAnio item = iter.next();
+            values.add(item.getCantidad());
+            labels.add(String.valueOf(item.getAnio()));
+        }
+        
+        barDataSet.setData(values);
+        data.addChartDataSet(barDataSet);
+        
+
+        //}
+        data.setLabels(labels);
+        modelAntecedentesPorAnio.setData(data);
+    }
+    /*
     public void usuariosPorDiaBarras() {
         List<ChartUsuariosPorDia> lista = null;
 
@@ -761,5 +803,5 @@ public class ChartsController extends AbstractController<ChartUsuariosPorDia> {
         modelUsuariosPorDiaBar.setData(data);
         
     }
-*/
+     */
 }

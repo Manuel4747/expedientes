@@ -105,6 +105,13 @@
                                 </p:barChart>
                             </p:panel>
                         </div>
+                        <div class="ui-sm-12 ui-md-12 ui-g-12">
+                            <p:panel id="modelAntecedentesPorAnio" header="Antecedentes por Año" >
+                                <p:barChart model="#{chartsController.modelAntecedentesPorAnio}" style="width: 100%; height: 100%; min-height:  200px">
+                                    <p:draggable for="modelAntecedentesPorAnio" opacity="0.3" />
+                                </p:barChart>
+                            </p:panel>
+                        </div>
                     </div>
             </h:form>
         </ui:define>

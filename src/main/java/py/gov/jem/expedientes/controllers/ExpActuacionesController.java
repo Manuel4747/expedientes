@@ -1227,4 +1227,32 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         listaPendientes = obtenerOficiosElectronicos(false);
     }
 
+    public String rowStyle(Date fecha) {
+        if (fecha != null) {
+            //Date dateFecha = sdf.parse(fecha);
+            long diferencia = ((fecha.getTime() - getStartOfDay(new Date()).getTime()) / (24 * 60 * 60 * 1000));
+
+            if (diferencia <= 5) {
+                return "red";
+            }
+            if (diferencia <= 12 && diferencia > 5) {
+                return "yellow";
+            }
+            if (diferencia > 12) {
+                return "green";
+            }
+        }
+        return "ui-datatable-odd";
+    }
+
+    public static Date getStartOfDay(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTime();
+    }
+
 }
