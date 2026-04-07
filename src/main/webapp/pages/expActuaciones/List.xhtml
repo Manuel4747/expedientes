@@ -42,6 +42,34 @@
             <div class="ui-sm-12 ui-md-12 ui-g-12">
                 <p:commandButton id="verifButton" style="height: 50px" value="Verificiar Oficios" rendered="#{expActuacionesController.renderedVerifOficios()}" onclick="monitorExporting(startHandler(0), endHandler)" actionListener="#{expActuacionesController.actualizarOficiosElectronicos()}" update="datalist, :growl" />
             </div>
+             <p:panelGrid columns="4" styleClass="ui-fluid">
+
+                <p:outputLabel value="Fecha Desde" for="fechaDesde"/>
+                <p:calendar id="fechaDesde" yearRange="c-100:c+0"
+                            pattern="dd/MM/yyyy" navigator="true"
+                            value="#{expActuacionesController.fechaDesde}"
+                            showOn="button"/>
+
+                <p:outputLabel value="Fecha Hasta" for="fechaHasta"/>
+                <p:calendar id="fechaHasta" yearRange="c-100:c+0"
+                            pattern="dd/MM/yyyy" navigator="true"
+                            value="#{expActuacionesController.fechaHasta}"
+                            showOn="button"/>
+            </p:panelGrid>
+            <p:selectOneRadio id="opciones" value="#{expActuacionesController.opciones}" 
+                              rendered="#{expActuacionesController.renderedFiltrosActuacionesEnElaboracion()}">
+                <f:selectItem itemLabel="Por fecha de presentacion" itemValue="1" />
+                <f:selectItem itemLabel="Por fecha de resolucion" itemValue="2" />
+            </p:selectOneRadio>
+            <!-- BOTON -->
+            <p:commandButton rendered="true" value="Buscar"
+                             update="datalist"
+                             action="#{expActuacionesController.buscar()}"/>
+            
+            
+            
+            <p:commandButton id="imprimirButton" style="margin-left: 10px" rendered="#{expActuacionesController.renderedFiltrosRepresentacionPend()}"  ajax="false" onclick="this.form.target = '_blank'" value="Imprimir en PDF" action="#{expActuacionesController.repPresentacionesPendiente(true)}"/>
+            <p:commandButton id="imprimirButton1" style="margin-left: 10px" rendered="#{expActuacionesController.renderedFiltrosActuacionesEnElaboracion()}"  ajax="false" onclick="this.form.target = '_blank'" value="Imprimir en PDF" action="#{expActuacionesController.repActuacionesEnElaboracion(true)}"/>
 
             <div class="ui-sm-12 ui-md-12 ui-g-12">
                 <p:panel header="#{expActuacionesController.titulo}">

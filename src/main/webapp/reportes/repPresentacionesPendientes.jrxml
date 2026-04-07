@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="1050" pageHeight="914" whenNoDataType="AllSectionsNoDetail" columnWidth="1010" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09b0a97c-e717-407e-a0d7-efb5f8aa07aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="hora" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.lang.String"/>
+	<parameter name="fechaHasta" class="java.lang.String"/>
+	<field name="caratula" class="java.lang.String"/>
+	<field name="nroExpediente" class="java.lang.String"/>
+	<field name="fechaPresentacion" class="java.util.Date"/>
+	<field name="motivoProceso" class="java.lang.String"/>
+	<field name="descripcion" class="java.lang.String"/>
+	<field name="tipoActuacion" class="java.lang.String"/>
+	<field name="remitente" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="96" splitType="Stretch">
+			<image>
+				<reportElement x="111" y="0" width="267" height="56" uuid="eeb2daeb-60c8-4836-a09b-b1278f4f259b"/>
+				<imageExpression><![CDATA["imagen_logo_chico.jpg"]]></imageExpression>
+			</image>
+			<staticText>
+				<reportElement mode="Transparent" x="783" y="67" width="40" height="13" backcolor="#FFFFFF" uuid="e708e306-ec31-466a-8d26-6db6ad440c76"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="823" y="67" width="100" height="14" uuid="59a4cf77-ee80-4388-a142-07a6aefbbfcb"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="380" y="0" width="320" height="60" uuid="f24007e2-ff1f-48a6-8131-0245278ed749"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Presentaciones Pendientes]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="3" y="64" width="67" height="15" uuid="d11a864c-a62b-4e9c-bc8c-6eb8a15235ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha desde:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="139" y="64" width="67" height="15" uuid="effdb3d6-6f08-41cb-af05-505819d0f042"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha hasta:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="70" y="64" width="69" height="15" uuid="a9e7b43e-a268-4db7-b774-47fe373dc6be"/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="210" y="64" width="90" height="15" uuid="5588dad7-9715-4a7e-98a7-387c899f5200"/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="40">
+			<rectangle>
+				<reportElement mode="Transparent" x="2" y="4" width="1008" height="29" uuid="1223f60b-c048-4e94-a251-d0a0b44adcf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="123" y="4" width="85" height="29" uuid="de981bd4-de90-4835-86d7-a00c88d95612"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. de Causa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="208" y="3" width="232" height="30" uuid="ecf48ce0-6171-4515-971e-c146419e8718"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carátula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="440" y="4" width="216" height="36" uuid="48cb9215-e4e8-438e-b37f-64847693b17b"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expediente Judicial /Cuaderno de Investigación fiscal]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="656" y="4" width="138" height="29" uuid="15982a8a-03b0-475f-adc0-5c9f26508e2e"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Descripción]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="11" y="3" width="106" height="30" uuid="603d2a67-3c64-4968-b2d1-960c1dadc338"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Presentación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="794" y="3" width="100" height="30" uuid="500f8623-671a-45df-9f9c-ffd9a5067c2f"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Actuación]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="894" y="2" width="115" height="31" uuid="38071fe3-fc6f-4d22-b654-e64a8e1ccc8f"/>
+				<textElement textAlignment="Center">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Remitente]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="65">
+			<line>
+				<reportElement x="17" y="59" width="980" height="2" uuid="ec6a11f2-bc34-4982-8c5d-c2dccbdb370b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<textField>
+				<reportElement x="117" y="0" width="89" height="59" uuid="eaa7d03e-2ecc-4297-972f-f95b3133e5df"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nroExpediente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="208" y="0" width="232" height="59" uuid="85d99d85-7d29-4241-a8a0-3b01023fce27"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caratula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="440" y="0" width="216" height="59" uuid="08ce19e1-e75e-4912-999e-2758dfdcd991"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motivoProceso}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="656" y="0" width="138" height="59" uuid="7cd2131f-4d1d-49e7-a950-4e0427217991"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{descripcion}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="11" y="0" width="106" height="59" uuid="d23b2b6e-be01-41b1-a211-04b6a78a23d9"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaPresentacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="794" y="0" width="100" height="59" uuid="34334cfb-5ddf-44cc-9e6f-ddf1747a0194"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoActuacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="894" y="0" width="115" height="59" uuid="c82ff716-e787-42df-8a28-db5651950d9f"/>
+				<textElement textAlignment="Center">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remitente}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

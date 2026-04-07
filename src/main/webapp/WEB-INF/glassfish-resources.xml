@@ -64,14 +64,14 @@
         <property name="useSSL" value="false"/>
         <property name="allowPublicKeyRetrieval" value="true"/>
         <property name="systemTimezone" value="SYSTEM"/>
-        <property name="serverTimezone" value="UTC"/>
+        <property name="serverTimezone" value="America/Asuncion"/>
         <property name="serverName" value="localhost"/>
         <property name="portNumber" value="3306"/>
-        <property name="databaseName" value="desarrollo"/>
+        <property name="databaseName" value="desarrollo2"/>
         <property name="User" value="root"/>
         <!--<property name="Password" value="Jurado@443.559"/>-->
-        <property name="Password" value="12345"/>
-        <property name="URL" value="jdbc:mysql://localhost:3306/desarrollo?zeroDateTimeBehavior=convertToNull"/>
+        <property name="Password" value="mysql123"/>
+        <property name="URL" value="jdbc:mysql://localhost:3306/desarrollo2?zeroDateTimeBehavior=convertToNull"/>
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
     </jdbc-connection-pool>
    

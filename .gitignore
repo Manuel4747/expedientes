@@ -1,5 +1,7 @@
 target/
 /target/
+/src/main/webapp/WEB-INF/glassfish-resources.xml
+src/main/webapp/WEB-INF/glassfish-resources.xml
 *.DS_Store*
 nb-configuration.xml
 db/desarrollo.sql

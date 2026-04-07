@@ -8,7 +8,9 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -19,11 +21,21 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
+import py.gov.jem.expedientes.controllers.util.JsfUtil;
 import py.gov.jem.expedientes.datasource.CantidadItem;
 import py.gov.jem.expedientes.datasource.EstadoCantidad;
 import py.gov.jem.expedientes.datasource.IdCantidad;
+import py.gov.jem.expedientes.datasource.RepPresentacionesPendientes;
 import py.gov.jem.expedientes.models.AntecedentesRoles;
 import py.gov.jem.expedientes.models.CanalesEntradaDocumentoJudicial;
 import py.gov.jem.expedientes.models.DocumentosJudiciales;
@@ -56,12 +68,16 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
     private Personas personaSelected;
     private String accion;
     private String titulo;
+    private String tituloReportes;
     private String tituloAlt;
     private String endpoint;
+    private Date fechaDesde;
+    private Date fechaHasta;
     private boolean filtrarResoluciones;
     private boolean filtrarProvidencias;
     private boolean filtrarOficios;
     private boolean esRelator;
+    private int opciones;
 
     public List<ExpActuaciones> getListaPendientesAlt() {
         return listaPendientesAlt;
@@ -143,6 +159,39 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         this.titulo = titulo;
     }
 
+    public Date getFechaDesde() {
+        return fechaDesde;
+    }
+
+    public void setFechaDesde(Date fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public Date getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
+    }
+
+    public int getOpciones() {
+        return opciones;
+    }
+
+    public void setOpciones(int opciones) {
+        this.opciones = opciones;
+    }
+
+    public String getTituloReportes() {
+        return tituloReportes;
+    }
+
+    public void setTituloReportes(String tituloReportes) {
+        this.tituloReportes = tituloReportes;
+    }
+    
+
     public ExpActuacionesController() {
         // Inform the Abstract parent controller of the concrete TiposPersona Entity
         super(ExpActuaciones.class);
@@ -179,22 +228,29 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         } else if (Constantes.ACCION_NOTIFICACION.equals(accion)) {
             titulo = "NOTIFICACIONES";
         } else if (Constantes.ACCION_PARA_LA_FIRMA.equals(accion)) {
+            tituloReportes = "Presentaciones Para La Firma";
             titulo = "PRESENTACIONES PARA LA FIRMA";
         } else if (Constantes.ACCION_ULTIMAS.equals(accion)) {
             titulo = "ULTIMAS 10 PRESENTACIONES";
         } else if (Constantes.ACCION_ACTUACIONES_EN_PROYECTO.equals(accion)) {
             titulo = "ACTUACIONES EN ELABORACION";
+            tituloReportes = "Actuaciones En Elaboración";
         } else if (Constantes.ACCION_ACTUACIONES_REVISION_SECRETARIO.equals(accion)) {
             titulo = "ACTUACIONES P/ REVISION POR EL SECRETARIO";
+            tituloReportes = "Actuaciones Para Revisión Secretario";
         } else if (Constantes.ACCION_ACTUACIONES_REVISION_DIRECTOR.equals(accion)) {
             titulo = "ACTUACIONES P/ REVISION POR EL DIRECTOR";
         } else if (Constantes.ACCION_ACTUACIONES_REVISION_PRESIDENTE.equals(accion)) {
             titulo = "ACTUACIONES P/ REVISION POR EL PREOPINANTE";
+            tituloReportes = "Actuaciones Para Revisión Por el Preopinante";
         } else if (Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE.equals(accion)) {
             titulo = "ACTUACIONES P/ LA FIRMA DEL PREOPINANTE";
+             tituloReportes = "Actuaciones Para Firma Del Preopinante";
         } else if (Constantes.ACCION_ACTUACIONES_AGREGAR_FIRMANTES.equals(accion)) {
             titulo = "ACTUACIONES P/ AGREGAR FIRMANTES";
+            tituloReportes = "Actuaciones Para Agregar Firmantes";
         } else if (Constantes.ACCION_ACTUACIONES_FIRMA_MIEMBROS.equals(accion)) {
+            tituloReportes = "Actuaciones Para Firma Miembros";
             titulo = "ACTUACIONES P/ LA FIRMA DE LOS MIEMBROS";
         } else if (Constantes.ACCION_ACTUACIONES_REVISION_PRESIDENTE_OF_PROV.equals(accion)) {
             titulo = "OFICIOS Y PROVIDENCIAS P/ REVISION";
@@ -207,14 +263,18 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
             tituloAlt = "RESOLUCIONES COMO MIEMBRO P/ LA FIRMA";
         } else if (Constantes.ACCION_ACTUACIONES_FIRMA_SECRETARIO.equals(accion)) {
             titulo = "ACTUACIONES P/ LA FIRMA DEL SECRETARIO";
+            tituloReportes = "Actuaciones Para Firma Secretario";
         } else if (Constantes.ACCION_ACTUACIONES_FIRMA_EXSECRETARIO.equals(accion)) {
+            tituloReportes = "Actuaciones Para Firma Exsecretario";
             titulo = "ACTUACIONES P/ LA FIRMA DEL EXSECRETARIO";
         } else if (Constantes.ACCION_ACTUACIONES_FINALIZADAS.equals(accion)) {
+            tituloReportes = "Actuaciones Finalizadas";
             titulo = "ACTUACIONES FINALIZADAS";
         } else if (Constantes.ACCION_ACTUACIONES_OFICIO_ELECT.equals(accion)) {
             titulo = "OFICIOS ELECTRÓNICO";
         } else {
             // JsfUtil.addErrorMessage("Accion no permitida:: " + accion);
+            tituloReportes = "Actuaciones";
             return;
         }
 
@@ -267,9 +327,9 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
     public String rowClassEstadoProceso(ExpActuaciones doc) {
         if (doc != null) {
-            if(doc.isUrgente()){
+            if (doc.isUrgente()) {
                 return "redOscuro";
-            }else{
+            } else {
                 if (doc.getDocumentoJudicial().getFechaInicioEnjuiciamiento() != null) {
                     if (doc.getDocumentoJudicial().getEstadoProcesoExpedienteElectronico().isEnProceso()) {
                         Date now = ejbFacade.getSystemDateOnly(0);
@@ -282,7 +342,7 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
         return "";
     }
-    
+
     public Long cantDiasEnjuiciamiento(ExpActuaciones act) {
         Date now = ejbFacade.getSystemDateOnly(0);
         return Utils.cantDiasEnjuiciamiento(act.getDocumentoJudicial(), now, ejbFacade.getEntityManager());
@@ -290,9 +350,9 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
     public String rowClass(ExpActuaciones act) {
         // #{item.tipoActuacion.id==9?(item.leido==null?'while':(!item.leido?'red':'white')):'white'}
-        if(act.isUrgente()){
-            return "redOscuro";  
-        }else if (Constantes.TIPO_ACTUACION_NOTIFICACION.equals(act.getTipoActuacion().getId())) {
+        if (act.isUrgente()) {
+            return "redOscuro";
+        } else if (Constantes.TIPO_ACTUACION_NOTIFICACION.equals(act.getTipoActuacion().getId())) {
             return !act.isLeido() ? "red" : "white";
         } else if (((Constantes.TIPO_ACTUACION_PROVIDENCIA.equals(act.getTipoActuacion().getId())
                 || Constantes.TIPO_ACTUACION_OFICIO_CORTE.equals(act.getTipoActuacion().getId())
@@ -386,6 +446,13 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         empresaController.setSelected(null);
     }
 
+    public void buscarPorFechaPresentacion() {
+        if (fechaDesde != null && fechaHasta != null) {
+            this.ejbFacade.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+            setItems(this.ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findByBuscarPorFechaPresentacion", ExpActuaciones.class).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList());
+        }
+    }
+
     /**
      * Sets the "selected" attribute of the Empresas controller in order to
      * display its data in its View dialog.
@@ -466,6 +533,29 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         return false;
     }
 
+    public boolean renderedFiltrosRepresentacionPend() {
+        if (Constantes.ACCION_PENDIENTES.equals(accion)) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean renderedFiltrosActuacionesEnElaboracion() {
+        if (Constantes.ACCION_ACTUACIONES_EN_PROYECTO.equals(accion)
+                || Constantes.ACCION_ACTUACIONES_REVISION_SECRETARIO.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_REVISION_PRESIDENTE.equals(accion) ||
+                Constantes.ACCION_ACTUACIONES_AGREGAR_FIRMANTES.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_FIRMA_EXSECRETARIO.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_FIRMA_MIEMBROS.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_FIRMA_SECRETARIO.equals(accion)||
+                Constantes.ACCION_ACTUACIONES_FINALIZADAS.equals(accion)||
+                Constantes.ACCION_PARA_LA_FIRMA.equals(accion)) {
+            return true;
+        }
+        return false;
+    }
+
     public boolean renderedFiltroPersonas() {
         if (Constantes.ACCION_ACTUACIONES_REVISION_PRESIDENTE.equals(accion)
                 || Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE.equals(accion)
@@ -483,14 +573,38 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         }
         return false;
     }
-    
-    public String revisado(ExpActuaciones act){
-        return act==null?"":(act.getPersonaRevisado()==null?"images/no.png":"images/si.png");
+
+    public String revisado(ExpActuaciones act) {
+        return act == null ? "" : (act.getPersonaRevisado() == null ? "images/no.png" : "images/si.png");
     }
 
     public List<ExpActuaciones> obtenerParaLaFirma() {
-        return ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findParaLaFirma", ExpActuaciones.class).setParameter("estado", new Estados("AC")).getResultList();
+        if (fechaDesde != null && fechaHasta != null) {
+             if (opciones==1) {
+         List<ExpActuaciones> lista = ejbFacade.getEntityManager()
+                .createNamedQuery("ExpActuaciones.findParaLaFirmaFiltarPorFechaPresentacion", ExpActuaciones.class)
+                .setParameter("estado", new Estados("AC"))
+                .setParameter("fechaDesde", fechaDesde)
+                .setParameter("fechaHasta", fechaHasta)
+                .getResultList();
+         return lista;
+    } else {
+       List<ExpActuaciones> lista = ejbFacade.getEntityManager()
+                .createNamedQuery("ExpActuaciones.findParaLaFirmaFiltarPorFechaResolucion", ExpActuaciones.class)
+                .setParameter("estado", new Estados("AC"))
+                .setParameter("fechaDesde", fechaDesde)
+                .setParameter("fechaHasta", fechaHasta)
+                .getResultList();
+         return lista;
     }
+            
+        }
+         return ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findParaLaFirma", ExpActuaciones.class).setParameter("estado", new Estados("AC")).getResultList();
+    
+       
+     
+    }
+   
 
     public List<ExpActuaciones> obtenerNotificaciones(boolean soloNoLeidos) {
         Date fecha = ejbFacade.getSystemDate();
@@ -565,18 +679,16 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         }
 
         // String comando = "select a.* from exp_actuaciones as a where a.formato is not null" + estadoString + tipoActuacion + preopinante + mas;
-
         String comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - ((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - (case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - (case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) as plazo from exp_actuaciones as a, documentos_judiciales as d where a.documento_judicial = d.id and a.formato is not null" + estadoString + tipoActuacion + preopinante + mas + " order by a.urgente desc, plazo desc";
 
         // String comando = "select a.*, p.nombres_apellidos as personarevisado, f.fecha_hora_revisado as fechahorarevisado from exp_actuaciones as a left join exp_personas_firmantes_por_actuaciones as f on (f.actuacion = a.id and f.persona_firmante = " + (persona==null?0:persona.getId()) + ") left join personas as p on (f.persona_revisado = p.id) where a.formato is not null" + estadoString + tipoActuacion + preopinante + mas;
         // return ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).getResultList();
-
         List<ExpActuaciones> lista = ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).getResultList();
 
-        for(ExpActuaciones act : lista){
+        for (ExpActuaciones act : lista) {
             List<ExpPersonasFirmantesPorActuaciones> lista3 = ejbFacade.getEntityManager().createNamedQuery("ExpPersonasFirmantesPorActuaciones.findByActuacionPersonaFirmanteEstado", ExpPersonasFirmantesPorActuaciones.class).setParameter("actuacion", act).setParameter("personaFirmante", persona).setParameter("estado", new Estados("AC")).getResultList();
-            if(!lista3.isEmpty()){
-                act.setPersonaRevisado(lista3.get(0).getPersonaRevisado()==null?null:lista3.get(0).getPersonaRevisado().getNombresApellidos());
+            if (!lista3.isEmpty()) {
+                act.setPersonaRevisado(lista3.get(0).getPersonaRevisado() == null ? null : lista3.get(0).getPersonaRevisado().getNombresApellidos());
                 act.setFechaHoraRevisado(lista3.get(0).getFechaHoraRevisado());
             }
 
@@ -630,12 +742,36 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         if (!"".equals(mas)) {
             mas += ") ";
         }
+        String comando = "";
+        if (fechaDesde != null && fechaHasta != null) {
+            if (opciones==1) {
+                comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - "
+                    + "((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - "
+                    + "(case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - "
+                    + "(case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) "
+                    + "FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) "
+                    + " as plazo from exp_actuaciones as a, documentos_judiciales as d where a.documento_judicial = d.id "
+                    + " and a.formato is not null and a.estado = ?1" + preopinante + mas + " and a.fecha_presentacion >= ?2 and a.fecha_presentacion <= ?3"
+                    + "  order by a.urgente desc, plazo desc, a.fecha_hora_alta";
+            } else {
+                comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - "
+                    + "((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - "
+                    + "(case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - "
+                    + "(case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) "
+                    + "FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) "
+                    + " as plazo from (exp_actuaciones as a, documentos_judiciales as d) left join resoluciones r on a.resolucion = r.id where a.documento_judicial = d.id "
+                    + " and a.formato is not null and a.estado = ?1" + preopinante + mas + " and r.fecha >= ?2 and r.fecha <= ?3"
+                    + "  order by a.urgente desc, plazo desc, a.fecha_hora_alta";
+            }
+            return ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).setParameter(1, estado)
+                    .setParameter(2, fechaDesde).setParameter(3, fechaHasta).getResultList();
 
-        // String comando = "select a.*, p.nombres_apellidos as personarevisado, f.fecha_hora_revisado as fechahorarevisado from exp_actuaciones as a left join exp_personas_firmantes_por_actuaciones as f on (f.actuacion = a.id and f.persona_firmante = " + (persona==null?0:persona.getId()) + ") left join personas as p on (f.persona_revisado = p.id) where a.formato is not null and a.estado = ?1" + preopinante + mas;
+        } else {
 
-        // String comando = "select a.* from exp_actuaciones as a where a.formato is not null and a.estado = ?1" + preopinante + mas + " order by a.urgente desc";
-
-        String comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - ((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - (case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - (case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) as plazo from exp_actuaciones as a, documentos_judiciales as d where a.documento_judicial = d.id and a.formato is not null and a.estado = ?1" + preopinante + mas + " order by a.urgente desc, plazo desc, a.fecha_presentacion, a.fecha_hora_alta";
+            // String comando = "select a.*, p.nombres_apellidos as personarevisado, f.fecha_hora_revisado as fechahorarevisado from exp_actuaciones as a left join exp_personas_firmantes_por_actuaciones as f on (f.actuacion = a.id and f.persona_firmante = " + (persona==null?0:persona.getId()) + ") left join personas as p on (f.persona_revisado = p.id) where a.formato is not null and a.estado = ?1" + preopinante + mas;
+            // String comando = "select a.* from exp_actuaciones as a where a.formato is not null and a.estado = ?1" + preopinante + mas + " order by a.urgente desc";
+        }
+        comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - ((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - (case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - (case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) as plazo from exp_actuaciones as a, documentos_judiciales as d where a.documento_judicial = d.id and a.formato is not null and a.estado = ?1" + preopinante + mas + " order by a.urgente desc, plazo desc, a.fecha_presentacion, a.fecha_hora_alta";
         return ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).setParameter(1, estado).getResultList();
 
         /* CAMBIOS PLAZO ENJUICIAMIENTO
@@ -652,7 +788,7 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
         return lista;
         
-        */
+         */
     }
 
     public List<ExpActuaciones> obtenerCantidadActuacionesEstadoPreopinante(String estado, Personas persona) {
@@ -666,12 +802,10 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         }
 
         //String comando = "select a.*, p.nombres_apellidos as personarevisado, f.fecha_hora_revisado as fechahorarevisado from exp_actuaciones as a left join exp_personas_firmantes_por_actuaciones as f on (f.actuacion = a.id and f.persona_firmante = " + (persona==null?0:persona.getId()) + ") left join personas as p on (f.persona_revisado = p.id) where a.formato is not null and a.estado = ?1" + preopinante;
-
         // String comando = "select a.* from exp_actuaciones as a where a.formato is not null and a.estado = ?1" + preopinante + " order by a.urgente desc";
-
         String comando = "select a.*, ifnull(((DATEDIFF(CURRENT_DATE() , d.fecha_inicio_enjuiciamiento)) - ((WEEK(CURRENT_DATE()) - WEEK(d.fecha_inicio_enjuiciamiento)) * 2) - (case when weekday(CURRENT_DATE()) = 6 then 1 else 0 end) - (case when weekday(d.fecha_inicio_enjuiciamiento) = 5 then 1 else 0 end) - (SELECT COUNT(*) FROM exp_feriados WHERE fecha = d.fecha_inicio_enjuiciamiento and fecha<=CURRENT_DATE()) - 1), 0) as plazo from exp_actuaciones as a, documentos_judiciales as d where a.documento_judicial = d.id and a.formato is not null and a.estado = ?1" + preopinante + " order by a.urgente desc, plazo desc, a.fecha_presentacion, a.fecha_hora_alta";
         return ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).setParameter(1, estado).getResultList();
-/* CAMBIOS PLAZO ENJUICIAMIENTO
+        /* CAMBIOS PLAZO ENJUICIAMIENTO
         List<ExpActuaciones> lista = ejbFacade.getEntityManager().createNativeQuery(comando, ExpActuaciones.class).setParameter(1, estado).getResultList();
 
         for(ExpActuaciones act : lista){
@@ -683,7 +817,7 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
         }
         return lista;
-*/
+         */
     }
 
     public List<EstadoCantidad> obtenerCantidadActuacionesEstadoTodos(List<String> listaEstados) {
@@ -742,10 +876,10 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
 
     }
 // 
-    
-    public boolean deshabilitarDatosRevision(){
-        return !(Constantes.ACCION_ACTUACIONES_FIRMA_MIEMBROS.equals(accion) ||
-            Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE_RESOLUCIONES.equals(accion));
+
+    public boolean deshabilitarDatosRevision() {
+        return !(Constantes.ACCION_ACTUACIONES_FIRMA_MIEMBROS.equals(accion)
+                || Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE_RESOLUCIONES.equals(accion));
         /*
         return !(Constantes.ACCION_ACTUACIONES_REVISION_PRESIDENTE.equals(accion) ||
             Constantes.ACCION_ACTUACIONES_FIRMA_PRESIDENTE.equals(accion) ||
@@ -757,7 +891,7 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
             Constantes.ACCION_ACTUACIONES_FIRMA_SECRETARIO.equals(accion) ||
             Constantes.ACCION_ACTUACIONES_FIRMA_EXSECRETARIO.equals(accion) ||
             Constantes.ACCION_ACTUACIONES_FINALIZADAS.equals(accion));
-        */
+         */
     }
 
     public boolean deshabilitarDatosSecretaria() {
@@ -784,7 +918,12 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         for (DocumentosJudiciales doc : lista) {
             ExpActuaciones act = null;
             fecha1 = Calendar.getInstance();
-            List<ExpActuaciones> listAct = this.ejbFacade.getEntityManager().createNativeQuery("select a.* from exp_actuaciones as a where a.documento_judicial = ?1 order by a.fecha_presentacion desc, a.fecha_hora_alta desc", ExpActuaciones.class).setParameter(1, doc.getId()).getResultList();
+            List<ExpActuaciones> listAct = new ArrayList<>();
+            if (fechaDesde != null && fechaHasta != null) {
+                listAct = this.ejbFacade.getEntityManager().createNativeQuery("select a.* from exp_actuaciones as a where a.documento_judicial = ?1 and a.fecha_presentacion >= ?2 and a.fecha_presentacion <= ?3 order by a.fecha_presentacion desc, a.fecha_hora_alta desc", ExpActuaciones.class).setParameter(1, doc.getId()).setParameter(2, fechaDesde).setParameter(3, fechaHasta).getResultList();
+            } else {
+                listAct = this.ejbFacade.getEntityManager().createNativeQuery("select a.* from exp_actuaciones as a where a.documento_judicial = ?1 order by a.fecha_presentacion desc, a.fecha_hora_alta desc", ExpActuaciones.class).setParameter(1, doc.getId()).getResultList();
+            }
 
             Utils.timeStamp("actuaciones: ", fecha1, Calendar.getInstance());
             if (!listAct.isEmpty()) {
@@ -1003,7 +1142,7 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         List<List<ExpActuaciones>> array = new ArrayList<>(2);
 
         ejbFacade.getEntityManager().getEntityManagerFactory().getCache().evictAll();
-        
+
         array.add(new ArrayList<>());
         array.add(new ArrayList<>());
 
@@ -1227,4 +1366,187 @@ public class ExpActuacionesController extends AbstractController<ExpActuaciones>
         listaPendientes = obtenerOficiosElectronicos(false);
     }
 
+    public void repPresentacionesPendiente(boolean generarPdf) {
+
+        HttpServletResponse httpServletResponse = null;
+        try {
+            JRBeanCollectionDataSource beanCollectionDataSource = null;
+
+            ejbFacade.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+
+            List<ExpActuaciones> lista = listaPendientes;/*ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findByBuscarPorFechaPresentacion", ExpActuaciones.class
+            ).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();*/
+
+            SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
+            List<RepPresentacionesPendientes> listafinal2 = new ArrayList<>();
+            RepPresentacionesPendientes item = null;
+            for (ExpActuaciones det : lista) {
+
+                item = new RepPresentacionesPendientes();
+                item.setFechaPresentacion(det.getFechaPresentacion());
+                item.setNroExpediente(det.getDocumentoJudicial().getCausa());
+                item.setCaratula(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getCaratula()));
+                item.setMotivoProceso(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getMotivoProcesoString()));
+                item.setDescripcion(det.getDescripcion());
+                item.setTipoActuacion(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getTipoActuacion().getDescripcion()));
+                item.setRemitente(det.getPersonaAlta().getNombresApellidos());
+
+                listafinal2.add(item);
+
+            }
+
+            beanCollectionDataSource = new JRBeanCollectionDataSource(listafinal2);
+
+            HashMap map = new HashMap();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            Date fecha = ejbFacade.getSystemDate();
+
+            map.put("fecha", format.format(fecha));
+            map.put("fechaDesde", format2.format(fechaDesde));
+            map.put("fechaHasta", format2.format(fechaHasta));
+
+            JasperPrint jasperPrint = null;
+            ServletOutputStream servletOutputStream = null;
+            if (generarPdf) {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repPresentacionesPendientes.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.pdf");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+                JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+
+            } else {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repPresentacionesPendientes.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.xlsx");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+
+                JRXlsxExporter exporter = new JRXlsxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+                exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+                exporter.exportReport();
+            }
+
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            FacesContext.getCurrentInstance().responseComplete();
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            e.printStackTrace();
+
+            if (httpServletResponse != null) {
+                if (httpServletResponse.getHeader("Content-disposition") == null) {
+                    httpServletResponse.addHeader("Content-disposition", "inline");
+                } else {
+                    httpServletResponse.setHeader("Content-disposition", "inline");
+                }
+
+            }
+            JsfUtil.addErrorMessage("No se pudo generar el reporte.");
+
+        }
+    }
+    
+    public void repActuacionesEnElaboracion(boolean generarPdf) {
+
+        HttpServletResponse httpServletResponse = null;
+        try {
+            JRBeanCollectionDataSource beanCollectionDataSource = null;
+
+            ejbFacade.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+
+            List<ExpActuaciones> lista = listaPendientes;/*ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findByBuscarPorFechaPresentacion", ExpActuaciones.class
+            ).setParameter("fechaDesde", fechaDesde).setParameter("fechaHasta", fechaHasta).getResultList();*/
+
+            SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
+            List<RepPresentacionesPendientes> listafinal2 = new ArrayList<>();
+            RepPresentacionesPendientes item = null;
+            for (ExpActuaciones det : lista) {
+
+                item = new RepPresentacionesPendientes();
+                item.setFechaPresentacion(det.getFechaPresentacion());
+                item.setNroExpediente(det.getDocumentoJudicial().getCausa());
+                item.setCaratula(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getCaratula()));
+                item.setMotivoProceso(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getMotivoProcesoString()));
+                item.setDescripcion(det.getDescripcion());
+                item.setTipoActuacion(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getTipoActuacion().getDescripcion()));
+                item.setRemitente(det.getPersonaAlta() == null ? "" : det.getPersonaAlta().getNombresApellidos());
+                item.setSecretario(det.getSecretario() == null ? "" : det.getSecretario().getNombresApellidos());
+                item.setPreopinante(det.getPreopinante() == null ? "" : det.getPreopinante().getNombresApellidos());
+                item.setFechaResolucion(det.getResolucion() == null ? null : det.getResolucion().getFecha());
+                
+                listafinal2.add(item);
+
+            }
+
+            beanCollectionDataSource = new JRBeanCollectionDataSource(listafinal2);
+
+            HashMap map = new HashMap();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            Date fecha = ejbFacade.getSystemDate();
+
+            map.put("fecha", format.format(fecha));
+            map.put("fechaDesde", format2.format(fechaDesde));
+            map.put("fechaHasta", format2.format(fechaHasta));
+            map.put("titulo",tituloReportes);
+
+            JasperPrint jasperPrint = null;
+            ServletOutputStream servletOutputStream = null;
+            if (generarPdf) {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repActuacionesEnElaboracion.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.pdf");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+                JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+
+            } else {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repActuacionesEnElaboracion.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.xlsx");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+
+                JRXlsxExporter exporter = new JRXlsxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+                exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+                exporter.exportReport();
+            }
+
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            FacesContext.getCurrentInstance().responseComplete();
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            e.printStackTrace();
+
+            if (httpServletResponse != null) {
+                if (httpServletResponse.getHeader("Content-disposition") == null) {
+                    httpServletResponse.addHeader("Content-disposition", "inline");
+                } else {
+                    httpServletResponse.setHeader("Content-disposition", "inline");
+                }
+
+            }
+            JsfUtil.addErrorMessage("No se pudo generar el reporte.");
+
+        }
+    }
+
+    
 }
