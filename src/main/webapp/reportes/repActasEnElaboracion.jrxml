@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version last-->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="null" pageWidth="1500" pageHeight="700" whenNoDataType="AllSectionsNoDetail" columnWidth="1460" columnSpacing="28" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="09b0a97c-e717-407e-a0d7-efb5f8aa07aa">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<parameter name="fecha" class="java.lang.String"/>
+	<parameter name="hora" class="java.lang.String"/>
+	<parameter name="fechaDesde" class="java.lang.String"/>
+	<parameter name="fechaHasta" class="java.lang.String"/>
+	<field name="caratula" class="java.lang.String"/>
+	<field name="causa" class="java.lang.String"/>
+	<field name="fechaHoraAlta" class="java.util.Date"/>
+	<field name="motivoProceso" class="java.lang.String"/>
+	<field name="remitente" class="java.lang.String"/>
+	<field name="estado" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="tipoSesion" class="java.lang.String"/>
+	<field name="personaRevisado" class="java.lang.String"/>
+	<field name="fechaHoraRevisado" class="java.lang.String"/>
+	<background>
+		<band height="58" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="18" width="1449" height="2" uuid="ec6a11f2-bc34-4982-8c5d-c2dccbdb370b">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+			</line>
+			<staticText>
+				<reportElement stretchType="RelativeToBandHeight" x="647" y="-235" width="320" height="60" uuid="f24007e2-ff1f-48a6-8131-0245278ed749"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Actas en Elaboración]]></text>
+			</staticText>
+		</band>
+	</background>
+	<title>
+		<band height="78" splitType="Stretch">
+			<property name="local_mesure_unitheight" value="pixel"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<image>
+				<reportElement x="111" y="0" width="267" height="56" uuid="eeb2daeb-60c8-4836-a09b-b1278f4f259b"/>
+				<imageExpression><![CDATA["imagen_logo_chico.jpg"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="1350" y="10" width="100" height="20" uuid="59a4cf77-ee80-4388-a142-07a6aefbbfcb"/>
+				<textFieldExpression><![CDATA[$P{fecha}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement mode="Transparent" x="1300" y="10" width="40" height="20" backcolor="#FFFFFF" uuid="e708e306-ec31-466a-8d26-6db6ad440c76"/>
+				<textElement>
+					<font isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[Fecha:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="68">
+			<rectangle>
+				<reportElement mode="Transparent" x="0" y="31" width="1449" height="29" uuid="1223f60b-c048-4e94-a251-d0a0b44adcf2"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="160" y="35" width="83" height="20" uuid="de981bd4-de90-4835-86d7-a00c88d95612"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nro. de Causa]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="270" y="35" width="232" height="20" uuid="ecf48ce0-6171-4515-971e-c146419e8718"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Carátula]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="30" y="35" width="100" height="20" uuid="603d2a67-3c64-4968-b2d1-960c1dadc338"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="750" y="35" width="115" height="20" uuid="38071fe3-fc6f-4d22-b654-e64a8e1ccc8f"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha de Sesión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="530" y="31" width="193" height="33" uuid="48cb9215-e4e8-438e-b37f-64847693b17b"/>
+				<textElement textAlignment="Justified">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Expediente Judicial /Cuaderno de Investigación fiscal]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="237" y="12" width="90" height="15" uuid="5588dad7-9715-4a7e-98a7-387c899f5200"/>
+				<textFieldExpression><![CDATA[$P{fechaHasta}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="30" y="12" width="67" height="15" uuid="d11a864c-a62b-4e9c-bc8c-6eb8a15235ed"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha desde:]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="97" y="12" width="69" height="15" uuid="a9e7b43e-a268-4db7-b774-47fe373dc6be"/>
+				<textFieldExpression><![CDATA[$P{fechaDesde}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="170" y="12" width="67" height="15" uuid="effdb3d6-6f08-41cb-af05-505819d0f042"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha hasta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="890" y="35" width="115" height="20" uuid="7eebf1e1-270b-4be1-9990-36f84f020c43"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo Sesión]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1030" y="35" width="115" height="20" uuid="17cb4d2b-4797-4674-aa9e-209350dde537"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Estado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1170" y="35" width="115" height="20" uuid="4dbda1b8-7fcb-47d0-8fc8-458d059c5b04"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Persona Revisado]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="1310" y="35" width="115" height="20" uuid="a7fe91b5-58f1-4f17-8714-45028c89327d"/>
+				<textElement>
+					<font size="10" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Fecha Hora Revisado]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="87">
+			<textField>
+				<reportElement x="161" y="0" width="89" height="20" uuid="eaa7d03e-2ecc-4297-972f-f95b3133e5df"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{causa}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="270" y="0" width="232" height="59" uuid="85d99d85-7d29-4241-a8a0-3b01023fce27"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caratula}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement stretchType="RelativeToBandHeight" x="530" y="0" width="193" height="59" uuid="08ce19e1-e75e-4912-999e-2758dfdcd991"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{motivoProceso}]]></textFieldExpression>
+			</textField>
+			<textField pattern="dd/MM/yyyy">
+				<reportElement x="30" y="0" width="106" height="20" uuid="d23b2b6e-be01-41b1-a211-04b6a78a23d9"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{fechaHoraAlta}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="750" y="0" width="115" height="59" uuid="c82ff716-e787-42df-8a28-db5651950d9f"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{remitente}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="890" y="0" width="115" height="59" uuid="461be6ae-76c1-4788-a59b-1da0e7864a86"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoSesion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1030" y="0" width="115" height="59" uuid="51f4146b-3bb8-41f8-afbf-91c1cefa72dc"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{estado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1170" y="0" width="115" height="59" uuid="5fbd6555-ed8a-4e7a-81df-1525d8445f2b"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{personaRevisado}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="1310" y="0" width="115" height="59" uuid="8dca21c0-94e0-4122-a046-09645aa9fc2c"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{personaRevisado}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

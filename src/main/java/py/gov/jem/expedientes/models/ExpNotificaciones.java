@@ -39,8 +39,10 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "ExpNotificaciones.findAll", query = "SELECT r FROM ExpNotificaciones r ORDER BY r.estado DESC, r.fechaHoraAlta DESC")
     , @NamedQuery(name = "ExpNotificaciones.findAllTipoActuacionEstado", query = "SELECT r FROM ExpNotificaciones r WHERE r.actuacion.tipoActuacion = :tipoActuacion AND r.estado = :estado ORDER BY r.estado DESC, r.fechaHoraAlta DESC")
+   , @NamedQuery(name = "ExpNotificaciones.findAllTipoActuacionEstadoFiltroFecha", query = "SELECT r FROM ExpNotificaciones r WHERE r.actuacion.tipoActuacion = :tipoActuacion AND r.estado = :estado AND r.fechaHoraAlta >= :fechaDesde AND r.fechaHoraAlta <= :fechaHasta ORDER BY r.estado DESC, r.fechaHoraAlta DESC")
     , @NamedQuery(name = "ExpNotificaciones.findByActuacion", query = "SELECT r FROM ExpNotificaciones r WHERE r.actuacion = :actuacion")
     , @NamedQuery(name = "ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisible", query = "SELECT r FROM ExpNotificaciones r WHERE r.destinatario = :destinatario AND r.actuacion.tipoActuacion = :tipoActuacion AND r.estado = :estado AND r.visible = :visible ORDER BY r.estado DESC, r.fechaHoraAlta DESC")
+    , @NamedQuery(name = "ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisibleFiltroFecha", query = "SELECT r FROM ExpNotificaciones r WHERE r.destinatario = :destinatario AND r.actuacion.tipoActuacion = :tipoActuacion AND r.estado = :estado AND r.visible = :visible AND r.fechaHoraAlta >= :fechaDesde AND r.fechaHoraAlta <= :fechaHasta ORDER BY r.estado DESC, r.fechaHoraAlta DESC")
     , @NamedQuery(name = "ExpNotificaciones.findByEstado", query = "SELECT r FROM ExpNotificaciones r WHERE r.estado = :estado ORDER BY r.fechaHoraAlta")
     , @NamedQuery(name = "ExpNotificaciones.findById", query = "SELECT r FROM ExpNotificaciones r WHERE r.id = :id")})
 public class ExpNotificaciones implements Serializable {

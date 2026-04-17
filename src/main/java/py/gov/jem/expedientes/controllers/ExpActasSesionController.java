@@ -32,6 +32,8 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -51,11 +53,18 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import org.apache.poi.util.IOUtils;
 import org.primefaces.PrimeFaces;
 import org.primefaces.model.file.UploadedFile;
 import py.gov.jem.expedientes.controllers.util.JsfUtil;
 import py.gov.jem.expedientes.datasource.EstadoCantidad;
+import py.gov.jem.expedientes.datasource.RepActasSesion;
+import py.gov.jem.expedientes.datasource.RepExpedientesAsociados;
+import py.gov.jem.expedientes.datasource.RepPersonasFirmantes;
 import py.gov.jem.expedientes.models.AntecedentesRoles;
 import py.gov.jem.expedientes.models.AntecedentesRolesPorPersonas;
 import py.gov.jem.expedientes.models.CanalesEntradaDocumentoJudicial;
@@ -131,6 +140,7 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
     private Integer itemsSize;
     private Integer newItemIx;
     private String titulo;
+    private String tituloReporte;
     private String accion;
 
     public String getTitulo() {
@@ -140,6 +150,15 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
+
+    public String getTituloReporte() {
+        return tituloReporte;
+    }
+
+    public void setTituloReporte(String tituloReporte) {
+        this.tituloReporte = tituloReporte;
+    }
+    
 
     public Integer getItemsSize() {
         return itemsSize;
@@ -306,6 +325,10 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
         super(ExpActasSesion.class);
     }
 
+    public boolean deshabilitarSesion() {
+        return getSelected() == null;
+    }
+
     @PostConstruct
     @Override
     public void initParams() {
@@ -333,14 +356,19 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
 
         if (Constantes.ACCION_ACTA_SESION_EN_PROYECTO.equals(accion)) {
             titulo = "ACTAS DE SESIÓN EN ELABORACION";
+            tituloReporte ="Actas de Sesión en Elaboración";
         } else if (Constantes.ACCION_ACTA_SESION_REVISION_MIEMBROS.equals(accion)) {
             titulo = "ACTAS DE SESIÓN P/ REVISIÓN POR EL PRESIDENTE";
+            tituloReporte= "Actas de Sesión P/ Revisión Por el Presidente";
         } else if (Constantes.ACCION_ACTA_SESION_FIRMA_MIEMBROS.equals(accion)) {
             titulo = "ACTAS DE SESIÓN P/ LA FIRMA DEL PRESIDENTE";
+            tituloReporte = "Actas de Sesión P/ la Firma del Presidente";
         } else if (Constantes.ACCION_ACTA_SESION_FIRMA_SECRETARIO.equals(accion)) {
             titulo = "ACTAS DE SESIÓN P/ LA FIRMA DEL SECRETARIO";
+            tituloReporte = "Actas de Sesión P/ la Firma del Secretario";
         } else if (Constantes.ACCION_ACTA_SESION_FINALIZADAS.equals(accion)) {
             titulo = "ACTAS DE SESIÓN FINALIZADAS";
+            tituloReporte = "Actas de Sesión Finalizadas";
         } else {
             titulo = "ACTAS DE SESIÓN";
             // Si viene del menu Registrar Acta Sesion entonces abrir dialog para crear 
@@ -583,7 +611,6 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
             Document document = new Document(pdfDoc);
 
             // String path = par.getProtocolo() + "://" + par.getIpServidor() + ":" + par.getPuertoServidor() + "/" + endpoint + "/" + Constantes.URL_VALIDACION_ACTUACION;
-
             String path = par.getProtocolo() + "://" + par.getIpServidor() + ":" + par.getPuertoServidor() + "/expedientes/" + Constantes.URL_VALIDACION_ACTA_SESION;
             BarcodeQRCode qrCode = new BarcodeQRCode(path + "?hash=" + hash);
             // PdfFormXObject barcodeObject = qrCode.createFormXObject(ColorConstants.BLACK, pdfDoc);
@@ -918,12 +945,12 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
                 return resp;
             }
         }
-/*
+        /*
         if (!verifActuacionAnterior(docImprimir)) {
             JsfUtil.addErrorMessage("Ud tiene actas anteriores que firmar");
             return resp;
         }
-*/
+         */
         if (firma == null) {
             firma = new Firmas();
 
@@ -1895,7 +1922,7 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
             nombreArchivo += "_" + getSelected().getId() + ".pdf";
 
             getSelected().setArchivo(nombreArchivo);
-            
+
             String hash = "";
             try {
                 hash = Utils.generarHash(fecha, getSelected().getId());
@@ -1917,13 +1944,12 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
                 JsfUtil.addErrorMessage("No se pudo guardar archivo");
                 fos = null;
             }
-            
+
             agregarQR(Constantes.RUTA_ARCHIVOS_TEMP + File.separator + nombreArchivo, par.getRutaActas() + File.separator + getSelected().getArchivo(), getSelected().getHash(), false);
- 
-            
+
             File archivo = new File(Constantes.RUTA_ARCHIVOS_TEMP + File.separator + nombreArchivo);
             archivo.delete();
-            
+
             saveFirmantes();
             saveExpedientes();
 
@@ -1939,5 +1965,102 @@ public class ExpActasSesionController extends AbstractController<ExpActasSesion>
             return retornar;
         }
         return "";
+    }
+
+    public void imprimirSesionEnElaboracion() {
+        HttpServletResponse httpServletResponse = null;
+        try {
+            Collection<ExpActasSesion> fcCabecera = ejbFacade.getEntityManager().createNamedQuery("ExpActasSesion.findById", ExpActasSesion.class).setParameter("id", getSelected().getId()).getResultList();
+            Iterator<ExpActasSesion> ifcCabecera = fcCabecera.iterator();
+            Collection<RepActasSesion> detalles = new ArrayList<>();
+            Collection<RepPersonasFirmantes> detallesFirmantes = new ArrayList<>();
+            Collection<RepExpedientesAsociados> detallesExpedientes = new ArrayList<>();
+
+            Collection<ExpPersonasFirmantesPorActasSesion> pfDetalle = new ArrayList<>();
+            Collection<ExpDetallesActaSesion> fcDetalle = new ArrayList<>();
+            while (ifcCabecera.hasNext()) {
+                ExpActasSesion acta = ifcCabecera.next();
+                fcDetalle = ejbFacade.getEntityManager().createNamedQuery("ExpDetallesActaSesion.findByActaSesion", ExpDetallesActaSesion.class).setParameter("actaSesion", acta).getResultList();
+                //Iterator<ExpDetallesActaSesion> ifcDetalle = fcDetalle.iterator();
+                pfDetalle = ejbFacade.getEntityManager().createNamedQuery("ExpPersonasFirmantesPorActasSesion.findByActaSesion", ExpPersonasFirmantesPorActasSesion.class).setParameter("actaSesion", acta).getResultList();
+
+                RepActasSesion actaSesion = new RepActasSesion();
+                actaSesion.setFechaSesion(acta.getFechaSesion());
+                actaSesion.setTipoSesion(acta.getTipoSesion().getDescripcion());
+                actaSesion.setEstado(acta.getEstado().getDescripcion());
+                
+                detalles.add(actaSesion);
+                //}
+            }
+            ifcCabecera = fcCabecera.iterator();
+            while (ifcCabecera.hasNext()) {
+                ExpActasSesion acta = ifcCabecera.next();
+
+                pfDetalle = ejbFacade.getEntityManager()
+                        .createNamedQuery("ExpPersonasFirmantesPorActasSesion.findByActaSesion", ExpPersonasFirmantesPorActasSesion.class)
+                        .setParameter("actaSesion", acta)
+                        .getResultList();
+
+                // Recorrer la lista de firmantes
+                for (ExpPersonasFirmantesPorActasSesion epf : pfDetalle) {
+
+                    RepPersonasFirmantes personasFirmantes = new RepPersonasFirmantes();
+
+                    personasFirmantes.setCi(epf.getPersonaFirmante().getCi());
+                    personasFirmantes.setNombreApellidos(epf.getPersonaFirmante().getNombresApellidos());
+
+                    detallesFirmantes.add(personasFirmantes);
+                }
+            }
+            ifcCabecera = fcCabecera.iterator();
+            while (ifcCabecera.hasNext()) {
+                ExpActasSesion acta = ifcCabecera.next();
+
+                fcDetalle = ejbFacade.getEntityManager()
+                        .createNamedQuery("ExpDetallesActaSesion.findByActaSesion", ExpDetallesActaSesion.class)
+                        .setParameter("actaSesion", acta)
+                        .getResultList();
+
+                // Recorrer la lista de expedientes asociados
+                for (ExpDetallesActaSesion fcd : fcDetalle) {
+
+                    RepExpedientesAsociados expedientesAsociados = new RepExpedientesAsociados();
+
+                   expedientesAsociados.setCausas(fcd.getDocumentoJudicial().getCausa());
+                   expedientesAsociados.setCaratula(fcd.getDocumentoJudicial().getCaratula());
+
+                    detallesExpedientes.add(expedientesAsociados);
+                }
+            }
+            HashMap map = new HashMap();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            Date fecha = ejbFacade.getSystemDate();
+
+            map.put("fecha", format.format(fecha));
+            map.put("tituloReporte", tituloReporte);
+            map.put("listas_firmantes", new JRBeanCollectionDataSource(detallesFirmantes));
+            map.put("listas_expedientes", new JRBeanCollectionDataSource(detallesExpedientes));
+            map.put("listas_sesion_actas", new JRBeanCollectionDataSource(detalles));
+
+            //Paso el detalle del reporte
+            JRBeanCollectionDataSource beanCollectionDataSource = new JRBeanCollectionDataSource(detalles);
+
+            String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/acta_sesion_en_elaboracion.jasper");
+            JasperPrint jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+            httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+            httpServletResponse.addHeader("Content-disposition", "attachment;filename=actas_sesion.pdf");
+
+            ServletOutputStream servletOutputStream = httpServletResponse.getOutputStream();
+
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+            FacesContext.getCurrentInstance().responseComplete();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

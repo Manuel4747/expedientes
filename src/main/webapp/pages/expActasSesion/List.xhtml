@@ -45,8 +45,11 @@
                 <div class="ui-sm-12 ui-md-4 ui-lg-2 ui-g-2">
                     <p:commandButton style="padding-right: 10px; width: 100%" rendered="#{actasSesionController.renderedDatatable()}" value="Buscar" ajax="false" onclick="monitorExporting(startHandler(0), endHandler)" update="datalist, datalistDetalles, :growl" action="#{actasSesionController.buscarPorFecha()}"></p:commandButton>
                 </div>
-                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                <ui:remove><p:commandButton id="actaSesionButton" icon="ui-icon-print" rendered="false"  ajax="false" onstart="startHandler(0);" oncomplete="endHandler();" onerror="endHandler();" value="Imprimir" actionListener="#{actasSesionController.imprimirSesionEnElaboracion()}" style="margin-left: 10px"/> </ui:remove>
+               <p:commandButton id="actaSesionButton" style="margin-left: 10px"  ajax="false" onclick="this.form.target = '_blank'" value="Imprimir en PDF" action="#{actasSesionController.imprimirSesionEnElaboracion()}"/>
 
+                <div class="ui-sm-12 ui-md-12 ui-lg-12 ui-g-12">
+                    
                     <p:dataTable id="datalist"
                                  value="#{actasSesionController.listaActasSesion}"
                                  lazy="false"

@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "ExpPersonasFirmantesPorActasSesion.findByPersonaFirmanteFirmado", query = "SELECT o FROM ExpPersonasFirmantesPorActasSesion o WHERE o.personaFirmante = :personaFirmante AND o.firmado = :firmado ORDER BY o.actaSesion.fechaSesion,  o.actaSesion.fechaHoraAlta")
     , @NamedQuery(name = "ExpPersonasFirmantesPorActasSesion.findByActaSesion", query = "SELECT o FROM ExpPersonasFirmantesPorActasSesion o WHERE o.actaSesion = :actaSesion ORDER BY o.personaFirmante.nombresApellidos, o.fechaHoraAlta")
     , @NamedQuery(name = "ExpPersonasFirmantesPorActasSesion.findByActaSesionPersonaFirmanteEstado", query = "SELECT o FROM ExpPersonasFirmantesPorActasSesion o WHERE o.actaSesion = :actaSesion AND o.personaFirmante = :personaFirmante AND o.estado = :estado")
+    , @NamedQuery(name = "ExpPersonasFirmantesPorActasSesion.findByActaSesion", query = "SELECT o FROM ExpPersonasFirmantesPorActasSesion o WHERE o.actaSesion = :actaSesion ORDER BY o.personaFirmante.nombresApellidos, o.fechaHoraAlta")
     , @NamedQuery(name = "ExpPersonasFirmantesPorActasSesion.findByActaSesionEstado", query = "SELECT o FROM ExpPersonasFirmantesPorActasSesion o WHERE o.actaSesion = :actaSesion AND o.estado = :estado ORDER BY o.personaFirmante.nombresApellidos, o.fechaHoraAlta")})
 public class ExpPersonasFirmantesPorActasSesion implements Serializable {
 

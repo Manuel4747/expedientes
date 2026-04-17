@@ -1,13 +1,15 @@
 package py.gov.jem.expedientes.controllers;
 
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.PostConstruct;
@@ -17,10 +19,19 @@ import javax.inject.Named;
 import javax.faces.view.ViewScoped;
 import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
+import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRExporterParameter;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import org.primefaces.PrimeFaces;
 import py.gov.jem.expedientes.controllers.util.JsfUtil;
+import py.gov.jem.expedientes.datasource.RepRecusaciones;
 import py.gov.jem.expedientes.models.AntecedentesRoles;
 import py.gov.jem.expedientes.models.DocumentosJudiciales;
 import py.gov.jem.expedientes.models.ExpActuaciones;
@@ -55,7 +66,9 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
     private ExpEstadosNotificacion estadoLE;
     private ExpEstadosNotificacion estadoNL;
     private String endpoint;
-    
+    private Date fechaDesde;
+    private Date fechaHasta;
+    private String tituloReporte;
 
     public String getSessionId() {
         return sessionId;
@@ -73,12 +86,36 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
         this.titulo = titulo;
     }
 
+    public Date getFechaDesde() {
+        return fechaDesde;
+    }
+
+    public void setFechaDesde(Date fechaDesde) {
+        this.fechaDesde = fechaDesde;
+    }
+
+    public Date getFechaHasta() {
+        return fechaHasta;
+    }
+
+    public void setFechaHasta(Date fechaHasta) {
+        this.fechaHasta = fechaHasta;
+    }
+
+    public String getTituloReporte() {
+        return tituloReporte;
+    }
+
+    public void setTituloReporte(String tituloReporte) {
+        this.tituloReporte = tituloReporte;
+    }
+
     public String getContent() {
 
         nombre = "";
         try {
             if (docImprimir != null) {
-                if(docImprimir.getActuacion() != null){
+                if (docImprimir.getActuacion() != null) {
 
                     byte[] fileByte = null;
 
@@ -116,22 +153,22 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
             e.printStackTrace();
             content = null;
         }
-        
+
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         String url = request.getRequestURL().toString();
         String uri = request.getRequestURI();
         int pos = url.lastIndexOf(uri);
-        url = url.substring(0,pos);
+        url = url.substring(0, pos);
 
         // return "http://" + par.getIpServidor() + ":" + par.getPuertoServidor() + "/tmp/" + nombre;
         return url + "/tmp/" + nombre;
     }
-    
+
     public ExpNotificacionesController() {
         // Inform the Abstract parent controller of the concrete ExpNotificaciones Entity
         super(ExpNotificaciones.class);
     }
-    
+
     @PostConstruct
     @Override
     public void initParams() {
@@ -148,31 +185,32 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
 
         if (Constantes.ACCION_NOTIFICACION.equals(accion)) {
             titulo = "NOTIFICACIONES";
+           // tituloReporte = "Nuevas Causas Ingresadas";
             tipoActuacion = ejbFacade.getEntityManager().createNamedQuery("ExpTiposActuacion.findById", ExpTiposActuacion.class).setParameter("id", Constantes.TIPO_ACTUACION_NOTIFICACION).getSingleResult();
-        }else if (Constantes.ACCION_PRIMER.equals(accion)) {
+        } else if (Constantes.ACCION_PRIMER.equals(accion)) {
             titulo = "NUEVAS CAUSAS";
+            tituloReporte = "Nuevas Causas Ingresadas";
             tipoActuacion = ejbFacade.getEntityManager().createNamedQuery("ExpTiposActuacion.findById", ExpTiposActuacion.class).setParameter("id", Constantes.TIPO_ACTUACION_PRIMER_ESCRITO).getSingleResult();
-        }else if (Constantes.ACCION_RECUSACION.equals(accion)) {
+        } else if (Constantes.ACCION_RECUSACION.equals(accion)) {
             titulo = "RECUSACIONES";
+            tituloReporte = "Recusaciones";
             tipoActuacion = ejbFacade.getEntityManager().createNamedQuery("ExpTiposActuacion.findById", ExpTiposActuacion.class).setParameter("id", Constantes.TIPO_ACTUACION_RECUSACION).getSingleResult();
         } else {
             // JsfUtil.addErrorMessage("Accion no permitida:: " + accion);
             return;
         }
-        
+
         session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         sessionId = session.getId();
 
         personaUsuario = (Personas) session.getAttribute("Persona");
         rolElegido = (AntecedentesRoles) session.getAttribute("RolElegido");
-        
+
         par = ejbFacade.getEntityManager().createNamedQuery("ParametrosSistema.findById", ParametrosSistema.class).setParameter("id", Constantes.PARAMETRO_ID_ANTECEDENTE).getSingleResult();
 
-            
         estadoLE = ejbFacade.getEntityManager().createNamedQuery("ExpEstadosNotificacion.findByCodigo", ExpEstadosNotificacion.class).setParameter("codigo", Constantes.ESTADO_NOTIFICACION_LEIDO).getSingleResult();
         estadoNL = ejbFacade.getEntityManager().createNamedQuery("ExpEstadosNotificacion.findByCodigo", ExpEstadosNotificacion.class).setParameter("codigo", Constantes.ESTADO_NOTIFICACION_NO_LEIDO).getSingleResult();
 
-        
         // ExpEstadosNotificacion estado = ejbFacade.getEntityManager().createNamedQuery("ExpEstadosNotificacion.findByCodigo", ExpEstadosNotificacion.class).setParameter("codigo", Constantes.ESTADO_NOTIFICACION_NO_LEIDO).getSingleResult();
         // setItems(this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByEstado", ExpNotificaciones.class).setParameter("estado", estado).getResultList());
         buscar();
@@ -191,28 +229,28 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
     }
 
     public String color(ExpNotificaciones not) {
-        return (not == null)?"":(Constantes.ESTADO_NOTIFICACION_NO_LEIDO.equals(not.getEstado().getCodigo())?"red":"green");
+        return (not == null) ? "" : (Constantes.ESTADO_NOTIFICACION_NO_LEIDO.equals(not.getEstado().getCodigo()) ? "red" : "green");
     }
 
     public void prepareDialogoVerDoc(ExpNotificaciones doc) {
-        
-        if(doc != null){
-            
+
+        if (doc != null) {
+
             Date fecha = ejbFacade.getSystemDate();
-            
+
             doc.setFechaHoraLectura(fecha);
-            
+
             ExpEstadosNotificacion estado = ejbFacade.getEntityManager().createNamedQuery("ExpEstadosNotificacion.findByCodigo", ExpEstadosNotificacion.class).setParameter("codigo", Constantes.ESTADO_NOTIFICACION_LEIDO).getSingleResult();
             doc.setEstado(estado);
-            
+
             setSelected(doc);
             this.save(null);
             setSelected(null);
         }
-        
+
         docImprimir = doc;
     }
-    
+
     public void prepareCerrarDialogoVerDoc() {
         if (docImprimir != null) {
             File f = new File(Constantes.RUTA_ARCHIVOS_TEMP + "/" + nombre);
@@ -221,17 +259,17 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
             docImprimir = null;
         }
     }
-    
-    public void navigateActuacion(ExpNotificaciones not){
+
+    public void navigateActuacion(ExpNotificaciones not) {
         try {
             Date fecha = ejbFacade.getSystemDate();
-            
+
             not.setFechaHoraLectura(fecha);
             not.setEstado(estadoLE);
             setSelected(not);
             this.save(null);
             setSelected(null);
-            
+
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("actuacionId", String.valueOf(not.getActuacion().getId()));
             FacesContext.getCurrentInstance().getExternalContext().redirect("/" + endpoint + "/faces/pages/expEntradaDocumentosJudiciales/index.xhtml?tipo=consulta");
         } catch (IOException ex) {
@@ -241,28 +279,50 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
     public List<ExpNotificaciones> obtenerNotificaciones(ExpTiposActuacion tipoActuacion, ExpEstadosNotificacion estadoNL, Personas per, AntecedentesRoles rol) {
 
         List<ExpNotificaciones> lista = null;
-        if (filtroURL.verifPermiso(Constantes.PERMISO_ACCESO_TOTAL_EXPEDIENTES, rol.getId())) {
-            lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findAllTipoActuacionEstado", ExpNotificaciones.class).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).getResultList();
+        if (rol != null && filtroURL.verifPermiso(Constantes.PERMISO_ACCESO_TOTAL_EXPEDIENTES, rol.getId())) {
+            if (fechaDesde != null && fechaHasta != null) {
+                lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findAllTipoActuacionEstadoFiltroFecha", ExpNotificaciones.class)
+                        .setParameter("tipoActuacion", tipoActuacion)
+                        .setParameter("estado", estadoNL)
+                        .setParameter("fechaDesde", fechaDesde)
+                        .setParameter("fechaHasta", fechaHasta)
+                        .getResultList();
+            } else {
+                lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findAllTipoActuacionEstado", ExpNotificaciones.class).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).getResultList();
+            }
         } else {
-            lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisible", ExpNotificaciones.class).setParameter("destinatario", per).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).setParameter("visible", true).getResultList();
+            if (fechaDesde != null && fechaHasta != null) {
+                lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisibleFiltroFecha", ExpNotificaciones.class)
+                        .setParameter("destinatario", per)
+                        .setParameter("tipoActuacion", tipoActuacion)
+                        .setParameter("estado", estadoNL)
+                        .setParameter("visible", true)
+                        .setParameter("fechaDesde", fechaDesde)
+                        .setParameter("fechaHasta", fechaHasta)
+                        .getResultList();
+
+            } else {
+                lista = this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisible", ExpNotificaciones.class).setParameter("destinatario", per).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).setParameter("visible", true).getResultList();
+
+            }
         }
 
         return lista;
     }
-    
-    private void buscar(){
-        
+
+    public void buscar() {
+
         setItems(obtenerNotificaciones(tipoActuacion, estadoNL, personaUsuario, rolElegido));
-        
+
         /*
         if(filtroURL.verifPermiso(Constantes.PERMISO_ACCESO_TOTAL_EXPEDIENTES, rolElegido.getId())){
             setItems(this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findAllTipoActuacionEstado", ExpNotificaciones.class).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).getResultList());
         }else{
             setItems(this.ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisible", ExpNotificaciones.class).setParameter("destinatario", personaUsuario).setParameter("tipoActuacion", tipoActuacion).setParameter("estado", estadoNL).setParameter("visible", true).getResultList());
         }
-        */
+         */
     }
-    
+
     public void firmar() {
 
         Date fecha = ejbFacade.getSystemDate();
@@ -323,7 +383,7 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
 
             if (firma2 != null) {
                 if (firma2.getEstado().equals("AC")) {
-                    if(docImprimir != null){
+                    if (docImprimir != null) {
                         docImprimir.setActuacion(ejbFacade.getEntityManager().createNamedQuery("ExpActuaciones.findById", ExpActuaciones.class).setParameter("id", docImprimir.getId()).getSingleResult());
                     }
 
@@ -343,6 +403,101 @@ public class ExpNotificacionesController extends AbstractController<ExpNotificac
             JsfUtil.addErrorMessage("Tiempo de espera terminado");
         }
 
+    }
+
+    public void Recusaciones(boolean generarPdf) {
+
+        HttpServletResponse httpServletResponse = null;
+        try {
+            JRBeanCollectionDataSource beanCollectionDataSource = null;
+
+            ejbFacade.getEntityManager().getEntityManagerFactory().getCache().evictAll();
+
+            Collection<ExpNotificaciones> lista = getItems();
+            /* ejbFacade.getEntityManager().createNamedQuery("ExpNotificaciones.findByDestinatarioTipoActuacionEstadoVisibleFiltroFecha", ExpNotificaciones.class)
+                        .setParameter("destinatario", per)
+                        .setParameter("tipoActuacion", tipoActuacion)
+                        .setParameter("estado", estadoNL)
+                        .setParameter("visible", true)
+                        .setParameter("fechaDesde", fechaDesde)
+                        .setParameter("fechaHasta", fechaHasta)
+                        .getResultList();*/
+
+            SimpleDateFormat format2 = new SimpleDateFormat("dd/MM/yyyy");
+            List<RepRecusaciones> listafinal2 = new ArrayList<>();
+            RepRecusaciones item = null;
+            for (ExpNotificaciones det : lista) {
+
+                item = new RepRecusaciones();
+                item.setFechaHoraAlta(det.getFechaHoraAlta());
+                item.setCausa(det.getDocumentoJudicial().getCausa());
+                item.setCaratula(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getCaratula()));
+                item.setMotivoProceso(det.getDocumentoJudicial() == null ? "" : (det.getDocumentoJudicial() == null ? "" : det.getDocumentoJudicial().getMotivoProcesoString()));
+                item.setRemitente(det.getRemitente().getNombresApellidos());
+
+                listafinal2.add(item);
+
+            }
+
+            beanCollectionDataSource = new JRBeanCollectionDataSource(listafinal2);
+
+            HashMap map = new HashMap();
+            SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+
+            Date fecha = ejbFacade.getSystemDate();
+
+            map.put("fecha", format.format(fecha));
+            map.put("fechaDesde", format2.format(fechaDesde));
+            map.put("fechaHasta", format2.format(fechaHasta));
+            map.put("tituloReporte", tituloReporte);
+
+            JasperPrint jasperPrint = null;
+            ServletOutputStream servletOutputStream = null;
+            if (generarPdf) {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repRecusaciones.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.pdf");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+                JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
+
+            } else {
+                String reportPath = FacesContext.getCurrentInstance().getExternalContext().getRealPath("/reportes/repRecusaciones.jasper");
+                jasperPrint = JasperFillManager.fillReport(reportPath, map, beanCollectionDataSource);
+
+                httpServletResponse = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+
+                httpServletResponse.addHeader("Content-disposition", "filename=reporte.xlsx");
+
+                servletOutputStream = httpServletResponse.getOutputStream();
+
+                JRXlsxExporter exporter = new JRXlsxExporter();
+                exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+                exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, servletOutputStream);
+                exporter.exportReport();
+            }
+
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            FacesContext.getCurrentInstance().responseComplete();
+
+        } catch (Exception e) {
+            FacesContext.getCurrentInstance().getExternalContext().addResponseCookie("cookie.chart.exporting", "true", Collections.<String, Object>emptyMap());
+            e.printStackTrace();
+
+            if (httpServletResponse != null) {
+                if (httpServletResponse.getHeader("Content-disposition") == null) {
+                    httpServletResponse.addHeader("Content-disposition", "inline");
+                } else {
+                    httpServletResponse.setHeader("Content-disposition", "inline");
+                }
+
+            }
+            JsfUtil.addErrorMessage("No se pudo generar el reporte.");
+
+        }
     }
 
 }

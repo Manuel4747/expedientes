@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+    <!-- ===================== PARAMETER ===================== -->
+    <parameter name="acta_id" class="java.lang.Integer"/>
+
+    <!-- ===================== FIELDS ===================== -->
+    <field name="id" class="java.lang.Integer"/>
+    <field name="fecha_sesion" class="java.util.Date"/>
+    <field name="tipo_sesion" class="java.lang.String"/>
+    <field name="estado" class="java.lang.String"/>
+
+    <!-- ===================== TITLE ===================== -->
+    <title>
+        <band height="80">
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="30"/>
+                <textElement textAlignment="Center">
+                    <font size="16" isBold="true"/>
+                </textElement>
+                <text><![CDATA[ACTA DE SESIÓN]]></text>
+            </staticText>
+        </band>
+    </title>
+
+    <!-- ===================== DETAIL ===================== -->
+    <detail>
+        <band height="120">
+
+            <textField>
+                <reportElement x="0" y="10" width="200" height="20"/>
+                <textFieldExpression><![CDATA["ID: " + $F{id}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="0" y="30" width="400" height="20"/>
+                <textFieldExpression><![CDATA["Fecha: " + $F{fecha_sesion}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="0" y="50" width="400" height="20"/>
+                <textFieldExpression><![CDATA["Tipo: " + $F{tipo_sesion}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="0" y="70" width="400" height="20"/>
+                <textFieldExpression><![CDATA["Estado: " + $F{estado}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+
+    <!-- ===================== SUBREPORT FIRMANDO ===================== -->
+    <detail>
+        <band height="200">
+
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement textAlignment="Left">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[FIRMANTES]]></text>
+            </staticText>
+
+            <subreport>
+                <reportElement x="0" y="25" width="555" height="80"/>
+                <subreportParameter name="acta_id">
+                    <subreportParameterExpression><![CDATA[$P{acta_id}]]></subreportParameterExpression>
+                </subreportParameter>
+
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+
+                <subreportExpression><![CDATA["firmantes_subreport.jasper"]]></subreportExpression>
+            </subreport>
+
+        </band>
+    </detail>
+
+    <!-- ===================== SUBREPORT DOCUMENTOS ===================== -->
+    <detail>
+        <band height="200">
+
+            <staticText>
+                <reportElement x="0" y="0" width="555" height="20"/>
+                <textElement textAlignment="Left">
+                    <font isBold="true"/>
+                </textElement>
+                <text><![CDATA[DOCUMENTOS]]></text>
+            </staticText>
+
+            <subreport>
+                <reportElement x="0" y="25" width="555" height="80"/>
+                <subreportParameter name="acta_id">
+                    <subreportParameterExpression><![CDATA[$P{acta_id}]]></subreportParameterExpression>
+                </subreportParameter>
+
+                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+
+                <subreportExpression><![CDATA["documentos_subreport.jasper"]]></subreportExpression>
+            </subreport>
+
+        </band>
+    </detail>
+
+</jasperReport>

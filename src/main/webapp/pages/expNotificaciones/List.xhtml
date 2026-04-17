@@ -10,6 +10,26 @@
 
         <p:panel header="#{expNotificacionesController.titulo}">
             <p:commandButton id="viewButton" rendered="false" icon="ui-icon-search" value="#{mensajes.View}" update=":ExpNotificacionesViewForm" oncomplete="PF('ExpNotificacionesViewDialog').show()" disabled="#{empty expNotificacionesController.selected}"/>
+             <p:panelGrid columns="7" styleClass="ui-fluid">
+
+                <p:outputLabel value="Fecha Desde" for="fechaDesde"/>
+                <p:calendar id="fechaDesde" yearRange="c-100:c+0"
+                            pattern="dd/MM/yyyy" navigator="true"
+                            value="#{expNotificacionesController.fechaDesde}"
+                            showOn="button"/>
+
+                <p:outputLabel value="Fecha Hasta" for="fechaHasta"/>
+                <p:calendar id="fechaHasta" yearRange="c-100:c+0"
+                            pattern="dd/MM/yyyy" navigator="true"
+                            value="#{expNotificacionesController.fechaHasta}"
+                            showOn="button"/>
+            
+            <!-- BOTON -->
+            <p:commandButton value="Buscar"
+                             update="datalist"
+                             action="#{expNotificacionesController.buscar()}"/>
+            <p:commandButton id="imprimirButton" style="margin-left: 10px" rendered="true"  ajax="false" onclick="this.form.target = '_blank'" value="Imprimir en PDF" action="#{expNotificacionesController.Recusaciones(true)}"/>
+           </p:panelGrid>
             <p:dataTable id="datalist"
                          value="#{expNotificacionesController.items}"
                          lazy="false" emptyMessage="#{mensajes.NoRegistros}"
@@ -84,11 +104,12 @@
                         <p:commandButton id="verDocButton"   style="visibility: visible;" icon="ui-icon-search" value="Ver" update="ExpNotificacionesViewDlg, @form:datalist, :growl" actionListener="#{expNotificacionesController.prepareDialogoVerDoc(item)}" oncomplete="PF('ExpNotificacionesViewDialog').show(); PF('ExpNotificacionesViewDialog').toggleMaximize();"  disabled="#{empty item.actuacion.archivo}"/>
                     </p:column>
                 </ui:remove>
-
+        
 
             </p:dataTable>
 
         </p:panel>
+        
         <ui:include src="/pages/confirmation.xhtml"/>
     </h:form>
 

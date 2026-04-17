@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD JasperReport//EN" "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+      <parameter name="acta_id" class="java.lang.Integer"/>
+
+    <queryString>
+        <![CDATA[
+        SELECT 
+            dj.nro_causa,
+            dj.caratula
+        FROM ExpDetallesActaSesion d
+        JOIN documentos_judiciales dj ON dj.id = d.documentos_judiciales
+        WHERE d.acta_sesion = $P{acta_id}
+        ]]>
+    </queryString>
+
+    <field name="nro_causa" class="java.lang.String"/>
+    <field name="caratula" class="java.lang.String"/>
+
+    <columnHeader>
+        <band height="20">
+
+            <staticText>
+                <reportElement x="0" y="0" width="150" height="20"/>
+                <text><![CDATA[N° Causa]]></text>
+            </staticText>
+
+            <staticText>
+                <reportElement x="150" y="0" width="400" height="20"/>
+                <text><![CDATA[Carátula]]></text>
+            </staticText>
+
+        </band>
+    </columnHeader>
+
+    <detail>
+        <band height="20">
+
+            <textField>
+                <reportElement x="0" y="0" width="150" height="20"/>
+                <textFieldExpression><![CDATA[$F{nro_causa}]]></textFieldExpression>
+            </textField>
+
+            <textField>
+                <reportElement x="150" y="0" width="400" height="20"/>
+                <textFieldExpression><![CDATA[$F{caratula}]]></textFieldExpression>
+            </textField>
+
+        </band>
+    </detail>
+</jasperReport>
